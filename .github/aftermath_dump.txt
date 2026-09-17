@@ -1,0 +1,3311 @@
+
+===== #1 後果 @ 33742 =====
+kDialogueMode .widget{
+  margin-top:16px!important;
+}
+#game .dialogue.eventDialogueMode .choices,
+#game .dialogue.riskDialogueMode .choices{
+  gap:12px!important;
+  margin-top:16px!important;
+}
+#game .dialogue.eventDialogueMode .choice,
+#game .dialogue.riskDialogueMode .choice{
+  min-height:78px!important;
+  padding:15px 16px!important;
+  border-radius:14px!important;
+  font-size:22px!important;
+  line-height:1.42!important;
+  background:rgba(255,255,255,.075)!important;
+}
+#game .dialogue.eventDialogueMode .letter,
+#game .dialogue.riskDialogueMode .letter{
+  font-size:23px!important;
+  line-height:1!important;
+  margin-right:10px!important;
+}
+#game .dialogue.eventDialogueMode .cost,
+#game .dialogue.riskDialogueMode .cost{
+  font-size:17px!important;
+  line-height:1.5!important;
+  margin-top:6px!important;
+  color:#d1d8e5!important;
+}
+#game .dialogue.eventDialogueMode .adopt,
+#game .dialogue.riskDialogueMode .adopt{
+  font-size:17px!important;
+  line-height:1.15!important;
+  padding:10px 13px!important;
+  border-radius:10px!important;
+}
+#game .dialogue.eventDialogueMode .resultBtns,
+#game .dialogue.riskDialogueMode .resultBtns{
+  gap:12px!important;
+  margin-top:14px!important;
+}
+#game .dialogue.eventDialogueMode .resultBtns button,
+#game .dialogue.riskDialogueMode .resultBtns button{
+  font-size:18px!important;
+  padding:13px 15px!important;
+}
+@media (max-width:800px){
+  #game .dialogue.eventDialogueMode .story,
+  #game .dialogue.riskDialogueMode .story{font-size:20px!important;}
+  #game .dialogue.eventDialogueMode .choice,
+  #game .dialogue.riskDialogueMode .choice{font-size:18px!important;min-height:68px!important;}
+  #game .dialogue.eventDialogueMode .cost,
+  #game .dialogue.riskDialogueMode .cost{font-size:15px!important;}
+  #game .dialogue.eventDialogueMode .adopt,
+  #game .dialogue.riskDialogueMode .adopt{font-size:15px!important;}
+}
+</style>
+</head>
+<body>
+<section id="menu" class="screen active">
+  <div id="menuBg" class="bg"></div><div class="shade"></div>
+  <div class="inner"><div class="card">
+    <div class="kicker">CLASSROOM LIFE SIMULATION</div>
+    <h1>我們的14歲</h1>
+    <div class="lead">全班共同養一個沒有固定臉、沒有固定性別的國中生。<br>每節課最後約 5 分鐘推進一個事件，而且不好的選擇，後面真的可能出現後果。</div>
+    <div class="menuBtns">
+      <button class="primary" onclick="newGame()">＋ 建立新班級</button>
+      <button class="ghost" id="continueBtn" onclick="continueGame()">▶ 繼續上次班級</button>
+      <button class="ghost" onclick="openClassManager()">🏫 選擇／管理班級</button>
+      <button class="ghost" onclick="copyTeacherUrl()">🔗 複製老師總網址</button>
+      <button class="ghost" onclick="exportAllClasses()">💾 備份全部班級</button>
+      <button class="ghost" onclick="document.getElementById('allClassImport').click()">📥 還原全部班級</button>
+      <button class="ghost" onclick="refreshTeacherCloudList(true)">☁ 讀取雲端班級</button>
+    </div>
+    <div id="menuClassHint" class="menuClassHint"></div>
+    <div style="margin-top:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px">
+        <b>☁ 我的雲端班級</b>
+        <button class="ghost" onclick="refreshTeacherCloudList(true)">重新整理</button>
+      </div>
+      <div id="teacherCloudList" class="classManagerList"><div class="menuClassHint">正在讀取雲端班級……</div></div>
+    </div>
+    <div class="note">v28.5.4 事件閱讀・教室投影大字版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
+  </div></div>
+</section>
+
+<section id="game" class="screen">
+<div class="wrap">
+  <div class="topbar">
+    <div><div class="name">我們的14歲</div><div class="chapter">第一章｜九月，新生活開始了</div></div>
+    <div class="actions">
+      <button onclick="openGallery()">🖼 回憶</button>
+      <button onclick="saveLocal(true)">☁ 儲存並確認雲端</button>
+      <button onclick="cloudSavePrompt()">☁ 立即確認同步</button>
+      <button onclick="cloudReloadCurrent()">☁ 從雲端重新讀取</button>
+      <button onclick="copyResumeLink()">🔗 複製這個班級網址</button>
+      <button onclick="toggleFull()">⛶ 全螢幕</button>
+      <button onclick="openClassManager()">🏫 切換班級</button><button onclick="backToMenu()">選單</button>
+    </div>
+  </div>
+
+  <div class="layout" id="gameLayout">
+    <main class="stage">
+      <div id="visual" class="visual"></div>
+      <div id="tag" class="tag"></div>
+      <div id="spriteWrap" class="spriteWrap"><div class="spriteCard"><img id="spriteImg" alt=""></div></div>
+      <div id="dialogue" class="dialogue">
+        <div id="speaker" class="speaker">旁白</div>
+        <div id="story" class="story"></div>
+        <div id="hint" class="hint"></div><div id="subjectStrip" class="subjectStrip"></div>
+        <div id="widget" class="widget"></div>
+        <div id="choices" class="choices"></div>
+      </div>
+      <div id="eventDataBar" class="eventDataBar"></div>
+      <div id="eventIntroOverlay" class="eventIntroOverlay">
+        <div class="eventIntroCard">
+          <div id="eventIntroKind" class="eventIntroKind">STORY EVENT</div>
+          <div id="eventIntroTitle" class="eventIntroTitle"></div>
+          <div class="eventIntroHint">先看這一幕，再決定主角怎麼做。</div>
+          <button class="primary" onclick="enterCurrentEvent()">進入事件</button>
+        </div>
+      </div>
+      <div id="cgIntroOverlay" class="cgIntroOverlay">
+        <div class="cgIntroCard">
+          <div class="cgIntroKicker">CHAPTER CG</div>
+          <div class="cgIntroTitle">第一章｜告一段落</div>
+          <div id="cgIntroText" class="cgIntroText">先看看這一章留下的畫面，再進入回顧。</div>
+          <button class="primary" onclick="continueChapterReview()">看這一章的回顧</button>
+        </div>
+      </div>
+    </main>
+    <aside class="side">
+      <div class="card">
+        <div class="progressTop">
+          <div><div style="font-size:11px;color:#aeb7c8">目前進度</div><div id="weekText" class="week"></div><div id="classText" class="classN
+
+===== #2 後果 @ 1497877 =====
+2}}],"cinematic":true},{"week":5,"label":"第5週・事件2｜94分也不開心？","speaker":"小晴","bg":"cg_qing_crisis1","text":"下課後，小晴把 94 分的考卷對折，再對折。\n\n「那兩題我明明都會。」\n她沒有哭，也沒有發脾氣，只是一直盯著桌面。\n\n你手上還拿著自己的 48。這一刻，你不一定有餘裕當一個很會安慰人的朋友。","choices":[{"letter":"A","text":"忍不住說：妳 94 還不滿意喔？","cost":"很直覺｜也可能讓她覺得自己不該難過","effect":{"stats":{"social":-1},"hidden":{"qingTrust":-1}},"result":"小晴停了一下：「……嗯。」\n\n話題就這樣結束。","log":"用成績高低回應小晴。","relationImpact":{"qing":-0.38}},{"letter":"B","text":"問：妳是不是對自己要求很高？","cost":"多聽一點｜可能聽到更重的壓力","effect":{"stats":{"social":3,"self":2},"hidden":{"qingTrust":2}},"result":"小晴沉默幾秒：「我爸會問為什麼不是100。」\n\n原來94背後還有別的東西。","log":"試著理解小晴的壓力。","relationImpact":{"qing":0.4}},{"letter":"C","text":"先不接這題，因為自己現在也很難受","cost":"先顧自己｜關係不一定會更靠近","effect":{"stats":{"self":3},"stress":-1},"result":"你沒有硬撐著安慰別人。\n\n先把自己的考卷收好。","log":"先照顧自己的情緒。","relationImpact":{"qing":-0.12}},{"letter":"D","text":"交換一題：她教你，你陪她看她錯的地方","cost":"把兩個人的問題放在同一張桌上","effect":{"stats":{"study":3,"social":3},"hidden":{"mathPrep":2,"qingTrust":2}},"result":"你們各自拿出一張考卷。\n\n一個人在補不會的，一個人在整理失誤的。","log":"和小晴互相幫忙。","relationImpact":{"qing":0.46}}],"crisisCg":"cg_qing_crisis1","relationMoment":{"person":"qing","kind":"crisis","key":"qing_crisis_grade"},"cinematic":true,"unlock":"cg_qing_crisis1"},{"week":5,"label":"第5週・事件3｜考卷要不要簽名","speaker":"旁白","bg":"bg_home","text":"晚上，書包放在房間地板上。\n\n老師說明天一定要交家長簽名。那張 48 分的考卷就夾在最上面。\n\n你甚至已經想像得到家人的第一句話會是什麼。","choices":[{"letter":"A","text":"今晚就拿出去，不先排演答案","cost":"最早面對｜可能被問很多","effect":{"stats":{"family":2,"self":3},"hidden":{"familyTrust":2}},"result":"家人皺了眉，也問了不少問題。\n\n但至少明天不用再想怎麼藏。","log":"把48分拿給家人看。","relationImpact":{"mom":0.26}},{"letter":"B","text":"先整理自己錯在哪，再拿出去談","cost":"多花一點時間｜談話比較有方向","effect":{"stats":{"family":3,"self":4,"study":1},"hidden":{"familyTrust":2,"selfControl":1,"mathPrep":1}},"result":"你先講自己錯在哪、準備怎麼補。\n\n家人還是關心分數，但談話不只剩下責備。","log":"帶著補救計畫談成績。","relationImpact":{"mom":0.38}},{"letter":"C","text":"先用訊息跟家人說分數，等等再拿紙本出去","cost":"比較容易開口｜真正的談話還是躲不掉","effect":{"stress":3,"hidden":{"avoidance":1}},"result":"你先傳了一句：「我今天數學48，等一下拿考卷給你。」\n\n按下送出後，心跳還是很快，但至少第一句已經不用當面擠出來。","log":"先用訊息告知分數，再拿紙本給家人。","relationImpact":{"mom":-0.12}},{"letter":"D","text":"自己模仿簽名，先把這關過掉","cost":"眼前最省事｜留下高風險後果","effect":{"stress":5,"hidden":{"fakeSign":3,"avoidance":4},"stats":{"family":-2}},"result":"你模仿了一個簽名。\n\n紙上多了一個名字，心裡卻沒有比較輕鬆。","log":"用假簽名處理考卷。","relationImpact":{"mom":-0.5}}]},{"week":6,"label":"第6週・事件1｜段考範圍公告","speaker":"老師","bg":"bg_classroom","sprite":"sp_teacher","widget":"examScope","text":"午休前，老師把第一次段考範圍投在螢幕上。\n\n數學最長，社會也不少，英文看起來還能追。有人立刻拍照，有人已經開始說「完了」。\n\n你現在最需要的，不一定是「最努力」的選項，而是決定從哪裡開始。","choices":[{"letter":"A","text":"先把整週讀書和休息都排進時間表","cost":"先花時間規劃｜之後比較不亂","effect":{"stats":{"study":4,"self":4},"stress":-1,"hidden":{"selfControl":3,"mathPrep":1,"studyEffort":2}},"result":"你沒有立刻狂讀，而是把科目、時間、休息排開。\n\n事情沒有變少，但看起來沒那麼亂。","log":"先規劃段考節奏。"},{"letter":"B","text":"今晚先救最弱的數學，其他科明天再排","cost":"弱科先動起來｜其他科會晚一點才進場","effect":{"stats":{"study":5},"energy":-10,"stress":4,"hidden":{"mathPrep":3,"studyEffort":2}},"result":"數學進度真的往前，但其他科開始默默堆起來。","log":"集中火力準備數學。"},{"letter":"C","text":"先完成兩個最容易開始的小任務","cost":"最快換到進度感｜不一定先處理最弱科","effect":{"stats":{"study":3,"social":3,"mood":2},"hidden":{"friendTrust":1,"mathPrep":1,"studyEffort":1}},"result":"你先把英文單字和社會一小段收掉。\n\n範圍沒有突然變少很多，但「我完全還沒開始」的感覺先消失了。","log":"段考範圍公告後先完成兩個小任務。","relationImpact":{"zhe":0.06,"qing":0.06,"jiahao":0.06}},{"letter":"D","text":"先問老師或同學：哪些範圍最值得先抓","cost":"能拿到方向｜最後還是得自己決定","effect":{"stats":{"mood":2},"stress":2,"hidden":{"avoidance":3}},"result":"你先去問了最容易失分的地方。\n\n別人沒有替你讀書，但你比較知道第一步要放在哪。","log":"先詢問段考準備的優先順序。"}]},{"week":6,"label":"第6週・事件2｜今天真的讀不下去","speaker":"小晴","bg":"cg_qing_crisis2","text":"放學前，教室已經快空了。\n\n小晴盯著同一頁筆記很久，最後把筆放下。\n「我今天真的什麼都讀不進去。」\n\n她笑了一下，那個笑比較像是在替自己圓場。","choices":[{"letter":"A","text":"說：妳成績這麼好，真的不用那麼擔心","cost":"想讓她放心｜也可能讓她更難說下去","effect":{"stats":{"social":-2},"hidden":{"qingTrust":-1}},"result":"小晴沒有生氣，只把筆記收起來：「……也是。」","log":"快速安慰小晴。","relationImpact":{"qing":-0.46}},{"letter":"B","text":"先離開座位走一圈，問她要不要一起","cost":"少一點讀書時間｜先把人拉回來","effect":{"stats":{"social":3,"mood":2},"hidden":{"qingTrust":2}},"result":"你們去裝水，在走廊站了幾分鐘。\n\n她沒有突然變好，但肩膀看起來鬆了一點。","log":"陪小晴暫停一下。","relationImpact":{"qing":0.4}},{"letter":"C","text":"陪她把今天的待辦縮成只剩一件","cost":"不追求全部完成｜先找可做到的","effect":{"stats":{"social":2,"self":3,"study":1},"hidden":{"qingTrust":2,"selfControl":1,"studyEffort":1}},"result":"你們把一整頁待辦縮成一件。\n\n小晴：「……這樣好像可以。」","log":"和小晴縮小今天的任務。","relationImpact":{"qing":0.46}},{"letter":"D","text":"告訴她：其實你最近也有點撐不住","cost":"沒有立刻解決問題｜但彼此不用裝沒事","effect":{"stats":{"social":3,"self":2},"stress":-1,"hidden":{"qingTrust":2}},"result":"你們兩個都笑了一下。\n\n不是只有一個人在覺得累。","log":"和小晴互相說出壓力。","relationImpact":{"qing":0.5}}],"crisisCg":"cg_qing_crisis2","relationMoment":{"person":"qing","kind":"crisis","key":"qing_crisis_exhausted"},"cinematic":true,"unlock":"cg_qing_crisis2"},{"week":6,"label":"第6週・事件3｜朋友找你打遊戲","speaker":"阿哲","bg":"bg_home","sprite":"sp_azhe","text":"晚上 8:20。\n\n阿哲傳來：「上線啦！就打一場。」\n\n你原本打算今晚完成兩科，但其實也已經讀得有點煩。\n「打一場」可能真的只是一場，也可能不是。","choices":[{"letter":"A","text":"打一場，但開計時器，結束就下線","cost":"真的能休息一下｜要有辦法在時間到時停","effect":{"stats":{"mood":3,"social":2},"hidden":{"friendTrust":1,"gameDelay":2},"energy":-2},"result":"你上線了。\n\n第一場結束時，阿哲：「再一場啦，剛剛不算。」","log":"段考前上線玩一場。","relationImpact":{"zhe":0.24}},{"letter":"B","text":"今天不打，把原本兩科做完","cost":"進度最穩｜跟朋友少一段時間","effect":{"stats":{"self":3,"study":2},"hidden":{"selfControl":2,"studyEffort":2}},"result":"阿哲回：「好啦學霸。」後面還加了一個笑臉。\n\n你繼續原本的進度。","log":"拒絕遊戲邀請。","relationImpact":{"zhe":-0.12}},{"letter":"C","text":"先完成一個明確任務，再決定要不要玩","cost":"延後滿足｜今晚還是保留玩的可能","effect":{"stats":{"study":3,"self":3,"mood":1},"hidden":{"selfControl":2,"studyEffort":2}},"result":"你先把一科讀完。\n\n完成後再看時間，你開始有真的在掌握自己晚上怎麼用的感覺。","log":"先完成任務再玩。","relationImpact":{"zhe":-0.04}},{"letter":"D","text":"叫阿哲一起讀30分鐘，之後再開一場","cost":"把朋友拉進計畫｜他不一定想配合","effect":{"stats":{"study":2,"social":2,"self":2},"hidden":{"friendTrust":1,"studyEffort":1}},"result":"阿哲：「蛤……好啦。」\n\n30分鐘沒有很安靜，但至少兩個人都先做了一點。","log":"把邀約改成先讀再玩。","relationImpact":{"zhe":0.32}}]},{"week":7,"label":"第7週・事件1｜只剩三天","speaker":"旁白","bg":"bg_classroom","text":"距離第一次段考只剩三天。\n\n桌上同時攤著英文單字、數學錯題、自然講義和還沒整理完的社會範圍。\n\n最可怕的不是「完全沒讀」，而是每一科都還有一點沒做完。","choices":[{"letter":"A","text":"照原本計畫走，不因焦慮全部重排","cost":"可能還是有沒讀完的｜但節奏穩","effect":{"stats":{"study":3,"self":4},"stress":-2,"hidden":{"selfControl":2,"studyEffort":2}},"result":"你還是會擔心來不及，但沒有
+
+===== #3 後果 @ 1516194 =====
+大家都在玩而已",cost:"可能傷到人",effect:{stats:{social:1,self:-1},hidden:{jokeRisk:2}},result:`大家又笑了一輪。
+
+那個同學收好東西，先離開了。`,log:"跟著大家繼續開玩笑。"},
+      {letter:"B",text:"把話題轉去別的地方",cost:"不一定有人注意",effect:{stats:{social:2,self:2}},result:`你突然講起另一件事。
+
+笑聲慢慢轉到新的話題上。`,log:"把有點過頭的玩笑轉開。"},
+      {letter:"C",text:"問那個同學「你還OK嗎？」",cost:"需要主動",effect:{stats:{social:3,self:3}},result:`對方只說：「還好啦。」
+
+但他看起來有比較放鬆一點。`,log:"注意到被開玩笑同學的反應。"}
+    ]
+  },
+  {
+    id:"club_invite",minWeek:1,maxWeek:4,bg:"bg_classroom",speaker:"旁白",
+    label:"日常事件｜社團學長姐來招生",
+    text:`午休前，社團學長姐到教室發傳單。
+
+有一個社團看起來真的滿有趣，但參加後每週會多花一個下午。`,
+    choices:[
+      {letter:"A",text:"去試一次看看",cost:"時間 -、🌱 +",effect:{stats:{self:3,mood:2},energy:-2,hidden:{clubTry:1}},result:`你先報名體驗。
+
+還沒有決定一定要留下，但至少多知道了一個可能。`,log:"去體驗一個有興趣的社團。"},
+      {letter:"B",text:"現在先不要，怕時間不夠",cost:"保留時間",effect:{stats:{self:2},hidden:{selfControl:1}},result:`你把傳單收進書包。
+
+有些選擇不一定現在就要做。`,log:"因時間考量暫不參加社團。"},
+      {letter:"C",text:"朋友去我就去",cost:"把決定交給朋友",effect:{stats:{social:2},hidden:{friendTrust:1}},result:`你先問了一圈朋友。
+
+最後你更清楚大家要去哪，卻還沒有很清楚自己想去哪。`,log:"把社團選擇綁在朋友身上。"}
+    ]
+  },
+  {
+    id:"money_low",minWeek:2,maxWeek:7,bg:"bg_home",speaker:"旁白",
+    label:"條件事件｜這週只剩一點零用錢",
+    text:`你把錢包打開。
+
+這週還有幾天，但能自由使用的錢已經不多了。`,
+    condition:"lowMoney",
+    choices:[
+      {letter:"A",text:"剩下幾天先不買額外的東西",cost:"需要忍一下",effect:{stats:{self:3},hidden:{selfControl:2}},result:`接下來幾天你還是會想買東西。
+
+但至少沒有真的把錢花到零。`,log:"零用錢變少後開始節制。"},
+      {letter:"B",text:"反正下週又有300，繼續花",cost:"可能見底",effect:{money:-50,stats:{mood:1},hidden:{avoidance:1}},result:`你又花了一些。
+
+離下週還有幾天，錢包更輕了。`,log:"零用錢不足時仍繼續消費。"},
+      {letter:"C",text:"回想這週錢都花去哪裡",cost:"🌱 +3",effect:{stats:{self:3},hidden:{selfControl:1}},result:`你大概算了一下。
+
+真正讓錢變少的，不一定是哪一筆大額，而是很多次「沒多少啦」。`,log:"回顧本週零用錢用途。"}
+    ]
+  },
+  {
+    id:"low_energy",minWeek:2,maxWeek:7,bg:"bg_classroom",speaker:"旁白",
+    label:"條件事件｜上課開始打瞌睡",
+    text:`下午第一節，老師才講沒多久，你就開始一直眨眼。
+
+黑板上的字好像慢慢失去焦點。`,
+    condition:"lowEnergy",
+    choices:[
+      {letter:"A",text:"硬撐，不想被老師發現",cost:"⚡ -5",effect:{energy:-5,stress:1},result:`你撐住沒有趴下。
+
+但筆記中間還是空了一大塊。`,log:"很累時硬撐上課。"},
+      {letter:"B",text:"下課補問剛剛漏掉的部分",cost:"需要多花時間",effect:{stats:{study:2,self:2},stress:-1},result:`你把漏掉的重點補回來。
+
+疲累的後果沒有完全消失，但至少有補救。`,log:"疲累後補回漏掉的課程內容。"},
+      {letter:"C",text:"今天晚上把睡覺放在第一順位",cost:"其他行程可能延後",effect:{energy:3,stats:{self:2},hidden:{selfControl:1}},result:`你先把今天的疲累記在心裡。
+
+至少知道今晚不能再用同一套過。`,log:"因上課疲累決定調整睡眠。"}
+    ]
+  },
+  {
+    id:"answer_photo",minWeek:5,maxWeek:7,bg:"bg_home",speaker:"家豪",sprite:"sp_jiahao",
+    label:"突發事件｜群組有人傳答案",
+    text:`晚上，群組裡有人貼了一張明天要交的題目答案。
+
+家豪標記你：「先存起來啦，等等刪。」`,
+    choices:[
+      {letter:"A",text:"先存下來，需要時再看",cost:"高風險",effect:{hidden:{answerRisk:2,avoidance:1},stress:1},result:`圖片進了相簿。
+
+你還沒決定會不會抄，但那個捷徑已經放在手上。`,log:"先存下群組裡的答案照片。"},
+      {letter:"B",text:"不存，自己寫多少算多少",cost:"可能比較慢",effect:{stats:{study:2,self:3},hidden:{studyEffort:1}},result:`你沒有存圖。
+
+有幾題真的花了比較久。`,log:"沒有存群組答案，自己完成作業。"},
+      {letter:"C",text:"看解法，但自己重新算／寫",cost:"需要判斷界線",effect:{stats:{study:1,self:2}},result:`你看懂方法後把圖片關掉，重新自己做。
+
+這和直接把答案抄上去，感覺不太一樣。`,log:"把答案照片當參考而非直接照抄。"}
+    ]
+  },
+  {
+    id:"seat_clean",minWeek:1,maxWeek:5,bg:"bg_classroom",speaker:"旁白",
+    label:"日常事件｜座位旁邊有一堆垃圾",
+    text:`放學前，你發現座位旁邊有幾張紙和一個飲料封膜。
+
+你不確定是不是自己掉的。`,
+    choices:[
+      {letter:"A",text:"不是我的就不管",cost:"最快",effect:{stats:{self:-1}},result:`你直接離開。
+
+隔天那堆東西還在原地。`,log:"看見座位旁垃圾但沒有處理。"},
+      {letter:"B",text:"順手一起丟掉",cost:"花不到一分鐘",effect:{stats:{self:2}},result:`你把那幾樣東西一起拿去丟。
+
+沒有任何人稱讚你，教室就是少了一點垃圾。`,log:"順手處理座位旁的垃圾。"},
+      {letter:"C",text:"先問附近同學是不是他們的",cost:"需要多一步",effect:{stats:{social:1,self:2}},result:`有人看了一眼：「那個好像是我的。」
+
+事情很快就被處理掉了。`,log:"先確認垃圾是誰留下的。"}
+    ]
+  },
+  {
+    id:"weekend_plan",minWeek:3,maxWeek:7,bg:"bg_home",speaker:"旁白",
+    label:"日常事件｜週末突然空出半天",
+    text:`原本的週末安排取消了。
+
+你突然多出半天完全沒有排事情。`,
+    choices:[
+      {letter:"A",text:"把欠的進度補一點",cost:"📚 +3",effect:{stats:{study:3,self:2},hidden:{studyEffort:1}},result:`你沒有把半天全部拿去讀書。
+
+但至少補掉了一件原本一直拖著的事。`,log:"用空出的時間補一些進度。"},
+      {letter:"B",text:"什麼都不要排，好好休息",cost:"⚡ +8",effect:{energy:8,stress:-2,stats:{mood:2}},result:`你真的讓自己空了一陣子。
+
+晚上時，腦袋比早上安靜很多。`,log:"用空出的時間休息。"},
+      {letter:"C",text:"打遊戲打到晚餐",cost:"心情↑、時間大量使用",effect:{stats:{mood:4},energy:-4,hidden:{gameDelay:2,avoidance:1}},result:`一開始很放鬆。
+
+關掉遊戲時，你才發現半天已經沒有了。`,log:"把空出的半天大多拿去打遊戲。"}
+    ]
+  }
+,
+  {
+    id:"qing_opens_up",minWeek:4,maxWeek:7,bg:"cg_qing_crisis2",speaker:"小晴",sprite:"sp_qing",condition:"qingFamiliar",unique:true,relationMoment:{person:"qing",kind:"shared",key:"qing_after_school_talk"},
+    label:"關係事件｜小晴第一次說得比較多",
+    text:`放學後，小晴沒有立刻收書包。
+
+她小聲說：「你會不會覺得……考不好就很像對不起家裡？」`,
+    choices:[
+      {letter:"A",text:"先聽她說，不急著給建議",cost:"需要花時間陪",effect:{stats:{social:3},hidden:{qingTrust:2}},result:`你沒有馬上說「不要想太多」。
+
+小晴慢慢講了一些家裡對成績的期待。`,log:"讓小晴把壓力說完。"},
+      {letter:"B",text:"跟她說自己也會怕考不好",cost:"互相坦白",effect:{stats:{social:3,self:2},hidden:{qingTrust:2}},result:`你們交換了一些各自擔心的事。
+
+不是問題突然消失，而是有人知道。`,log:"和小晴互相說出考試焦慮。"},
+      {letter:"C",text:"「妳成績那麼好，不用擔心啦」",cost:"很直覺",effect:{stats:{social:-1},hidden:{qingTrust:-1}},result:`小晴笑了一下：「也是。」
+
+但話題就停在這裡了。`,log:"用成績高低回應小晴的壓力。"}
+    ]
+  },
+  {
+    id:"zhe_checks_in",minWeek:4,maxWeek:7,bg:"cg_zhe_crisis1",speaker:"阿哲",sprite:"sp_azhe",condition:"zheFamiliar",unique:true,crisisCg:"cg_zhe_crisis1",relationMoment:{person:"zhe",kind:"crisis",key:"zhe_crisis_checkin"},
+    label:"關係事件｜今天怎麼這麼安靜？",
+    text:`阿哲看了你一眼。
+
+「你今天超安靜欸。累喔？還是怎樣？」`,
+    choices:[
+      {letter:"A",text:"說最近真的有點累",cost:"需要承認狀態",effect:{stats:{social:2,self:2},stress:-1,hidden:{zheTrust:1}},result:`阿哲沒有笑你。
+
+他只說：「那等等不要拖你去亂跑了。」`,log:"向阿哲說自己最近有點累。"},
+      {letter:"B",text:"說沒事，照常就好",cost:"保持原樣",effect:{stats:{confidence:-4,mood:-3,social:-2},stress:4,hidden:{avoidance:1}},result:`你說沒事。
+
+阿哲也沒再問，但你還是覺得累。`,log:"沒有向朋友說出疲累。"},
+      {letter:"C",text:"反問他最近怎麼樣",cost:"把注意力也放到朋友身上",effect:{stats:{social:3},hidden:{zheTrust:2}},result:`原本只是他來問你，最後變成兩個人都聊了一點最近的事。`,log:"和阿哲互相關心近況。"}
+    ]
+  },
+  {
+    id:"stationery_breaks",minWeek:3,maxWeek:7,bg:"bg_classroom",speaker:"旁白",
+    label:"必要支出｜自動筆壞了",
+    text:`上課寫到一半，自動筆突然卡住。
+
+你怎麼按都不出芯。接下來幾天還要一直用。`,
+    choices:[
+      {letter:"A",text:"買一支自己喜歡的新筆",cost:"💰 -70",effect:{money:-70,stats:{mood:1}},result:`你換了一支新的。
+
+不是什麼大事，但這確實是這週的一筆必要支出。`,log:"花70元換新的自動筆。"},
+      {letter:"B",text:"先買便宜能用的",cost:"💰 -30",effect:{money:-30,stats:{self:1}},result:`功能很普通，但可以寫。
+
+你把剩下的錢留給其他事情。`,log:"用較便宜方式處理文具支出。"},
+
+===== #4 isConsequence @ 1529131 =====
+=Math.random()*weights.reduce((a,b)=>a+b,0),idx=0;
+  while(idx<pool.length-1 && roll>weights[idx]){roll-=weights[idx];idx++;}
+  state.pendingExtraId=pool[idx].id;
+  saveLocal(false);
+  return pool[idx];
+}
+function extraById(id){return EXTRA_EVENTS.find(e=>e.id===id);}
+
+function mergeEventEffect(label,choiceIndex,extra){
+  const ev=EVENTS.find(e=>e.label===label); if(!ev||!ev.choices[choiceIndex])return;
+  const e=ev.choices[choiceIndex].effect=ev.choices[choiceIndex].effect||{};
+  if(extra.mastery)e.mastery={...(e.mastery||{}),...extra.mastery};
+  if(extra.prep)e.prep={...(e.prep||{}),...extra.prep};
+  if(extra.fatigue)e.fatigue=(e.fatigue||0)+extra.fatigue;
+}
+mergeEventEffect("第5週・事件1｜48分",0,{mastery:{math:.8},fatigue:5});
+mergeEventEffect("第5週・事件1｜48分",2,{mastery:{math:1.0},fatigue:3});
+mergeEventEffect("第5週・事件2｜94分也不開心？",3,{mastery:{math:.6},fatigue:2});
+mergeEventEffect("第5週・事件3｜考卷要不要簽名",1,{mastery:{math:.4}});
+mergeEventEffect("第6週・事件1｜段考範圍公告",0,{prep:{chinese:1,english:1,math:1,science:1,social:1}});
+mergeEventEffect("第6週・事件1｜段考範圍公告",1,{prep:{math:3.5},fatigue:8});
+mergeEventEffect("第6週・事件1｜段考範圍公告",2,{prep:{chinese:.5,english:.5,math:.5,science:.5,social:.5},fatigue:3});
+mergeEventEffect("第6週・事件3｜朋友找你打遊戲",1,{prep:{chinese:.5,english:.5,math:.5,science:.5,social:.5}});
+mergeEventEffect("第6週・事件3｜朋友找你打遊戲",2,{prep:{chinese:.8,english:.8,math:.8,science:.8,social:.8}});
+mergeEventEffect("第7週・事件1｜只剩三天",0,{prep:{chinese:1,english:1,math:1,science:1,social:1},fatigue:3});
+mergeEventEffect("第7週・事件1｜只剩三天",2,{prep:{chinese:.7,english:.7,math:.7,science:.7,social:.7},fatigue:2});
+mergeEventEffect("第7週・事件1｜只剩三天",3,{prep:{chinese:1.5,english:1.5,math:1.5,science:1.5,social:1.5},fatigue:12});
+mergeEventEffect("第7週・事件3｜23:48",0,{prep:{chinese:1.5,english:1.5,math:1.5,science:1.5,social:1.5},fatigue:16});
+mergeEventEffect("第7週・事件3｜23:48",2,{prep:{chinese:1,english:1,math:1,science:1,social:1},fatigue:5});
+mergeEventEffect("第7週・事件3｜23:48",3,{prep:{chinese:1,english:1,math:1,science:1,social:1},fatigue:20});
+
+const DICE_RULES=[
+  {
+    id:"meme",name:"群組照片／梗圖",contexts:["teacher","group"],minWeek:1,baseFaces:2,
+    value:s=>s.hidden.memeRisk||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜群組梗圖傳到老師那裡",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+      text:`老師把手機放在講桌上，語氣明顯比平常嚴厲。
+
+「沒有經過同意就把別人的照片做成梗圖、繼續轉傳，不是『只是好玩』。」
+
+老師當眾把這件事講得很重，並表示如果查到持續轉傳的人，會通知導師與家長。教室突然安靜下來。`,
+      choices:[
+        {letter:"A",text:"保持沉默",cost:"短期最安全",aftermath:"meme_silent",effect:{stress:5,fatigue:3,stats:{confidence:-4,mood:-3},hidden:{avoidance:1}},result:`你沒有出聲。
+
+沒有人點你的名字，但你知道自己曾經參與。`,log:"群組照片事件被老師知道後選擇沉默。"},
+        {letter:"B",text:"私下把自己轉傳的圖片刪掉，以後不再傳",cost:"做補救",aftermath:"meme_cleanup",effect:{stats:{self:3,confidence:-2},stress:1,hidden:{memeRisk:-2}},result:`你把圖片刪掉。
+
+事情已經發生，但至少沒有繼續往外傳。`,log:"群組照片事件後做了補救。"},
+        {letter:"C",text:"在群組提醒大家不要再傳",cost:"可能被說太認真",aftermath:"meme_warn",effect:{stats:{self:4,social:-1,confidence:-1},stress:1,hidden:{memeRisk:-2}},result:`有人回了一個貼圖。
+
+但照片確實沒有再繼續刷下去。`,log:"群組照片事件後主動提醒大家。"}
+      ]
+    })
+  },
+  {
+    id:"loan",name:"借錢沒有說清楚",contexts:["azhe"],minWeek:2,baseFaces:2,
+    value:s=>s.hidden.loanRisk||0,resolveOnSafe:true,
+    safeEffect:{money:100,hidden:{loanRisk:-99}},
+    safeText:"阿哲看到你，自己突然想起來：「欸！我上次欠你100。」他主動把錢還了。這次沒有變成麻煩。",
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜阿哲真的忘了還錢",speaker:"阿哲",bg:"bg_classroom",sprite:"sp_azhe",
+      text:`隔了幾天，阿哲看起來完全忘了那100元。
+
+午休時他還在買飲料。你突然想到：他好像還沒還你。`,
+      choices:[
+        {letter:"A",text:"直接提醒「你上次借我的100還沒還」",cost:"直接但清楚，可能有一點尷尬",relationImpact:{zhe:-.08},aftermath:"loan_direct",effect:{money:100,stats:{self:3},hidden:{loanRisk:-99}},result:`阿哲愣了一下：「喔對欸！」
+
+他把錢還你。`,log:"把借錢問題說清楚。"},
+        {letter:"B",text:"用開玩笑方式提醒",cost:"比較柔和",relationImpact:{zhe:.04},aftermath:"loan_soft",effect:{money:100,stats:{social:1,self:1},hidden:{loanRisk:-99}},result:`你半開玩笑地提起來。
+
+阿哲笑了一下，還是把錢還你。`,log:"用比較柔和的方式提醒還錢。"},
+        {letter:"C",text:"算了，不想講",cost:"表面沒事，但心裡會卡住",relationImpact:{zhe:-.22},aftermath:"loan_silent",effect:{stress:4,fatigue:2,stats:{self:-1,confidence:-3,mood:-2}},result:`你沒有提。
+
+錢沒有回來，心裡也一直掛著。`,log:"沒有處理借錢問題。"}
+      ]
+    })
+  },
+  {
+    id:"fakeSign",name:"自己偷簽家長簽名",contexts:["teacher","school"],minWeek:5,baseFaces:4,
+    value:s=>s.hidden.fakeSign||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜老師多看了一眼簽名",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+      text:`老師收考卷時停了一下，接著把你叫到旁邊。
+
+「這不是忘記簽名而已。你是在冒用家長簽名。」
+
+老師確認後，先依校規處理：通知導師與家長，並記小過一次。
+
+接下來要處理的，是你要怎麼面對這件已經發生的後果。`,
+      choices:[
+        {letter:"A",text:"坦白並接受處理",cost:"小過已成立；影響較能止住",aftermath:"fakeSign_accept",effect:{stats:{self:4,confidence:-8,mood:-5,family:-1},energy:-6,fatigue:6,stress:8,hidden:{fakeSign:-99,caughtFake:1}},result:`你承認是自己簽的。
+
+老師仍然很嚴肅，也通知了導師與家長。
+小過沒有取消，但事情至少沒有再擴大。`,log:"偷簽被查到後坦白並接受處理。"},
+        {letter:"B",text:"被查到後仍繼續否認",cost:"小過已成立；信任與後續處理更嚴重",aftermath:"fakeSign_deny",effect:{stats:{confidence:-14,mood:-9,family:-7},energy:-10,fatigue:10,stress:15,warning:1,hidden:{avoidance:2,fakeSign:2,caughtFake:2}},result:`老師直接聯絡家長確認。
+
+原本的偷簽已經有小過紀錄，現在又多了一次「被發現後仍說謊」的處理。
+事情明顯變得更難收拾。`,log:"偷簽被查到後仍繼續否認。"},
+        {letter:"C",text:"承認，並說出自己是因為害怕被罵",cost:"小過已成立；開始談補救",aftermath:"fakeSign_explain",effect:{stats:{self:5,family:1,confidence:-7,mood:-4},energy:-5,fatigue:5,stress:7,hidden:{fakeSign:-99,caughtFake:1}},result:`你把原因說了出來。
+
+老師沒有因此把小過取消，但談話開始轉向：
+「下一次害怕的時候，你可以怎麼做，而不是再偽造簽名？」`,log:"偷簽被查到後承認原因並開始補救。"}
+      ]
+    })
+  },
+  {
+    id:"hideScore",name:"把48分考卷藏起來",contexts:["family"],minWeek:5,baseFaces:3,
+    value:s=>s.hidden.hideScore||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜48分還是被家人看到",speaker:"旁白",bg:"bg_home",
+      text:`你以為那張48分一直藏得很好。
+
+今天家人在整理東西時剛好看見了。
+「你考48分我可以跟你談，但你為什麼要一直藏？」
+
+家人的語氣明顯生氣了。`,
+      choices:[
+        {letter:"A",text:"承認自己因為害怕才藏",cost:"需要面對",aftermath:"hideScore_admit",effect:{stats:{family:-2,self:3,confidence:-6,mood:-5},energy:-4,fatigue:4,stress:8,hidden:{hideScore:-99}},result:`家人還是會不高興。
+
+但談話沒有只剩下「為什麼騙人」。`,log:"承認自己因害怕而藏考卷。"},
+        {letter:"B",text:"先說最近其實有在補救",cost:"帶著方案談",aftermath:"hideScore_plan",effect:{stats:{family:1,self:3,confidence:-4,mood:-3},energy:-3,fatigue:3,stress:6,mastery:{math:.4},hidden:{hideScore:-99}},result:`家人聽完後，臉色還是不好看。
+
+但比較願意談「接下來怎麼辦」。`,log:"被發現後帶著補救方案談。"},
+        {letter:"C",text:"說只是小考，根本不重要",cost:"衝突升高",aftermath:"hideScore_argue
+
+===== #5 AFTERMATH @ 1530742 =====
+Effect("第7週・事件1｜只剩三天",3,{prep:{chinese:1.5,english:1.5,math:1.5,science:1.5,social:1.5},fatigue:12});
+mergeEventEffect("第7週・事件3｜23:48",0,{prep:{chinese:1.5,english:1.5,math:1.5,science:1.5,social:1.5},fatigue:16});
+mergeEventEffect("第7週・事件3｜23:48",2,{prep:{chinese:1,english:1,math:1,science:1,social:1},fatigue:5});
+mergeEventEffect("第7週・事件3｜23:48",3,{prep:{chinese:1,english:1,math:1,science:1,social:1},fatigue:20});
+
+const DICE_RULES=[
+  {
+    id:"meme",name:"群組照片／梗圖",contexts:["teacher","group"],minWeek:1,baseFaces:2,
+    value:s=>s.hidden.memeRisk||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜群組梗圖傳到老師那裡",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+      text:`老師把手機放在講桌上，語氣明顯比平常嚴厲。
+
+「沒有經過同意就把別人的照片做成梗圖、繼續轉傳，不是『只是好玩』。」
+
+老師當眾把這件事講得很重，並表示如果查到持續轉傳的人，會通知導師與家長。教室突然安靜下來。`,
+      choices:[
+        {letter:"A",text:"保持沉默",cost:"短期最安全",aftermath:"meme_silent",effect:{stress:5,fatigue:3,stats:{confidence:-4,mood:-3},hidden:{avoidance:1}},result:`你沒有出聲。
+
+沒有人點你的名字，但你知道自己曾經參與。`,log:"群組照片事件被老師知道後選擇沉默。"},
+        {letter:"B",text:"私下把自己轉傳的圖片刪掉，以後不再傳",cost:"做補救",aftermath:"meme_cleanup",effect:{stats:{self:3,confidence:-2},stress:1,hidden:{memeRisk:-2}},result:`你把圖片刪掉。
+
+事情已經發生，但至少沒有繼續往外傳。`,log:"群組照片事件後做了補救。"},
+        {letter:"C",text:"在群組提醒大家不要再傳",cost:"可能被說太認真",aftermath:"meme_warn",effect:{stats:{self:4,social:-1,confidence:-1},stress:1,hidden:{memeRisk:-2}},result:`有人回了一個貼圖。
+
+但照片確實沒有再繼續刷下去。`,log:"群組照片事件後主動提醒大家。"}
+      ]
+    })
+  },
+  {
+    id:"loan",name:"借錢沒有說清楚",contexts:["azhe"],minWeek:2,baseFaces:2,
+    value:s=>s.hidden.loanRisk||0,resolveOnSafe:true,
+    safeEffect:{money:100,hidden:{loanRisk:-99}},
+    safeText:"阿哲看到你，自己突然想起來：「欸！我上次欠你100。」他主動把錢還了。這次沒有變成麻煩。",
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜阿哲真的忘了還錢",speaker:"阿哲",bg:"bg_classroom",sprite:"sp_azhe",
+      text:`隔了幾天，阿哲看起來完全忘了那100元。
+
+午休時他還在買飲料。你突然想到：他好像還沒還你。`,
+      choices:[
+        {letter:"A",text:"直接提醒「你上次借我的100還沒還」",cost:"直接但清楚，可能有一點尷尬",relationImpact:{zhe:-.08},aftermath:"loan_direct",effect:{money:100,stats:{self:3},hidden:{loanRisk:-99}},result:`阿哲愣了一下：「喔對欸！」
+
+他把錢還你。`,log:"把借錢問題說清楚。"},
+        {letter:"B",text:"用開玩笑方式提醒",cost:"比較柔和",relationImpact:{zhe:.04},aftermath:"loan_soft",effect:{money:100,stats:{social:1,self:1},hidden:{loanRisk:-99}},result:`你半開玩笑地提起來。
+
+阿哲笑了一下，還是把錢還你。`,log:"用比較柔和的方式提醒還錢。"},
+        {letter:"C",text:"算了，不想講",cost:"表面沒事，但心裡會卡住",relationImpact:{zhe:-.22},aftermath:"loan_silent",effect:{stress:4,fatigue:2,stats:{self:-1,confidence:-3,mood:-2}},result:`你沒有提。
+
+錢沒有回來，心裡也一直掛著。`,log:"沒有處理借錢問題。"}
+      ]
+    })
+  },
+  {
+    id:"fakeSign",name:"自己偷簽家長簽名",contexts:["teacher","school"],minWeek:5,baseFaces:4,
+    value:s=>s.hidden.fakeSign||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜老師多看了一眼簽名",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+      text:`老師收考卷時停了一下，接著把你叫到旁邊。
+
+「這不是忘記簽名而已。你是在冒用家長簽名。」
+
+老師確認後，先依校規處理：通知導師與家長，並記小過一次。
+
+接下來要處理的，是你要怎麼面對這件已經發生的後果。`,
+      choices:[
+        {letter:"A",text:"坦白並接受處理",cost:"小過已成立；影響較能止住",aftermath:"fakeSign_accept",effect:{stats:{self:4,confidence:-8,mood:-5,family:-1},energy:-6,fatigue:6,stress:8,hidden:{fakeSign:-99,caughtFake:1}},result:`你承認是自己簽的。
+
+老師仍然很嚴肅，也通知了導師與家長。
+小過沒有取消，但事情至少沒有再擴大。`,log:"偷簽被查到後坦白並接受處理。"},
+        {letter:"B",text:"被查到後仍繼續否認",cost:"小過已成立；信任與後續處理更嚴重",aftermath:"fakeSign_deny",effect:{stats:{confidence:-14,mood:-9,family:-7},energy:-10,fatigue:10,stress:15,warning:1,hidden:{avoidance:2,fakeSign:2,caughtFake:2}},result:`老師直接聯絡家長確認。
+
+原本的偷簽已經有小過紀錄，現在又多了一次「被發現後仍說謊」的處理。
+事情明顯變得更難收拾。`,log:"偷簽被查到後仍繼續否認。"},
+        {letter:"C",text:"承認，並說出自己是因為害怕被罵",cost:"小過已成立；開始談補救",aftermath:"fakeSign_explain",effect:{stats:{self:5,family:1,confidence:-7,mood:-4},energy:-5,fatigue:5,stress:7,hidden:{fakeSign:-99,caughtFake:1}},result:`你把原因說了出來。
+
+老師沒有因此把小過取消，但談話開始轉向：
+「下一次害怕的時候，你可以怎麼做，而不是再偽造簽名？」`,log:"偷簽被查到後承認原因並開始補救。"}
+      ]
+    })
+  },
+  {
+    id:"hideScore",name:"把48分考卷藏起來",contexts:["family"],minWeek:5,baseFaces:3,
+    value:s=>s.hidden.hideScore||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜48分還是被家人看到",speaker:"旁白",bg:"bg_home",
+      text:`你以為那張48分一直藏得很好。
+
+今天家人在整理東西時剛好看見了。
+「你考48分我可以跟你談，但你為什麼要一直藏？」
+
+家人的語氣明顯生氣了。`,
+      choices:[
+        {letter:"A",text:"承認自己因為害怕才藏",cost:"需要面對",aftermath:"hideScore_admit",effect:{stats:{family:-2,self:3,confidence:-6,mood:-5},energy:-4,fatigue:4,stress:8,hidden:{hideScore:-99}},result:`家人還是會不高興。
+
+但談話沒有只剩下「為什麼騙人」。`,log:"承認自己因害怕而藏考卷。"},
+        {letter:"B",text:"先說最近其實有在補救",cost:"帶著方案談",aftermath:"hideScore_plan",effect:{stats:{family:1,self:3,confidence:-4,mood:-3},energy:-3,fatigue:3,stress:6,mastery:{math:.4},hidden:{hideScore:-99}},result:`家人聽完後，臉色還是不好看。
+
+但比較願意談「接下來怎麼辦」。`,log:"被發現後帶著補救方案談。"},
+        {letter:"C",text:"說只是小考，根本不重要",cost:"衝突升高",aftermath:"hideScore_argue",effect:{stats:{family:-7,confidence:-8,mood:-7},energy:-5,fatigue:5,stress:12,hidden:{hideScore:1}},result:`氣氛立刻變差。
+
+本來只是在處理一張考卷，現在變成吵架。`,log:"考卷被發現後用否認回應。"}
+      ]
+    })
+  },
+  {
+    id:"cheat",name:"偷看／保存答案",contexts:["teacher"],minWeek:2,baseFaces:4,
+    value:s=>(s.hidden.cheatRisk||0)+(s.hidden.answerRisk||0),
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜答案怎麼這麼像？",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+      text:`老師把幾份作業放在桌上，臉色很嚴肅。
+
+「錯的地方、順序，甚至連寫法都一樣。這不是普通的參考。」
+
+老師把你留下來確認情況。如果確認是作弊或直接抄答案，除了通知導師與家長，也會依校規處理。`,
+      choices:[
+        {letter:"A",text:"承認自己有看答案",cost:"要面對後果",aftermath:"cheat_admit",effect:{stats:{self:3,confidence:-12,mood:-8},energy:-8,fatigue:8,stress:12,minorDemerit:1,hidden:{cheatRisk:-99,answerRisk:-99}},result:`老師沒有說沒關係。
+
+但至少事情停在這裡，沒有再往下一個謊延伸。`,log:"承認曾使用答案。"},
+        {letter:"B",text:"說只是剛好寫一樣",cost:"風險繼續",aftermath:"cheat_deny",effect:{stats:{confidence:-15,mood:-10},energy:-10,fatigue:10,stress:15,minorDemerit:1,hidden:{avoidance:2,cheatRisk:1}},result:`老師沒有立刻繼續問。
+
+但你知道這件事還沒真正結束。`,log:"答案被懷疑後仍否認。"},
+        {letter:"C",text:"主動重做一份",cost:"要再花時間",aftermath:"cheat_redo",effect:{stats:{study:1,self:4,confidence:-8,mood:-5},energy:-6,fatigue:8,stress:9,warning:1,hidden:{cheatRisk:-99,answerRisk:-99}},result:`你重新把題目做了一次。
+
+這次每一步都是自己寫的。`,log:"重新完成曾參考答案的作業。"}
+      ]
+    })
+  },
+  {
+    id:"joke",name:"玩笑可能傷到同學",contexts:["school"],minWeek:2,baseFaces:2,
+    value:s=>s.hidden.jokeRisk||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜他其實不喜歡那個綽號",speaker:"旁白",bg:"bg_classroom",
+      text:`下課時，那個同學終於忍不住說：
+
+「可以不要再叫那個綽號嗎
+
+===== #6 isConsequence @ 1532573 =====
+   text:`隔了幾天，阿哲看起來完全忘了那100元。
+
+午休時他還在買飲料。你突然想到：他好像還沒還你。`,
+      choices:[
+        {letter:"A",text:"直接提醒「你上次借我的100還沒還」",cost:"直接但清楚，可能有一點尷尬",relationImpact:{zhe:-.08},aftermath:"loan_direct",effect:{money:100,stats:{self:3},hidden:{loanRisk:-99}},result:`阿哲愣了一下：「喔對欸！」
+
+他把錢還你。`,log:"把借錢問題說清楚。"},
+        {letter:"B",text:"用開玩笑方式提醒",cost:"比較柔和",relationImpact:{zhe:.04},aftermath:"loan_soft",effect:{money:100,stats:{social:1,self:1},hidden:{loanRisk:-99}},result:`你半開玩笑地提起來。
+
+阿哲笑了一下，還是把錢還你。`,log:"用比較柔和的方式提醒還錢。"},
+        {letter:"C",text:"算了，不想講",cost:"表面沒事，但心裡會卡住",relationImpact:{zhe:-.22},aftermath:"loan_silent",effect:{stress:4,fatigue:2,stats:{self:-1,confidence:-3,mood:-2}},result:`你沒有提。
+
+錢沒有回來，心裡也一直掛著。`,log:"沒有處理借錢問題。"}
+      ]
+    })
+  },
+  {
+    id:"fakeSign",name:"自己偷簽家長簽名",contexts:["teacher","school"],minWeek:5,baseFaces:4,
+    value:s=>s.hidden.fakeSign||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜老師多看了一眼簽名",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+      text:`老師收考卷時停了一下，接著把你叫到旁邊。
+
+「這不是忘記簽名而已。你是在冒用家長簽名。」
+
+老師確認後，先依校規處理：通知導師與家長，並記小過一次。
+
+接下來要處理的，是你要怎麼面對這件已經發生的後果。`,
+      choices:[
+        {letter:"A",text:"坦白並接受處理",cost:"小過已成立；影響較能止住",aftermath:"fakeSign_accept",effect:{stats:{self:4,confidence:-8,mood:-5,family:-1},energy:-6,fatigue:6,stress:8,hidden:{fakeSign:-99,caughtFake:1}},result:`你承認是自己簽的。
+
+老師仍然很嚴肅，也通知了導師與家長。
+小過沒有取消，但事情至少沒有再擴大。`,log:"偷簽被查到後坦白並接受處理。"},
+        {letter:"B",text:"被查到後仍繼續否認",cost:"小過已成立；信任與後續處理更嚴重",aftermath:"fakeSign_deny",effect:{stats:{confidence:-14,mood:-9,family:-7},energy:-10,fatigue:10,stress:15,warning:1,hidden:{avoidance:2,fakeSign:2,caughtFake:2}},result:`老師直接聯絡家長確認。
+
+原本的偷簽已經有小過紀錄，現在又多了一次「被發現後仍說謊」的處理。
+事情明顯變得更難收拾。`,log:"偷簽被查到後仍繼續否認。"},
+        {letter:"C",text:"承認，並說出自己是因為害怕被罵",cost:"小過已成立；開始談補救",aftermath:"fakeSign_explain",effect:{stats:{self:5,family:1,confidence:-7,mood:-4},energy:-5,fatigue:5,stress:7,hidden:{fakeSign:-99,caughtFake:1}},result:`你把原因說了出來。
+
+老師沒有因此把小過取消，但談話開始轉向：
+「下一次害怕的時候，你可以怎麼做，而不是再偽造簽名？」`,log:"偷簽被查到後承認原因並開始補救。"}
+      ]
+    })
+  },
+  {
+    id:"hideScore",name:"把48分考卷藏起來",contexts:["family"],minWeek:5,baseFaces:3,
+    value:s=>s.hidden.hideScore||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜48分還是被家人看到",speaker:"旁白",bg:"bg_home",
+      text:`你以為那張48分一直藏得很好。
+
+今天家人在整理東西時剛好看見了。
+「你考48分我可以跟你談，但你為什麼要一直藏？」
+
+家人的語氣明顯生氣了。`,
+      choices:[
+        {letter:"A",text:"承認自己因為害怕才藏",cost:"需要面對",aftermath:"hideScore_admit",effect:{stats:{family:-2,self:3,confidence:-6,mood:-5},energy:-4,fatigue:4,stress:8,hidden:{hideScore:-99}},result:`家人還是會不高興。
+
+但談話沒有只剩下「為什麼騙人」。`,log:"承認自己因害怕而藏考卷。"},
+        {letter:"B",text:"先說最近其實有在補救",cost:"帶著方案談",aftermath:"hideScore_plan",effect:{stats:{family:1,self:3,confidence:-4,mood:-3},energy:-3,fatigue:3,stress:6,mastery:{math:.4},hidden:{hideScore:-99}},result:`家人聽完後，臉色還是不好看。
+
+但比較願意談「接下來怎麼辦」。`,log:"被發現後帶著補救方案談。"},
+        {letter:"C",text:"說只是小考，根本不重要",cost:"衝突升高",aftermath:"hideScore_argue",effect:{stats:{family:-7,confidence:-8,mood:-7},energy:-5,fatigue:5,stress:12,hidden:{hideScore:1}},result:`氣氛立刻變差。
+
+本來只是在處理一張考卷，現在變成吵架。`,log:"考卷被發現後用否認回應。"}
+      ]
+    })
+  },
+  {
+    id:"cheat",name:"偷看／保存答案",contexts:["teacher"],minWeek:2,baseFaces:4,
+    value:s=>(s.hidden.cheatRisk||0)+(s.hidden.answerRisk||0),
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜答案怎麼這麼像？",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+      text:`老師把幾份作業放在桌上，臉色很嚴肅。
+
+「錯的地方、順序，甚至連寫法都一樣。這不是普通的參考。」
+
+老師把你留下來確認情況。如果確認是作弊或直接抄答案，除了通知導師與家長，也會依校規處理。`,
+      choices:[
+        {letter:"A",text:"承認自己有看答案",cost:"要面對後果",aftermath:"cheat_admit",effect:{stats:{self:3,confidence:-12,mood:-8},energy:-8,fatigue:8,stress:12,minorDemerit:1,hidden:{cheatRisk:-99,answerRisk:-99}},result:`老師沒有說沒關係。
+
+但至少事情停在這裡，沒有再往下一個謊延伸。`,log:"承認曾使用答案。"},
+        {letter:"B",text:"說只是剛好寫一樣",cost:"風險繼續",aftermath:"cheat_deny",effect:{stats:{confidence:-15,mood:-10},energy:-10,fatigue:10,stress:15,minorDemerit:1,hidden:{avoidance:2,cheatRisk:1}},result:`老師沒有立刻繼續問。
+
+但你知道這件事還沒真正結束。`,log:"答案被懷疑後仍否認。"},
+        {letter:"C",text:"主動重做一份",cost:"要再花時間",aftermath:"cheat_redo",effect:{stats:{study:1,self:4,confidence:-8,mood:-5},energy:-6,fatigue:8,stress:9,warning:1,hidden:{cheatRisk:-99,answerRisk:-99}},result:`你重新把題目做了一次。
+
+這次每一步都是自己寫的。`,log:"重新完成曾參考答案的作業。"}
+      ]
+    })
+  },
+  {
+    id:"joke",name:"玩笑可能傷到同學",contexts:["school"],minWeek:2,baseFaces:2,
+    value:s=>s.hidden.jokeRisk||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜他其實不喜歡那個綽號",speaker:"旁白",bg:"bg_classroom",
+      text:`下課時，那個同學終於忍不住說：
+
+「可以不要再叫那個綽號嗎？我真的不喜歡。」
+
+旁邊幾個人瞬間安靜。班導後來也知道了，提醒大家：如果對方已經表示不舒服，再繼續就不是單純玩笑。`,
+      choices:[
+        {letter:"A",text:"當作沒聽到",cost:"暫時最輕鬆",aftermath:"joke_ignore",effect:{hidden:{avoidance:1}},result:`你沒有說話。
+
+但現在你已經知道，他其實不喜歡。`,log:"知道同學不喜歡綽號後沒有回應。"},
+        {letter:"B",text:"之後不再跟著叫",cost:"低調修正",aftermath:"joke_stop",effect:{stats:{self:3,confidence:-2},stress:2,hidden:{jokeRisk:-99}},result:`你沒有特別宣布什麼。
+
+只是之後真的沒有再叫。`,log:"知道界線後停止跟著叫綽號。"},
+        {letter:"C",text:"找機會跟他說抱歉",cost:"需要主動",aftermath:"joke_apologize",effect:{stats:{social:2,self:4,confidence:-1},stress:1,hidden:{jokeRisk:-99}},result:`對方說：「沒事啦。」
+
+但你知道這句抱歉不是完全多餘。`,log:"因玩笑越界向同學道歉。"}
+      ]
+    })
+  }
+];
+
+const AFTERMATH_EVENTS={
+  meme_silent:()=>({
+    isAftermath:true,label:"後續影響｜群組氣氛變了",speaker:"旁白",bg:"bg_classroom",
+    text:`隔天進教室時，大家還是會提到那張梗圖。
+
+雖然沒有人直接點名你，但那位同學明顯安靜很多。
+班上的氣氛也變得有點尷尬。`,
+    choices:[{letter:"✓",text:"知道了",cost:"事情沒有完全過去",effect:{stats:{social:-2,mood:-2,confidence:-1},stress:3},result:`你突然發現，「沒有被抓到名字」不代表這件事就沒有留下影響。`,log:"群組梗圖事件留下班級尷尬感。"}]
+  }),
+  meme_cleanup:()=>({
+    isAftermath:true,label:"後續影響｜老師再提醒一次",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+    text:`老師後來又提醒了一次網路界線。
+
+事情沒有再擴大，但班上幾個人看起來還是有點不自在。`,
+    choices:[{letter:"✓",text:"知道了",cost:"提醒會留在心裡",effect:{stats:{self:1,mood:-1},stress:1},result:`你知道，補救雖然有用，但不代表影響完全消失。`,log:"群組梗圖補救後，仍留下提醒。"}]
+  }),
+  meme_warn:()=>({
+    isAftermath:true,label:"後續影響｜你和同學之間有點尷尬",speaker:"旁白",bg:"bg_classroom",
+    text:`你在群組裡提醒大家後，照片確實沒有再傳。
+
+但其中幾個同學對你的態度變得有點微妙，像是覺得你太認真了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"界線有時候會讓人不舒服",effect:{stats:{social:-1,self:2}},result:`你不是做錯事，只是開始感受到「做對的事」有時也會帶來一點人際壓力。`,log:"提醒大家停傳梗圖後，感受到些微人際壓力。"}]
+  }),
+
+  loan_direct:()=>({
+    isAftermath:true,label:"後續影響｜錢拿回來了，但你記得了",speaker:"旁白",bg:"bg_classroom",
+    text:`阿哲把錢還你之後，事情表面上就結束了。
+
+但你也開始記得：下次借錢，最好一開始就講清
+
+===== #7 AFTERMATH @ 1534209 =====
+2}},result:`老師直接聯絡家長確認。
+
+原本的偷簽已經有小過紀錄，現在又多了一次「被發現後仍說謊」的處理。
+事情明顯變得更難收拾。`,log:"偷簽被查到後仍繼續否認。"},
+        {letter:"C",text:"承認，並說出自己是因為害怕被罵",cost:"小過已成立；開始談補救",aftermath:"fakeSign_explain",effect:{stats:{self:5,family:1,confidence:-7,mood:-4},energy:-5,fatigue:5,stress:7,hidden:{fakeSign:-99,caughtFake:1}},result:`你把原因說了出來。
+
+老師沒有因此把小過取消，但談話開始轉向：
+「下一次害怕的時候，你可以怎麼做，而不是再偽造簽名？」`,log:"偷簽被查到後承認原因並開始補救。"}
+      ]
+    })
+  },
+  {
+    id:"hideScore",name:"把48分考卷藏起來",contexts:["family"],minWeek:5,baseFaces:3,
+    value:s=>s.hidden.hideScore||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜48分還是被家人看到",speaker:"旁白",bg:"bg_home",
+      text:`你以為那張48分一直藏得很好。
+
+今天家人在整理東西時剛好看見了。
+「你考48分我可以跟你談，但你為什麼要一直藏？」
+
+家人的語氣明顯生氣了。`,
+      choices:[
+        {letter:"A",text:"承認自己因為害怕才藏",cost:"需要面對",aftermath:"hideScore_admit",effect:{stats:{family:-2,self:3,confidence:-6,mood:-5},energy:-4,fatigue:4,stress:8,hidden:{hideScore:-99}},result:`家人還是會不高興。
+
+但談話沒有只剩下「為什麼騙人」。`,log:"承認自己因害怕而藏考卷。"},
+        {letter:"B",text:"先說最近其實有在補救",cost:"帶著方案談",aftermath:"hideScore_plan",effect:{stats:{family:1,self:3,confidence:-4,mood:-3},energy:-3,fatigue:3,stress:6,mastery:{math:.4},hidden:{hideScore:-99}},result:`家人聽完後，臉色還是不好看。
+
+但比較願意談「接下來怎麼辦」。`,log:"被發現後帶著補救方案談。"},
+        {letter:"C",text:"說只是小考，根本不重要",cost:"衝突升高",aftermath:"hideScore_argue",effect:{stats:{family:-7,confidence:-8,mood:-7},energy:-5,fatigue:5,stress:12,hidden:{hideScore:1}},result:`氣氛立刻變差。
+
+本來只是在處理一張考卷，現在變成吵架。`,log:"考卷被發現後用否認回應。"}
+      ]
+    })
+  },
+  {
+    id:"cheat",name:"偷看／保存答案",contexts:["teacher"],minWeek:2,baseFaces:4,
+    value:s=>(s.hidden.cheatRisk||0)+(s.hidden.answerRisk||0),
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜答案怎麼這麼像？",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+      text:`老師把幾份作業放在桌上，臉色很嚴肅。
+
+「錯的地方、順序，甚至連寫法都一樣。這不是普通的參考。」
+
+老師把你留下來確認情況。如果確認是作弊或直接抄答案，除了通知導師與家長，也會依校規處理。`,
+      choices:[
+        {letter:"A",text:"承認自己有看答案",cost:"要面對後果",aftermath:"cheat_admit",effect:{stats:{self:3,confidence:-12,mood:-8},energy:-8,fatigue:8,stress:12,minorDemerit:1,hidden:{cheatRisk:-99,answerRisk:-99}},result:`老師沒有說沒關係。
+
+但至少事情停在這裡，沒有再往下一個謊延伸。`,log:"承認曾使用答案。"},
+        {letter:"B",text:"說只是剛好寫一樣",cost:"風險繼續",aftermath:"cheat_deny",effect:{stats:{confidence:-15,mood:-10},energy:-10,fatigue:10,stress:15,minorDemerit:1,hidden:{avoidance:2,cheatRisk:1}},result:`老師沒有立刻繼續問。
+
+但你知道這件事還沒真正結束。`,log:"答案被懷疑後仍否認。"},
+        {letter:"C",text:"主動重做一份",cost:"要再花時間",aftermath:"cheat_redo",effect:{stats:{study:1,self:4,confidence:-8,mood:-5},energy:-6,fatigue:8,stress:9,warning:1,hidden:{cheatRisk:-99,answerRisk:-99}},result:`你重新把題目做了一次。
+
+這次每一步都是自己寫的。`,log:"重新完成曾參考答案的作業。"}
+      ]
+    })
+  },
+  {
+    id:"joke",name:"玩笑可能傷到同學",contexts:["school"],minWeek:2,baseFaces:2,
+    value:s=>s.hidden.jokeRisk||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜他其實不喜歡那個綽號",speaker:"旁白",bg:"bg_classroom",
+      text:`下課時，那個同學終於忍不住說：
+
+「可以不要再叫那個綽號嗎？我真的不喜歡。」
+
+旁邊幾個人瞬間安靜。班導後來也知道了，提醒大家：如果對方已經表示不舒服，再繼續就不是單純玩笑。`,
+      choices:[
+        {letter:"A",text:"當作沒聽到",cost:"暫時最輕鬆",aftermath:"joke_ignore",effect:{hidden:{avoidance:1}},result:`你沒有說話。
+
+但現在你已經知道，他其實不喜歡。`,log:"知道同學不喜歡綽號後沒有回應。"},
+        {letter:"B",text:"之後不再跟著叫",cost:"低調修正",aftermath:"joke_stop",effect:{stats:{self:3,confidence:-2},stress:2,hidden:{jokeRisk:-99}},result:`你沒有特別宣布什麼。
+
+只是之後真的沒有再叫。`,log:"知道界線後停止跟著叫綽號。"},
+        {letter:"C",text:"找機會跟他說抱歉",cost:"需要主動",aftermath:"joke_apologize",effect:{stats:{social:2,self:4,confidence:-1},stress:1,hidden:{jokeRisk:-99}},result:`對方說：「沒事啦。」
+
+但你知道這句抱歉不是完全多餘。`,log:"因玩笑越界向同學道歉。"}
+      ]
+    })
+  }
+];
+
+const AFTERMATH_EVENTS={
+  meme_silent:()=>({
+    isAftermath:true,label:"後續影響｜群組氣氛變了",speaker:"旁白",bg:"bg_classroom",
+    text:`隔天進教室時，大家還是會提到那張梗圖。
+
+雖然沒有人直接點名你，但那位同學明顯安靜很多。
+班上的氣氛也變得有點尷尬。`,
+    choices:[{letter:"✓",text:"知道了",cost:"事情沒有完全過去",effect:{stats:{social:-2,mood:-2,confidence:-1},stress:3},result:`你突然發現，「沒有被抓到名字」不代表這件事就沒有留下影響。`,log:"群組梗圖事件留下班級尷尬感。"}]
+  }),
+  meme_cleanup:()=>({
+    isAftermath:true,label:"後續影響｜老師再提醒一次",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+    text:`老師後來又提醒了一次網路界線。
+
+事情沒有再擴大，但班上幾個人看起來還是有點不自在。`,
+    choices:[{letter:"✓",text:"知道了",cost:"提醒會留在心裡",effect:{stats:{self:1,mood:-1},stress:1},result:`你知道，補救雖然有用，但不代表影響完全消失。`,log:"群組梗圖補救後，仍留下提醒。"}]
+  }),
+  meme_warn:()=>({
+    isAftermath:true,label:"後續影響｜你和同學之間有點尷尬",speaker:"旁白",bg:"bg_classroom",
+    text:`你在群組裡提醒大家後，照片確實沒有再傳。
+
+但其中幾個同學對你的態度變得有點微妙，像是覺得你太認真了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"界線有時候會讓人不舒服",effect:{stats:{social:-1,self:2}},result:`你不是做錯事，只是開始感受到「做對的事」有時也會帶來一點人際壓力。`,log:"提醒大家停傳梗圖後，感受到些微人際壓力。"}]
+  }),
+
+  loan_direct:()=>({
+    isAftermath:true,label:"後續影響｜錢拿回來了，但你記得了",speaker:"旁白",bg:"bg_classroom",
+    text:`阿哲把錢還你之後，事情表面上就結束了。
+
+但你也開始記得：下次借錢，最好一開始就講清楚。`,
+    choices:[{letter:"✓",text:"知道了",cost:"關係還在，但界線要更清楚",effect:{stats:{self:1}},result:`你沒有失去朋友，也沒有再一直掛心這件事。`,log:"借錢事件後，學會把界線說清楚。"}]
+  }),
+  loan_soft:()=>({
+    isAftermath:true,label:"後續影響｜氣氛還算過得去",speaker:"旁白",bg:"bg_classroom",
+    text:`你用比較柔和的方式提醒，阿哲也把錢還了。
+
+雖然沒有鬧僵，但你還是記住這份不舒服感。`,
+    choices:[{letter:"✓",text:"知道了",cost:"之後會更注意",effect:{stats:{self:1,social:1}},result:`有些界線，還是要說清楚，才不會一直卡在心裡。`,log:"柔和處理借錢後，對界線更有感。"}]
+  }),
+  loan_silent:()=>({
+    isAftermath:true,label:"後續影響｜你們之間多了一點卡住的感覺",speaker:"旁白",bg:"bg_classroom",
+    text:`後來幾次看到阿哲買東西，你都會想到那100元。
+
+你沒有真的生氣，但心裡確實有一點悶悶的。`,
+    choices:[{letter:"✓",text:"知道了",cost:"這種悶住也算後果",effect:{stats:{social:-1,mood:-2,confidence:-1},stress:2},result:`有些事情如果一直不說，表面上沒事，心裡還是會慢慢卡住。`,log:"沒有處理借錢問題，心裡留下卡住感。"}]
+  }),
+
+  fakeSign_accept:()=>({
+    isAftermath:true,label:"後續影響｜回家後真的被責備了",speaker:"家人",bg:"bg_home",
+    text:`晚上回家，家人已經知道這件事了。
+
+「考不好可以談，做錯事也可以談，但你為什麼要連簽名都自己冒用？」
+
+家裡的氣氛很沉。`,
+    choices:[{letter:"✓",text:"知道了",cost:"被責備後心情一定會受影響",effect:{stats:{family:-2,mood:-3,confidence:-2},stress:4},result:`你知道，這件事不會因為在學校處理過，就自動變得沒事。`,log:"偷簽被抓後，回家也被嚴厲責備。"}]
+  }),
+  fakeSign_deny:()=>({
+    isAftermath:true,label:"後續影響｜家裡與學校都更難收拾了",speaker:"家人",bg:"bg_home",
+    text:`家人接到學校的電話後，明顯非常生氣。
+
+「你不只冒用簽名，被抓到之後還繼續說謊？」
+
+原本已經夠難處理的事，現在連家人對你的信任也一起受傷了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"後續會更重",effect:{stats:{family:-5,mood:-4,confidence:-3},stress:6,fatigue:3},result:`你感受到的已經不只是「被記過」，而是整個關係都變得更緊繃。`,log:"偷簽後還否認，導致家中衝突更嚴重。"}]
+  }),
+  fakeSign_explain:()=>({
+    isAftermath:true,label:"後續影響｜事情沒有消失，但開始有人想談怎麼補救",speaker:"家人",bg:"bg_home",
+    text:`回家後，家人當然還是很生氣。
+
+但在罵完之後，話題慢
+
+===== #8 isAftermath\s*:\s*true @ 1535996 =====
+上，臉色很嚴肅。
+
+「錯的地方、順序，甚至連寫法都一樣。這不是普通的參考。」
+
+老師把你留下來確認情況。如果確認是作弊或直接抄答案，除了通知導師與家長，也會依校規處理。`,
+      choices:[
+        {letter:"A",text:"承認自己有看答案",cost:"要面對後果",aftermath:"cheat_admit",effect:{stats:{self:3,confidence:-12,mood:-8},energy:-8,fatigue:8,stress:12,minorDemerit:1,hidden:{cheatRisk:-99,answerRisk:-99}},result:`老師沒有說沒關係。
+
+但至少事情停在這裡，沒有再往下一個謊延伸。`,log:"承認曾使用答案。"},
+        {letter:"B",text:"說只是剛好寫一樣",cost:"風險繼續",aftermath:"cheat_deny",effect:{stats:{confidence:-15,mood:-10},energy:-10,fatigue:10,stress:15,minorDemerit:1,hidden:{avoidance:2,cheatRisk:1}},result:`老師沒有立刻繼續問。
+
+但你知道這件事還沒真正結束。`,log:"答案被懷疑後仍否認。"},
+        {letter:"C",text:"主動重做一份",cost:"要再花時間",aftermath:"cheat_redo",effect:{stats:{study:1,self:4,confidence:-8,mood:-5},energy:-6,fatigue:8,stress:9,warning:1,hidden:{cheatRisk:-99,answerRisk:-99}},result:`你重新把題目做了一次。
+
+這次每一步都是自己寫的。`,log:"重新完成曾參考答案的作業。"}
+      ]
+    })
+  },
+  {
+    id:"joke",name:"玩笑可能傷到同學",contexts:["school"],minWeek:2,baseFaces:2,
+    value:s=>s.hidden.jokeRisk||0,
+    consequence:()=>({
+      isConsequence:true,label:"後果事件｜他其實不喜歡那個綽號",speaker:"旁白",bg:"bg_classroom",
+      text:`下課時，那個同學終於忍不住說：
+
+「可以不要再叫那個綽號嗎？我真的不喜歡。」
+
+旁邊幾個人瞬間安靜。班導後來也知道了，提醒大家：如果對方已經表示不舒服，再繼續就不是單純玩笑。`,
+      choices:[
+        {letter:"A",text:"當作沒聽到",cost:"暫時最輕鬆",aftermath:"joke_ignore",effect:{hidden:{avoidance:1}},result:`你沒有說話。
+
+但現在你已經知道，他其實不喜歡。`,log:"知道同學不喜歡綽號後沒有回應。"},
+        {letter:"B",text:"之後不再跟著叫",cost:"低調修正",aftermath:"joke_stop",effect:{stats:{self:3,confidence:-2},stress:2,hidden:{jokeRisk:-99}},result:`你沒有特別宣布什麼。
+
+只是之後真的沒有再叫。`,log:"知道界線後停止跟著叫綽號。"},
+        {letter:"C",text:"找機會跟他說抱歉",cost:"需要主動",aftermath:"joke_apologize",effect:{stats:{social:2,self:4,confidence:-1},stress:1,hidden:{jokeRisk:-99}},result:`對方說：「沒事啦。」
+
+但你知道這句抱歉不是完全多餘。`,log:"因玩笑越界向同學道歉。"}
+      ]
+    })
+  }
+];
+
+const AFTERMATH_EVENTS={
+  meme_silent:()=>({
+    isAftermath:true,label:"後續影響｜群組氣氛變了",speaker:"旁白",bg:"bg_classroom",
+    text:`隔天進教室時，大家還是會提到那張梗圖。
+
+雖然沒有人直接點名你，但那位同學明顯安靜很多。
+班上的氣氛也變得有點尷尬。`,
+    choices:[{letter:"✓",text:"知道了",cost:"事情沒有完全過去",effect:{stats:{social:-2,mood:-2,confidence:-1},stress:3},result:`你突然發現，「沒有被抓到名字」不代表這件事就沒有留下影響。`,log:"群組梗圖事件留下班級尷尬感。"}]
+  }),
+  meme_cleanup:()=>({
+    isAftermath:true,label:"後續影響｜老師再提醒一次",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+    text:`老師後來又提醒了一次網路界線。
+
+事情沒有再擴大，但班上幾個人看起來還是有點不自在。`,
+    choices:[{letter:"✓",text:"知道了",cost:"提醒會留在心裡",effect:{stats:{self:1,mood:-1},stress:1},result:`你知道，補救雖然有用，但不代表影響完全消失。`,log:"群組梗圖補救後，仍留下提醒。"}]
+  }),
+  meme_warn:()=>({
+    isAftermath:true,label:"後續影響｜你和同學之間有點尷尬",speaker:"旁白",bg:"bg_classroom",
+    text:`你在群組裡提醒大家後，照片確實沒有再傳。
+
+但其中幾個同學對你的態度變得有點微妙，像是覺得你太認真了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"界線有時候會讓人不舒服",effect:{stats:{social:-1,self:2}},result:`你不是做錯事，只是開始感受到「做對的事」有時也會帶來一點人際壓力。`,log:"提醒大家停傳梗圖後，感受到些微人際壓力。"}]
+  }),
+
+  loan_direct:()=>({
+    isAftermath:true,label:"後續影響｜錢拿回來了，但你記得了",speaker:"旁白",bg:"bg_classroom",
+    text:`阿哲把錢還你之後，事情表面上就結束了。
+
+但你也開始記得：下次借錢，最好一開始就講清楚。`,
+    choices:[{letter:"✓",text:"知道了",cost:"關係還在，但界線要更清楚",effect:{stats:{self:1}},result:`你沒有失去朋友，也沒有再一直掛心這件事。`,log:"借錢事件後，學會把界線說清楚。"}]
+  }),
+  loan_soft:()=>({
+    isAftermath:true,label:"後續影響｜氣氛還算過得去",speaker:"旁白",bg:"bg_classroom",
+    text:`你用比較柔和的方式提醒，阿哲也把錢還了。
+
+雖然沒有鬧僵，但你還是記住這份不舒服感。`,
+    choices:[{letter:"✓",text:"知道了",cost:"之後會更注意",effect:{stats:{self:1,social:1}},result:`有些界線，還是要說清楚，才不會一直卡在心裡。`,log:"柔和處理借錢後，對界線更有感。"}]
+  }),
+  loan_silent:()=>({
+    isAftermath:true,label:"後續影響｜你們之間多了一點卡住的感覺",speaker:"旁白",bg:"bg_classroom",
+    text:`後來幾次看到阿哲買東西，你都會想到那100元。
+
+你沒有真的生氣，但心裡確實有一點悶悶的。`,
+    choices:[{letter:"✓",text:"知道了",cost:"這種悶住也算後果",effect:{stats:{social:-1,mood:-2,confidence:-1},stress:2},result:`有些事情如果一直不說，表面上沒事，心裡還是會慢慢卡住。`,log:"沒有處理借錢問題，心裡留下卡住感。"}]
+  }),
+
+  fakeSign_accept:()=>({
+    isAftermath:true,label:"後續影響｜回家後真的被責備了",speaker:"家人",bg:"bg_home",
+    text:`晚上回家，家人已經知道這件事了。
+
+「考不好可以談，做錯事也可以談，但你為什麼要連簽名都自己冒用？」
+
+家裡的氣氛很沉。`,
+    choices:[{letter:"✓",text:"知道了",cost:"被責備後心情一定會受影響",effect:{stats:{family:-2,mood:-3,confidence:-2},stress:4},result:`你知道，這件事不會因為在學校處理過，就自動變得沒事。`,log:"偷簽被抓後，回家也被嚴厲責備。"}]
+  }),
+  fakeSign_deny:()=>({
+    isAftermath:true,label:"後續影響｜家裡與學校都更難收拾了",speaker:"家人",bg:"bg_home",
+    text:`家人接到學校的電話後，明顯非常生氣。
+
+「你不只冒用簽名，被抓到之後還繼續說謊？」
+
+原本已經夠難處理的事，現在連家人對你的信任也一起受傷了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"後續會更重",effect:{stats:{family:-5,mood:-4,confidence:-3},stress:6,fatigue:3},result:`你感受到的已經不只是「被記過」，而是整個關係都變得更緊繃。`,log:"偷簽後還否認，導致家中衝突更嚴重。"}]
+  }),
+  fakeSign_explain:()=>({
+    isAftermath:true,label:"後續影響｜事情沒有消失，但開始有人想談怎麼補救",speaker:"家人",bg:"bg_home",
+    text:`回家後，家人當然還是很生氣。
+
+但在罵完之後，話題慢慢從「你怎麼可以這樣」轉成了
+「那你之後打算怎麼做？」`,
+    choices:[{letter:"✓",text:"知道了",cost:"仍然不好受",effect:{stats:{family:-1,mood:-2,self:2},stress:3},result:`雖然還是挨了一頓罵，但至少事情沒有只停在責備。`,log:"偷簽被抓後，家庭談話開始轉向補救。"}]
+  }),
+
+  hideScore_admit:()=>({
+    isAftermath:true,label:"後續影響｜家裡氣氛還是悶悶的",speaker:"旁白",bg:"bg_home",
+    text:`那天晚上，家裡沒有再大吵。
+
+但氣氛還是很悶。
+你知道，家人不只在意成績，也在意你為什麼選擇藏起來。`,
+    choices:[{letter:"✓",text:"知道了",cost:"心情還是會受影響",effect:{stats:{mood:-2,family:-1},stress:3},result:`就算誠實面對了，有些失望感也不會立刻消失。`,log:"藏考卷被發現後，家裡氣氛仍然低沉。"}]
+  }),
+  hideScore_plan:()=>({
+    isAftermath:true,label:"後續影響｜家人開始盯著你的補救行動",speaker:"家人",bg:"bg_home",
+    text:`家人沒有再罵下去，但之後幾天會主動問：
+
+「你今天有沒有把數學錯題訂正完？」
+「你說的補救，有沒有真的開始做？」`,
+    choices:[{letter:"✓",text:"知道了",cost:"多了一種被盯著的壓力",effect:{stats:{mood:-1,self:1},stress:2},result:`被盯著不一定舒服，但它確實讓這件事變得更真實。`,log:"藏考卷後提出補救，家人開始持續追蹤。"}]
+  }),
+  hideScore_argue:()=>({
+    isAftermath:true,label:"後續影響｜晚餐氣氛很差",speaker:"旁白",bg:"bg_home",
+    text:`那天晚餐幾乎沒有人多說話。
+
+雖然吵架暫時停下來了，但那種不舒服的氣氛還留在家裡。`,
+    choices:[{letter:"✓",text:"知道了",cost:"衝突沒有真的解開",effect:{stats:{family:-3,mood:-3},stress:4,fatigue:2},result:`有些後果不是當下那幾句話，而是之後相處時整個氣氛都變了。`,log:"藏考卷後吵架，家裡氣氛持續變差。"}]
+  }),
+
+  cheat_admit:()=>({
+    isAftermath:true,label:"後續影響｜老師開始多看你一眼",speaker:"旁白",bg:"bg_classroom",
+    text:`之後幾次作業與小考，老師都會多看你一眼。
+
+雖然沒有再公開提起，但你知道：
+自己的誠信印象已經受影響了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"信任要重新累積",effect:{stats:{confidence:-2,mood:-2,self:2},stress:3},result:`有些錯誤不是處理完就結束，而是之後要慢慢把信任補回來。`,log:"作弊事件後，老師對你的信任下降。"}]
+  }),
+  cheat_deny:()=>({
+    isAftermath:true,label:"後續影響｜導師也找你談了",speaker:"導師",bg:"bg_classroom",
+    text:`隔天導師把你叫去談。
+
+「老師反映你這次的作業很有問題，而且你面對時還沒有說清楚。
+這件事我會繼續記著。」`,
+    choices:[{letter:"✓",text:"知道了",cost:"壓力持續",effect:{stats:{confidence:-3,mood:-3},stress:5,fatigue:3,warning:1},result:`你感
+
+===== #9 isAftermath\s*:\s*true @ 1537926 =====
+ext:`隔天進教室時，大家還是會提到那張梗圖。
+
+雖然沒有人直接點名你，但那位同學明顯安靜很多。
+班上的氣氛也變得有點尷尬。`,
+    choices:[{letter:"✓",text:"知道了",cost:"事情沒有完全過去",effect:{stats:{social:-2,mood:-2,confidence:-1},stress:3},result:`你突然發現，「沒有被抓到名字」不代表這件事就沒有留下影響。`,log:"群組梗圖事件留下班級尷尬感。"}]
+  }),
+  meme_cleanup:()=>({
+    isAftermath:true,label:"後續影響｜老師再提醒一次",speaker:"老師",bg:"bg_classroom",sprite:"sp_teacher",
+    text:`老師後來又提醒了一次網路界線。
+
+事情沒有再擴大，但班上幾個人看起來還是有點不自在。`,
+    choices:[{letter:"✓",text:"知道了",cost:"提醒會留在心裡",effect:{stats:{self:1,mood:-1},stress:1},result:`你知道，補救雖然有用，但不代表影響完全消失。`,log:"群組梗圖補救後，仍留下提醒。"}]
+  }),
+  meme_warn:()=>({
+    isAftermath:true,label:"後續影響｜你和同學之間有點尷尬",speaker:"旁白",bg:"bg_classroom",
+    text:`你在群組裡提醒大家後，照片確實沒有再傳。
+
+但其中幾個同學對你的態度變得有點微妙，像是覺得你太認真了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"界線有時候會讓人不舒服",effect:{stats:{social:-1,self:2}},result:`你不是做錯事，只是開始感受到「做對的事」有時也會帶來一點人際壓力。`,log:"提醒大家停傳梗圖後，感受到些微人際壓力。"}]
+  }),
+
+  loan_direct:()=>({
+    isAftermath:true,label:"後續影響｜錢拿回來了，但你記得了",speaker:"旁白",bg:"bg_classroom",
+    text:`阿哲把錢還你之後，事情表面上就結束了。
+
+但你也開始記得：下次借錢，最好一開始就講清楚。`,
+    choices:[{letter:"✓",text:"知道了",cost:"關係還在，但界線要更清楚",effect:{stats:{self:1}},result:`你沒有失去朋友，也沒有再一直掛心這件事。`,log:"借錢事件後，學會把界線說清楚。"}]
+  }),
+  loan_soft:()=>({
+    isAftermath:true,label:"後續影響｜氣氛還算過得去",speaker:"旁白",bg:"bg_classroom",
+    text:`你用比較柔和的方式提醒，阿哲也把錢還了。
+
+雖然沒有鬧僵，但你還是記住這份不舒服感。`,
+    choices:[{letter:"✓",text:"知道了",cost:"之後會更注意",effect:{stats:{self:1,social:1}},result:`有些界線，還是要說清楚，才不會一直卡在心裡。`,log:"柔和處理借錢後，對界線更有感。"}]
+  }),
+  loan_silent:()=>({
+    isAftermath:true,label:"後續影響｜你們之間多了一點卡住的感覺",speaker:"旁白",bg:"bg_classroom",
+    text:`後來幾次看到阿哲買東西，你都會想到那100元。
+
+你沒有真的生氣，但心裡確實有一點悶悶的。`,
+    choices:[{letter:"✓",text:"知道了",cost:"這種悶住也算後果",effect:{stats:{social:-1,mood:-2,confidence:-1},stress:2},result:`有些事情如果一直不說，表面上沒事，心裡還是會慢慢卡住。`,log:"沒有處理借錢問題，心裡留下卡住感。"}]
+  }),
+
+  fakeSign_accept:()=>({
+    isAftermath:true,label:"後續影響｜回家後真的被責備了",speaker:"家人",bg:"bg_home",
+    text:`晚上回家，家人已經知道這件事了。
+
+「考不好可以談，做錯事也可以談，但你為什麼要連簽名都自己冒用？」
+
+家裡的氣氛很沉。`,
+    choices:[{letter:"✓",text:"知道了",cost:"被責備後心情一定會受影響",effect:{stats:{family:-2,mood:-3,confidence:-2},stress:4},result:`你知道，這件事不會因為在學校處理過，就自動變得沒事。`,log:"偷簽被抓後，回家也被嚴厲責備。"}]
+  }),
+  fakeSign_deny:()=>({
+    isAftermath:true,label:"後續影響｜家裡與學校都更難收拾了",speaker:"家人",bg:"bg_home",
+    text:`家人接到學校的電話後，明顯非常生氣。
+
+「你不只冒用簽名，被抓到之後還繼續說謊？」
+
+原本已經夠難處理的事，現在連家人對你的信任也一起受傷了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"後續會更重",effect:{stats:{family:-5,mood:-4,confidence:-3},stress:6,fatigue:3},result:`你感受到的已經不只是「被記過」，而是整個關係都變得更緊繃。`,log:"偷簽後還否認，導致家中衝突更嚴重。"}]
+  }),
+  fakeSign_explain:()=>({
+    isAftermath:true,label:"後續影響｜事情沒有消失，但開始有人想談怎麼補救",speaker:"家人",bg:"bg_home",
+    text:`回家後，家人當然還是很生氣。
+
+但在罵完之後，話題慢慢從「你怎麼可以這樣」轉成了
+「那你之後打算怎麼做？」`,
+    choices:[{letter:"✓",text:"知道了",cost:"仍然不好受",effect:{stats:{family:-1,mood:-2,self:2},stress:3},result:`雖然還是挨了一頓罵，但至少事情沒有只停在責備。`,log:"偷簽被抓後，家庭談話開始轉向補救。"}]
+  }),
+
+  hideScore_admit:()=>({
+    isAftermath:true,label:"後續影響｜家裡氣氛還是悶悶的",speaker:"旁白",bg:"bg_home",
+    text:`那天晚上，家裡沒有再大吵。
+
+但氣氛還是很悶。
+你知道，家人不只在意成績，也在意你為什麼選擇藏起來。`,
+    choices:[{letter:"✓",text:"知道了",cost:"心情還是會受影響",effect:{stats:{mood:-2,family:-1},stress:3},result:`就算誠實面對了，有些失望感也不會立刻消失。`,log:"藏考卷被發現後，家裡氣氛仍然低沉。"}]
+  }),
+  hideScore_plan:()=>({
+    isAftermath:true,label:"後續影響｜家人開始盯著你的補救行動",speaker:"家人",bg:"bg_home",
+    text:`家人沒有再罵下去，但之後幾天會主動問：
+
+「你今天有沒有把數學錯題訂正完？」
+「你說的補救，有沒有真的開始做？」`,
+    choices:[{letter:"✓",text:"知道了",cost:"多了一種被盯著的壓力",effect:{stats:{mood:-1,self:1},stress:2},result:`被盯著不一定舒服，但它確實讓這件事變得更真實。`,log:"藏考卷後提出補救，家人開始持續追蹤。"}]
+  }),
+  hideScore_argue:()=>({
+    isAftermath:true,label:"後續影響｜晚餐氣氛很差",speaker:"旁白",bg:"bg_home",
+    text:`那天晚餐幾乎沒有人多說話。
+
+雖然吵架暫時停下來了，但那種不舒服的氣氛還留在家裡。`,
+    choices:[{letter:"✓",text:"知道了",cost:"衝突沒有真的解開",effect:{stats:{family:-3,mood:-3},stress:4,fatigue:2},result:`有些後果不是當下那幾句話，而是之後相處時整個氣氛都變了。`,log:"藏考卷後吵架，家裡氣氛持續變差。"}]
+  }),
+
+  cheat_admit:()=>({
+    isAftermath:true,label:"後續影響｜老師開始多看你一眼",speaker:"旁白",bg:"bg_classroom",
+    text:`之後幾次作業與小考，老師都會多看你一眼。
+
+雖然沒有再公開提起，但你知道：
+自己的誠信印象已經受影響了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"信任要重新累積",effect:{stats:{confidence:-2,mood:-2,self:2},stress:3},result:`有些錯誤不是處理完就結束，而是之後要慢慢把信任補回來。`,log:"作弊事件後，老師對你的信任下降。"}]
+  }),
+  cheat_deny:()=>({
+    isAftermath:true,label:"後續影響｜導師也找你談了",speaker:"導師",bg:"bg_classroom",
+    text:`隔天導師把你叫去談。
+
+「老師反映你這次的作業很有問題，而且你面對時還沒有說清楚。
+這件事我會繼續記著。」`,
+    choices:[{letter:"✓",text:"知道了",cost:"壓力持續",effect:{stats:{confidence:-3,mood:-3},stress:5,fatigue:3,warning:1},result:`你感受到的後果，已經從作業本身擴大成「老師之後怎麼看你」。`,log:"作弊後仍否認，導師也介入處理。"}]
+  }),
+  cheat_redo:()=>({
+    isAftermath:true,label:"後續影響｜你花時間補回來了",speaker:"旁白",bg:"bg_home",
+    text:`重做那份作業之後，你確實多花了一段時間。
+
+很累，但至少這次交出去的東西是自己完成的。`,
+    choices:[{letter:"✓",text:"知道了",cost:"補救也要付出代價",effect:{fatigue:2,stats:{self:2,confidence:-1}},result:`補救不是免費的，但它真的讓事情停在比較小的地方。`,log:"作弊後重做作業，付出額外時間。"}]
+  }),
+
+  joke_ignore:()=>({
+    isAftermath:true,label:"後續影響｜那個同學開始跟你們有點距離",speaker:"旁白",bg:"bg_classroom",
+    text:`後來幾次下課，那個同學經過你們時都比較安靜。
+
+你突然很清楚地感覺到：那個綽號並不是「大家都覺得好笑」。`,
+    choices:[{letter:"✓",text:"知道了",cost:"人際距離真的會變",effect:{stats:{social:-2,mood:-1},stress:2},result:`就算沒有被罵，傷人的玩笑還是會在人和人之間留下痕跡。`,log:"同學明顯拉開距離，感受到玩笑的後續影響。"}]
+  }),
+  joke_stop:()=>({
+    isAftermath:true,label:"後續影響｜關係沒有更壞，但需要時間",speaker:"旁白",bg:"bg_classroom",
+    text:`你沒有再跟著叫那個綽號後，事情慢慢安靜下來。
+
+但你也感覺得到，對方一時之間還不會立刻回到原本的樣子。`,
+    choices:[{letter:"✓",text:"知道了",cost:"停止傷害不等於立刻修復",effect:{stats:{self:2,mood:-1}},result:`修正自己的行為是第一步，但關係恢復還需要時間。`,log:"停止叫綽號後，關係正在慢慢修復。"}]
+  }),
+  joke_apologize:()=>({
+    isAftermath:true,label:"後續影響｜你們之間比較沒有那麼卡了",speaker:"旁白",bg:"bg_classroom",
+    text:`道歉之後，對方雖然沒有馬上變得很熱絡，但表情確實鬆了一點。
+
+至少你知道，自己沒有把那份不舒服當作沒發生。`,
+    choices:[{letter:"✓",text:"知道了",cost:"修復是慢慢來的",effect:{stats:{social:1,self:2}},result:`一聲道歉不會讓一切立刻回到原樣，但它確實讓事情往比較好的方向走。`,log:"道歉後，和同學之間的僵硬感稍微降低。"}]
+  })
+};
+
+const AFTERMATH_DELAY={
+  meme_silent:{days:2},meme_cleanup:{days:2},meme_warn:{days:2},
+  loan_direct:{days:3},loan_soft:{days:3},loan_silent:{days:3},
+  fakeSign_accept:{days:2},fakeSign_deny:{days:2},fakeSign_explain:{days:2},
+  hideScore_admit:{days:2},hideScore_plan:{days:2},hideScore_argue:{days:2},
+  cheat_admit:{weeks:1},cheat_deny:{weeks:1},cheat_redo:{days:2},
+  joke_ignore:{weeks:1},joke_stop:{weeks:1},joke_apologize:{weeks:1}
+};
+function queueAftermath(ids){
+  if(!ids)return;
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[
+
+===== #10 isAftermath\s*:\s*true @ 1539599 =====
+:"知道了",cost:"這種悶住也算後果",effect:{stats:{social:-1,mood:-2,confidence:-1},stress:2},result:`有些事情如果一直不說，表面上沒事，心裡還是會慢慢卡住。`,log:"沒有處理借錢問題，心裡留下卡住感。"}]
+  }),
+
+  fakeSign_accept:()=>({
+    isAftermath:true,label:"後續影響｜回家後真的被責備了",speaker:"家人",bg:"bg_home",
+    text:`晚上回家，家人已經知道這件事了。
+
+「考不好可以談，做錯事也可以談，但你為什麼要連簽名都自己冒用？」
+
+家裡的氣氛很沉。`,
+    choices:[{letter:"✓",text:"知道了",cost:"被責備後心情一定會受影響",effect:{stats:{family:-2,mood:-3,confidence:-2},stress:4},result:`你知道，這件事不會因為在學校處理過，就自動變得沒事。`,log:"偷簽被抓後，回家也被嚴厲責備。"}]
+  }),
+  fakeSign_deny:()=>({
+    isAftermath:true,label:"後續影響｜家裡與學校都更難收拾了",speaker:"家人",bg:"bg_home",
+    text:`家人接到學校的電話後，明顯非常生氣。
+
+「你不只冒用簽名，被抓到之後還繼續說謊？」
+
+原本已經夠難處理的事，現在連家人對你的信任也一起受傷了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"後續會更重",effect:{stats:{family:-5,mood:-4,confidence:-3},stress:6,fatigue:3},result:`你感受到的已經不只是「被記過」，而是整個關係都變得更緊繃。`,log:"偷簽後還否認，導致家中衝突更嚴重。"}]
+  }),
+  fakeSign_explain:()=>({
+    isAftermath:true,label:"後續影響｜事情沒有消失，但開始有人想談怎麼補救",speaker:"家人",bg:"bg_home",
+    text:`回家後，家人當然還是很生氣。
+
+但在罵完之後，話題慢慢從「你怎麼可以這樣」轉成了
+「那你之後打算怎麼做？」`,
+    choices:[{letter:"✓",text:"知道了",cost:"仍然不好受",effect:{stats:{family:-1,mood:-2,self:2},stress:3},result:`雖然還是挨了一頓罵，但至少事情沒有只停在責備。`,log:"偷簽被抓後，家庭談話開始轉向補救。"}]
+  }),
+
+  hideScore_admit:()=>({
+    isAftermath:true,label:"後續影響｜家裡氣氛還是悶悶的",speaker:"旁白",bg:"bg_home",
+    text:`那天晚上，家裡沒有再大吵。
+
+但氣氛還是很悶。
+你知道，家人不只在意成績，也在意你為什麼選擇藏起來。`,
+    choices:[{letter:"✓",text:"知道了",cost:"心情還是會受影響",effect:{stats:{mood:-2,family:-1},stress:3},result:`就算誠實面對了，有些失望感也不會立刻消失。`,log:"藏考卷被發現後，家裡氣氛仍然低沉。"}]
+  }),
+  hideScore_plan:()=>({
+    isAftermath:true,label:"後續影響｜家人開始盯著你的補救行動",speaker:"家人",bg:"bg_home",
+    text:`家人沒有再罵下去，但之後幾天會主動問：
+
+「你今天有沒有把數學錯題訂正完？」
+「你說的補救，有沒有真的開始做？」`,
+    choices:[{letter:"✓",text:"知道了",cost:"多了一種被盯著的壓力",effect:{stats:{mood:-1,self:1},stress:2},result:`被盯著不一定舒服，但它確實讓這件事變得更真實。`,log:"藏考卷後提出補救，家人開始持續追蹤。"}]
+  }),
+  hideScore_argue:()=>({
+    isAftermath:true,label:"後續影響｜晚餐氣氛很差",speaker:"旁白",bg:"bg_home",
+    text:`那天晚餐幾乎沒有人多說話。
+
+雖然吵架暫時停下來了，但那種不舒服的氣氛還留在家裡。`,
+    choices:[{letter:"✓",text:"知道了",cost:"衝突沒有真的解開",effect:{stats:{family:-3,mood:-3},stress:4,fatigue:2},result:`有些後果不是當下那幾句話，而是之後相處時整個氣氛都變了。`,log:"藏考卷後吵架，家裡氣氛持續變差。"}]
+  }),
+
+  cheat_admit:()=>({
+    isAftermath:true,label:"後續影響｜老師開始多看你一眼",speaker:"旁白",bg:"bg_classroom",
+    text:`之後幾次作業與小考，老師都會多看你一眼。
+
+雖然沒有再公開提起，但你知道：
+自己的誠信印象已經受影響了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"信任要重新累積",effect:{stats:{confidence:-2,mood:-2,self:2},stress:3},result:`有些錯誤不是處理完就結束，而是之後要慢慢把信任補回來。`,log:"作弊事件後，老師對你的信任下降。"}]
+  }),
+  cheat_deny:()=>({
+    isAftermath:true,label:"後續影響｜導師也找你談了",speaker:"導師",bg:"bg_classroom",
+    text:`隔天導師把你叫去談。
+
+「老師反映你這次的作業很有問題，而且你面對時還沒有說清楚。
+這件事我會繼續記著。」`,
+    choices:[{letter:"✓",text:"知道了",cost:"壓力持續",effect:{stats:{confidence:-3,mood:-3},stress:5,fatigue:3,warning:1},result:`你感受到的後果，已經從作業本身擴大成「老師之後怎麼看你」。`,log:"作弊後仍否認，導師也介入處理。"}]
+  }),
+  cheat_redo:()=>({
+    isAftermath:true,label:"後續影響｜你花時間補回來了",speaker:"旁白",bg:"bg_home",
+    text:`重做那份作業之後，你確實多花了一段時間。
+
+很累，但至少這次交出去的東西是自己完成的。`,
+    choices:[{letter:"✓",text:"知道了",cost:"補救也要付出代價",effect:{fatigue:2,stats:{self:2,confidence:-1}},result:`補救不是免費的，但它真的讓事情停在比較小的地方。`,log:"作弊後重做作業，付出額外時間。"}]
+  }),
+
+  joke_ignore:()=>({
+    isAftermath:true,label:"後續影響｜那個同學開始跟你們有點距離",speaker:"旁白",bg:"bg_classroom",
+    text:`後來幾次下課，那個同學經過你們時都比較安靜。
+
+你突然很清楚地感覺到：那個綽號並不是「大家都覺得好笑」。`,
+    choices:[{letter:"✓",text:"知道了",cost:"人際距離真的會變",effect:{stats:{social:-2,mood:-1},stress:2},result:`就算沒有被罵，傷人的玩笑還是會在人和人之間留下痕跡。`,log:"同學明顯拉開距離，感受到玩笑的後續影響。"}]
+  }),
+  joke_stop:()=>({
+    isAftermath:true,label:"後續影響｜關係沒有更壞，但需要時間",speaker:"旁白",bg:"bg_classroom",
+    text:`你沒有再跟著叫那個綽號後，事情慢慢安靜下來。
+
+但你也感覺得到，對方一時之間還不會立刻回到原本的樣子。`,
+    choices:[{letter:"✓",text:"知道了",cost:"停止傷害不等於立刻修復",effect:{stats:{self:2,mood:-1}},result:`修正自己的行為是第一步，但關係恢復還需要時間。`,log:"停止叫綽號後，關係正在慢慢修復。"}]
+  }),
+  joke_apologize:()=>({
+    isAftermath:true,label:"後續影響｜你們之間比較沒有那麼卡了",speaker:"旁白",bg:"bg_classroom",
+    text:`道歉之後，對方雖然沒有馬上變得很熱絡，但表情確實鬆了一點。
+
+至少你知道，自己沒有把那份不舒服當作沒發生。`,
+    choices:[{letter:"✓",text:"知道了",cost:"修復是慢慢來的",effect:{stats:{social:1,self:2}},result:`一聲道歉不會讓一切立刻回到原樣，但它確實讓事情往比較好的方向走。`,log:"道歉後，和同學之間的僵硬感稍微降低。"}]
+  })
+};
+
+const AFTERMATH_DELAY={
+  meme_silent:{days:2},meme_cleanup:{days:2},meme_warn:{days:2},
+  loan_direct:{days:3},loan_soft:{days:3},loan_silent:{days:3},
+  fakeSign_accept:{days:2},fakeSign_deny:{days:2},fakeSign_explain:{days:2},
+  hideScore_admit:{days:2},hideScore_plan:{days:2},hideScore_argue:{days:2},
+  cheat_admit:{weeks:1},cheat_deny:{weeks:1},cheat_redo:{days:2},
+  joke_ignore:{weeks:1},joke_stop:{weeks:1},joke_apologize:{weeks:1}
+};
+function queueAftermath(ids){
+  if(!ids)return;
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  state.pendingAftermaths=state.pendingAftermaths.map(x=>typeof x==="string"?{
+    id:x,dueWeek:state.week||1,dueDay:(state.daySerial||0)+1,
+    queuedWeek:state.week||1,queuedDay:state.daySerial||0
+  }:x);
+  (Array.isArray(ids)?ids:[ids]).forEach(id=>{
+    if(!id||!AFTERMATH_EVENTS[id])return;
+    const delay=AFTERMATH_DELAY[id]||{days:2};
+    let dueWeek=(state.week||1)+(delay.weeks||0);
+    let dueDay=(state.daySerial||0)+(delay.days||0);
+    // 第一章最後一週仍保證能在段考結算前看到後續。
+    if(dueWeek>7){dueWeek=7;dueDay=(state.daySerial||0)+2;}
+    state.pendingAftermaths.push({
+      id,dueWeek,dueDay,
+      queuedWeek:state.week||1,
+      queuedDay:state.daySerial||0
+    });
+  });
+}
+function aftermathDue(item){
+  if(!item)return false;
+  if(typeof item==="string")return true;
+  if((state.week||1)>(item.dueWeek||1))return true;
+  if((state.week||1)<(item.dueWeek||1))return false;
+  return (state.daySerial||0)>=(item.dueDay||0);
+}
+function dueAftermathIndex(force=false){
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  if(force)return state.pendingAftermaths.length?0:-1;
+  return state.pendingAftermaths.findIndex(aftermathDue);
+}
+function hasDueAftermath(){return dueAftermathIndex(false)>=0;}
+function showQueuedAftermath(force=false){
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  const i=dueAftermathIndex(force);
+  if(i<0)return resumeFlow();
+  const item=state.pendingAftermaths.splice(i,1)[0];
+  const id=typeof item==="string"?item:item.id;
+  if(!id||!AFTERMATH_EVENTS[id])return resumeFlow();
+  showEvent(AFTERMATH_EVENTS[id]());
+}
+function addWarning(n=1){
+  stat
+
+===== #11 isAftermath\s*:\s*true @ 1541240 =====
+但之後幾天會主動問：
+
+「你今天有沒有把數學錯題訂正完？」
+「你說的補救，有沒有真的開始做？」`,
+    choices:[{letter:"✓",text:"知道了",cost:"多了一種被盯著的壓力",effect:{stats:{mood:-1,self:1},stress:2},result:`被盯著不一定舒服，但它確實讓這件事變得更真實。`,log:"藏考卷後提出補救，家人開始持續追蹤。"}]
+  }),
+  hideScore_argue:()=>({
+    isAftermath:true,label:"後續影響｜晚餐氣氛很差",speaker:"旁白",bg:"bg_home",
+    text:`那天晚餐幾乎沒有人多說話。
+
+雖然吵架暫時停下來了，但那種不舒服的氣氛還留在家裡。`,
+    choices:[{letter:"✓",text:"知道了",cost:"衝突沒有真的解開",effect:{stats:{family:-3,mood:-3},stress:4,fatigue:2},result:`有些後果不是當下那幾句話，而是之後相處時整個氣氛都變了。`,log:"藏考卷後吵架，家裡氣氛持續變差。"}]
+  }),
+
+  cheat_admit:()=>({
+    isAftermath:true,label:"後續影響｜老師開始多看你一眼",speaker:"旁白",bg:"bg_classroom",
+    text:`之後幾次作業與小考，老師都會多看你一眼。
+
+雖然沒有再公開提起，但你知道：
+自己的誠信印象已經受影響了。`,
+    choices:[{letter:"✓",text:"知道了",cost:"信任要重新累積",effect:{stats:{confidence:-2,mood:-2,self:2},stress:3},result:`有些錯誤不是處理完就結束，而是之後要慢慢把信任補回來。`,log:"作弊事件後，老師對你的信任下降。"}]
+  }),
+  cheat_deny:()=>({
+    isAftermath:true,label:"後續影響｜導師也找你談了",speaker:"導師",bg:"bg_classroom",
+    text:`隔天導師把你叫去談。
+
+「老師反映你這次的作業很有問題，而且你面對時還沒有說清楚。
+這件事我會繼續記著。」`,
+    choices:[{letter:"✓",text:"知道了",cost:"壓力持續",effect:{stats:{confidence:-3,mood:-3},stress:5,fatigue:3,warning:1},result:`你感受到的後果，已經從作業本身擴大成「老師之後怎麼看你」。`,log:"作弊後仍否認，導師也介入處理。"}]
+  }),
+  cheat_redo:()=>({
+    isAftermath:true,label:"後續影響｜你花時間補回來了",speaker:"旁白",bg:"bg_home",
+    text:`重做那份作業之後，你確實多花了一段時間。
+
+很累，但至少這次交出去的東西是自己完成的。`,
+    choices:[{letter:"✓",text:"知道了",cost:"補救也要付出代價",effect:{fatigue:2,stats:{self:2,confidence:-1}},result:`補救不是免費的，但它真的讓事情停在比較小的地方。`,log:"作弊後重做作業，付出額外時間。"}]
+  }),
+
+  joke_ignore:()=>({
+    isAftermath:true,label:"後續影響｜那個同學開始跟你們有點距離",speaker:"旁白",bg:"bg_classroom",
+    text:`後來幾次下課，那個同學經過你們時都比較安靜。
+
+你突然很清楚地感覺到：那個綽號並不是「大家都覺得好笑」。`,
+    choices:[{letter:"✓",text:"知道了",cost:"人際距離真的會變",effect:{stats:{social:-2,mood:-1},stress:2},result:`就算沒有被罵，傷人的玩笑還是會在人和人之間留下痕跡。`,log:"同學明顯拉開距離，感受到玩笑的後續影響。"}]
+  }),
+  joke_stop:()=>({
+    isAftermath:true,label:"後續影響｜關係沒有更壞，但需要時間",speaker:"旁白",bg:"bg_classroom",
+    text:`你沒有再跟著叫那個綽號後，事情慢慢安靜下來。
+
+但你也感覺得到，對方一時之間還不會立刻回到原本的樣子。`,
+    choices:[{letter:"✓",text:"知道了",cost:"停止傷害不等於立刻修復",effect:{stats:{self:2,mood:-1}},result:`修正自己的行為是第一步，但關係恢復還需要時間。`,log:"停止叫綽號後，關係正在慢慢修復。"}]
+  }),
+  joke_apologize:()=>({
+    isAftermath:true,label:"後續影響｜你們之間比較沒有那麼卡了",speaker:"旁白",bg:"bg_classroom",
+    text:`道歉之後，對方雖然沒有馬上變得很熱絡，但表情確實鬆了一點。
+
+至少你知道，自己沒有把那份不舒服當作沒發生。`,
+    choices:[{letter:"✓",text:"知道了",cost:"修復是慢慢來的",effect:{stats:{social:1,self:2}},result:`一聲道歉不會讓一切立刻回到原樣，但它確實讓事情往比較好的方向走。`,log:"道歉後，和同學之間的僵硬感稍微降低。"}]
+  })
+};
+
+const AFTERMATH_DELAY={
+  meme_silent:{days:2},meme_cleanup:{days:2},meme_warn:{days:2},
+  loan_direct:{days:3},loan_soft:{days:3},loan_silent:{days:3},
+  fakeSign_accept:{days:2},fakeSign_deny:{days:2},fakeSign_explain:{days:2},
+  hideScore_admit:{days:2},hideScore_plan:{days:2},hideScore_argue:{days:2},
+  cheat_admit:{weeks:1},cheat_deny:{weeks:1},cheat_redo:{days:2},
+  joke_ignore:{weeks:1},joke_stop:{weeks:1},joke_apologize:{weeks:1}
+};
+function queueAftermath(ids){
+  if(!ids)return;
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  state.pendingAftermaths=state.pendingAftermaths.map(x=>typeof x==="string"?{
+    id:x,dueWeek:state.week||1,dueDay:(state.daySerial||0)+1,
+    queuedWeek:state.week||1,queuedDay:state.daySerial||0
+  }:x);
+  (Array.isArray(ids)?ids:[ids]).forEach(id=>{
+    if(!id||!AFTERMATH_EVENTS[id])return;
+    const delay=AFTERMATH_DELAY[id]||{days:2};
+    let dueWeek=(state.week||1)+(delay.weeks||0);
+    let dueDay=(state.daySerial||0)+(delay.days||0);
+    // 第一章最後一週仍保證能在段考結算前看到後續。
+    if(dueWeek>7){dueWeek=7;dueDay=(state.daySerial||0)+2;}
+    state.pendingAftermaths.push({
+      id,dueWeek,dueDay,
+      queuedWeek:state.week||1,
+      queuedDay:state.daySerial||0
+    });
+  });
+}
+function aftermathDue(item){
+  if(!item)return false;
+  if(typeof item==="string")return true;
+  if((state.week||1)>(item.dueWeek||1))return true;
+  if((state.week||1)<(item.dueWeek||1))return false;
+  return (state.daySerial||0)>=(item.dueDay||0);
+}
+function dueAftermathIndex(force=false){
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  if(force)return state.pendingAftermaths.length?0:-1;
+  return state.pendingAftermaths.findIndex(aftermathDue);
+}
+function hasDueAftermath(){return dueAftermathIndex(false)>=0;}
+function showQueuedAftermath(force=false){
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  const i=dueAftermathIndex(force);
+  if(i<0)return resumeFlow();
+  const item=state.pendingAftermaths.splice(i,1)[0];
+  const id=typeof item==="string"?item:item.id;
+  if(!id||!AFTERMATH_EVENTS[id])return resumeFlow();
+  showEvent(AFTERMATH_EVENTS[id]());
+}
+function addWarning(n=1){
+  state.discipline=state.discipline||{warning:0,minorDemerit:0};
+  state.formalConsequences=state.formalConsequences||{fakeSignDemeritApplied:false};
+  state.discipline.warning+=n;
+}
+function addMinorDemerit(n=1){
+  state.discipline=state.discipline||{warning:0,minorDemerit:0};
+  state.discipline.minorDemerit+=n;
+}
+function riskFaces(rule){
+  const accumulated=Math.ceil(Math.max(0,rule.value(state)));
+  return clamp((rule.baseFaces||1)+Math.max(0,accumulated-1),1,5);
+}
+function riskActive(rule){
+  return !state.consequencesDone[rule.id] && rule.value(state)>0;
+}
+function riskSnapshot(){
+  const o={};DICE_RULES.forEach(r=>o[r.id]=Math.max(0,r.value(state)));return o;
+}
+function markRaisedRisks(before){
+  state.riskMeta=state.riskMeta||{};
+  state.classId=state.classId||"";
+  state.chapter1Review=state.chapter1Review||null;
+  state.stats.confidence=state.stats.confidence??55;
+  state.discipline=state.discipline||{warning:0,minorDemerit:0};
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  DICE_RULES.forEach(r=>{
+    const now=Math.max(0,r.value(state)),old=before[r.id]||0;
+    if(now>old){
+      state.riskMeta[r.id]=state.riskMeta[r.id]||{};
+      state.riskMeta[r.id].raisedDay=state.daySerial||0;
+    }
+  });
+}
+function eventContexts(ev){
+  const c=[];
+  if(!ev)return c;
+  if(ev.speaker==="老師"||ev.sprite==="sp_teacher")c.push("teacher");
+  if(ev.speaker==="媽媽"||ev.sprite==="sp_mom"||ev.bg==="bg_home")c.push("family");
+  if(ev.speaker==="阿哲"||ev.sprite==="sp_azhe")c.push("azhe");
+  if((ev.label||"").includes("群組"))c.push("group");
+  if(ev.bg==="bg_classroom")c.push("school");
+  
+
+===== #12 AFTERMATH @ 1543071 =====
+明顯拉開距離，感受到玩笑的後續影響。"}]
+  }),
+  joke_stop:()=>({
+    isAftermath:true,label:"後續影響｜關係沒有更壞，但需要時間",speaker:"旁白",bg:"bg_classroom",
+    text:`你沒有再跟著叫那個綽號後，事情慢慢安靜下來。
+
+但你也感覺得到，對方一時之間還不會立刻回到原本的樣子。`,
+    choices:[{letter:"✓",text:"知道了",cost:"停止傷害不等於立刻修復",effect:{stats:{self:2,mood:-1}},result:`修正自己的行為是第一步，但關係恢復還需要時間。`,log:"停止叫綽號後，關係正在慢慢修復。"}]
+  }),
+  joke_apologize:()=>({
+    isAftermath:true,label:"後續影響｜你們之間比較沒有那麼卡了",speaker:"旁白",bg:"bg_classroom",
+    text:`道歉之後，對方雖然沒有馬上變得很熱絡，但表情確實鬆了一點。
+
+至少你知道，自己沒有把那份不舒服當作沒發生。`,
+    choices:[{letter:"✓",text:"知道了",cost:"修復是慢慢來的",effect:{stats:{social:1,self:2}},result:`一聲道歉不會讓一切立刻回到原樣，但它確實讓事情往比較好的方向走。`,log:"道歉後，和同學之間的僵硬感稍微降低。"}]
+  })
+};
+
+const AFTERMATH_DELAY={
+  meme_silent:{days:2},meme_cleanup:{days:2},meme_warn:{days:2},
+  loan_direct:{days:3},loan_soft:{days:3},loan_silent:{days:3},
+  fakeSign_accept:{days:2},fakeSign_deny:{days:2},fakeSign_explain:{days:2},
+  hideScore_admit:{days:2},hideScore_plan:{days:2},hideScore_argue:{days:2},
+  cheat_admit:{weeks:1},cheat_deny:{weeks:1},cheat_redo:{days:2},
+  joke_ignore:{weeks:1},joke_stop:{weeks:1},joke_apologize:{weeks:1}
+};
+function queueAftermath(ids){
+  if(!ids)return;
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  state.pendingAftermaths=state.pendingAftermaths.map(x=>typeof x==="string"?{
+    id:x,dueWeek:state.week||1,dueDay:(state.daySerial||0)+1,
+    queuedWeek:state.week||1,queuedDay:state.daySerial||0
+  }:x);
+  (Array.isArray(ids)?ids:[ids]).forEach(id=>{
+    if(!id||!AFTERMATH_EVENTS[id])return;
+    const delay=AFTERMATH_DELAY[id]||{days:2};
+    let dueWeek=(state.week||1)+(delay.weeks||0);
+    let dueDay=(state.daySerial||0)+(delay.days||0);
+    // 第一章最後一週仍保證能在段考結算前看到後續。
+    if(dueWeek>7){dueWeek=7;dueDay=(state.daySerial||0)+2;}
+    state.pendingAftermaths.push({
+      id,dueWeek,dueDay,
+      queuedWeek:state.week||1,
+      queuedDay:state.daySerial||0
+    });
+  });
+}
+function aftermathDue(item){
+  if(!item)return false;
+  if(typeof item==="string")return true;
+  if((state.week||1)>(item.dueWeek||1))return true;
+  if((state.week||1)<(item.dueWeek||1))return false;
+  return (state.daySerial||0)>=(item.dueDay||0);
+}
+function dueAftermathIndex(force=false){
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  if(force)return state.pendingAftermaths.length?0:-1;
+  return state.pendingAftermaths.findIndex(aftermathDue);
+}
+function hasDueAftermath(){return dueAftermathIndex(false)>=0;}
+function showQueuedAftermath(force=false){
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  const i=dueAftermathIndex(force);
+  if(i<0)return resumeFlow();
+  const item=state.pendingAftermaths.splice(i,1)[0];
+  const id=typeof item==="string"?item:item.id;
+  if(!id||!AFTERMATH_EVENTS[id])return resumeFlow();
+  showEvent(AFTERMATH_EVENTS[id]());
+}
+function addWarning(n=1){
+  state.discipline=state.discipline||{warning:0,minorDemerit:0};
+  state.formalConsequences=state.formalConsequences||{fakeSignDemeritApplied:false};
+  state.discipline.warning+=n;
+}
+function addMinorDemerit(n=1){
+  state.discipline=state.discipline||{warning:0,minorDemerit:0};
+  state.discipline.minorDemerit+=n;
+}
+function riskFaces(rule){
+  const accumulated=Math.ceil(Math.max(0,rule.value(state)));
+  return clamp((rule.baseFaces||1)+Math.max(0,accumulated-1),1,5);
+}
+function riskActive(rule){
+  return !state.consequencesDone[rule.id] && rule.value(state)>0;
+}
+function riskSnapshot(){
+  const o={};DICE_RULES.forEach(r=>o[r.id]=Math.max(0,r.value(state)));return o;
+}
+function markRaisedRisks(before){
+  state.riskMeta=state.riskMeta||{};
+  state.classId=state.classId||"";
+  state.chapter1Review=state.chapter1Review||null;
+  state.stats.confidence=state.stats.confidence??55;
+  state.discipline=state.discipline||{warning:0,minorDemerit:0};
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  DICE_RULES.forEach(r=>{
+    const now=Math.max(0,r.value(state)),old=before[r.id]||0;
+    if(now>old){
+      state.riskMeta[r.id]=state.riskMeta[r.id]||{};
+      state.riskMeta[r.id].raisedDay=state.daySerial||0;
+    }
+  });
+}
+function eventContexts(ev){
+  const c=[];
+  if(!ev)return c;
+  if(ev.speaker==="老師"||ev.sprite==="sp_teacher")c.push("teacher");
+  if(ev.speaker==="媽媽"||ev.sprite==="sp_mom"||ev.bg==="bg_home")c.push("family");
+  if(ev.speaker==="阿哲"||ev.sprite==="sp_azhe")c.push("azhe");
+  if((ev.label||"").includes("群組"))c.push("group");
+  if(ev.bg==="bg_classroom")c.push("school");
+  return [...new Set(c)];
+}
+function findRiskForContext(contexts){
+  if(!contexts||!contexts.length)return null;
+  state.riskMeta=state.riskMeta||{};
+  const candidates=DICE_RULES.filter(r=>{
+    if(!riskActive(r)||state.week<(r.minWeek||1))return false;
+    if(!r.contexts.some(c=>contexts.includes(c)))return false;
+    const meta=state.riskMeta[r.id]||{};
+    if((meta.raisedDay??-1)>=(state.daySerial||0))return false;
+    if(meta.lastCheckWeek===state.week)return false;
+    return true;
+  });
+  if(!candidates.length)return null;
+  candidates.sort((a,b)=>riskFaces(b)-riskFaces(a));
+  return candidates[0];
+}
+function decaySoftRisks(){
+  ["memeRisk","jokeRisk","cheatRisk","answerRisk"].forEach(k=>{
+    if((state.hidden[k]||0)>0)state.hidden[k]=Math.max(0,state.hidden[k]-1);
+  });
+}
+
+function freshState(){return {
+  classId:"",className:"",week:1,idx:0,
+  extraTarget:0,extraSeen:0,usedExtras:[],pendingExtraId:null,
+  scheduleDone:false,weekPlan:[],planUnits:[],planCursor:0,executedUnits:[],
+  weekAbsorbSamples:[],weekAvoidanceStart:0,
+  pendingHealthEvent:false,pendingRiskContext:null,pendingDice:null,pendingConsequenceId:null,
+  money:300,dailyBasicCost:35,basicDaysPaid:0,basicDaysPerWeek:7,
+  daySerial:0,energy:80,fatigue:20,stress:20,
+  prologueSeen:false,finished:false,examEpilogueSeen:false,chapter1Review:null,sickTurns:0,healthCooldown:0,
+  stats:{study:45,social:40,family:55,mood:60,self:30,confidence:55},
+  mastery:{chinese:58,english:60,math:48,science:55,social:57},
+  prep:{chinese:0,english:0,math:0,science:0,social:0},
+  habit:{stableStreak:0,chaosStreak:0,trait:"none"},
+  traitPoints:{stable:0,lastMinute:0,relationship:0,grind:0,anxious:0,face:0,avoid:0,rebound:0},
+  activityFamiliarity:{},weeklyWish:null,ignoredWishStreak:0,
+  chapter:1,
+  chapterStart:{
+    money:300,energy:80,fatigue:20,st
+
+===== #13 AFTERMATH @ 1544760 =====
+elay.days||0);
+    // 第一章最後一週仍保證能在段考結算前看到後續。
+    if(dueWeek>7){dueWeek=7;dueDay=(state.daySerial||0)+2;}
+    state.pendingAftermaths.push({
+      id,dueWeek,dueDay,
+      queuedWeek:state.week||1,
+      queuedDay:state.daySerial||0
+    });
+  });
+}
+function aftermathDue(item){
+  if(!item)return false;
+  if(typeof item==="string")return true;
+  if((state.week||1)>(item.dueWeek||1))return true;
+  if((state.week||1)<(item.dueWeek||1))return false;
+  return (state.daySerial||0)>=(item.dueDay||0);
+}
+function dueAftermathIndex(force=false){
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  if(force)return state.pendingAftermaths.length?0:-1;
+  return state.pendingAftermaths.findIndex(aftermathDue);
+}
+function hasDueAftermath(){return dueAftermathIndex(false)>=0;}
+function showQueuedAftermath(force=false){
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  const i=dueAftermathIndex(force);
+  if(i<0)return resumeFlow();
+  const item=state.pendingAftermaths.splice(i,1)[0];
+  const id=typeof item==="string"?item:item.id;
+  if(!id||!AFTERMATH_EVENTS[id])return resumeFlow();
+  showEvent(AFTERMATH_EVENTS[id]());
+}
+function addWarning(n=1){
+  state.discipline=state.discipline||{warning:0,minorDemerit:0};
+  state.formalConsequences=state.formalConsequences||{fakeSignDemeritApplied:false};
+  state.discipline.warning+=n;
+}
+function addMinorDemerit(n=1){
+  state.discipline=state.discipline||{warning:0,minorDemerit:0};
+  state.discipline.minorDemerit+=n;
+}
+function riskFaces(rule){
+  const accumulated=Math.ceil(Math.max(0,rule.value(state)));
+  return clamp((rule.baseFaces||1)+Math.max(0,accumulated-1),1,5);
+}
+function riskActive(rule){
+  return !state.consequencesDone[rule.id] && rule.value(state)>0;
+}
+function riskSnapshot(){
+  const o={};DICE_RULES.forEach(r=>o[r.id]=Math.max(0,r.value(state)));return o;
+}
+function markRaisedRisks(before){
+  state.riskMeta=state.riskMeta||{};
+  state.classId=state.classId||"";
+  state.chapter1Review=state.chapter1Review||null;
+  state.stats.confidence=state.stats.confidence??55;
+  state.discipline=state.discipline||{warning:0,minorDemerit:0};
+  state.pendingAftermaths=Array.isArray(state.pendingAftermaths)?state.pendingAftermaths:[];
+  DICE_RULES.forEach(r=>{
+    const now=Math.max(0,r.value(state)),old=before[r.id]||0;
+    if(now>old){
+      state.riskMeta[r.id]=state.riskMeta[r.id]||{};
+      state.riskMeta[r.id].raisedDay=state.daySerial||0;
+    }
+  });
+}
+function eventContexts(ev){
+  const c=[];
+  if(!ev)return c;
+  if(ev.speaker==="老師"||ev.sprite==="sp_teacher")c.push("teacher");
+  if(ev.speaker==="媽媽"||ev.sprite==="sp_mom"||ev.bg==="bg_home")c.push("family");
+  if(ev.speaker==="阿哲"||ev.sprite==="sp_azhe")c.push("azhe");
+  if((ev.label||"").includes("群組"))c.push("group");
+  if(ev.bg==="bg_classroom")c.push("school");
+  return [...new Set(c)];
+}
+function findRiskForContext(contexts){
+  if(!contexts||!contexts.length)return null;
+  state.riskMeta=state.riskMeta||{};
+  const candidates=DICE_RULES.filter(r=>{
+    if(!riskActive(r)||state.week<(r.minWeek||1))return false;
+    if(!r.contexts.some(c=>contexts.includes(c)))return false;
+    const meta=state.riskMeta[r.id]||{};
+    if((meta.raisedDay??-1)>=(state.daySerial||0))return false;
+    if(meta.lastCheckWeek===state.week)return false;
+    return true;
+  });
+  if(!candidates.length)return null;
+  candidates.sort((a,b)=>riskFaces(b)-riskFaces(a));
+  return candidates[0];
+}
+function decaySoftRisks(){
+  ["memeRisk","jokeRisk","cheatRisk","answerRisk"].forEach(k=>{
+    if((state.hidden[k]||0)>0)state.hidden[k]=Math.max(0,state.hidden[k]-1);
+  });
+}
+
+function freshState(){return {
+  classId:"",className:"",week:1,idx:0,
+  extraTarget:0,extraSeen:0,usedExtras:[],pendingExtraId:null,
+  scheduleDone:false,weekPlan:[],planUnits:[],planCursor:0,executedUnits:[],
+  weekAbsorbSamples:[],weekAvoidanceStart:0,
+  pendingHealthEvent:false,pendingRiskContext:null,pendingDice:null,pendingConsequenceId:null,
+  money:300,dailyBasicCost:35,basicDaysPaid:0,basicDaysPerWeek:7,
+  daySerial:0,energy:80,fatigue:20,stress:20,
+  prologueSeen:false,finished:false,examEpilogueSeen:false,chapter1Review:null,sickTurns:0,healthCooldown:0,
+  stats:{study:45,social:40,family:55,mood:60,self:30,confidence:55},
+  mastery:{chinese:58,english:60,math:48,science:55,social:57},
+  prep:{chinese:0,english:0,math:0,science:0,social:0},
+  habit:{stableStreak:0,chaosStreak:0,trait:"none"},
+  traitPoints:{stable:0,lastMinute:0,relationship:0,grind:0,anxious:0,face:0,avoid:0,rebound:0},
+  activityFamiliarity:{},weeklyWish:null,ignoredWishStreak:0,
+  chapter:1,
+  chapterStart:{
+    money:300,energy:80,fatigue:20,stress:20,
+    stats:{study:45,social:40,family:55,mood:60,self:30,confidence:55},
+    mastery:{chinese:58,english:60,math:48,science:55,social:57},
+    relations:{qing:"還不熟",zhe:"還不熟",jiahao:"還不熟",mom:"日常互動"}
+  },
+  relationships:{
+    qing:{affinity:0,interactions:0,shared:0,crises:0,repairs:0,moments:[],trustGate:false,importantGate:false},
+    zhe:{affinity:0,interactions:0,shared:0,crises:0,repairs:0,moments:[],trustGate:false,importantGate:false},
+    jiahao:{affinity:0,interactions:0,shared:0,crises:0,repairs:0,moments:[],trustGate:false,importantGate:false},
+    mom:{affinity:1,interactions:0,shared:0,crises:0,repairs:0,moments:[],trustGate:true,importantGate:false}
+  },
+  relationshipEventsSeen:{},
+  history:{confidenceMin:55},
+  examVariance:null,riskMeta:{},discipline:{warning:0,minorDemerit:0},formalConsequences:{fakeSignDemeritApplied:false},
+  pendingAftermaths:[],
+  hidden:{sleepDebt:0,mathPrep:0,friendTrust:0,familyTrust:1,selfControl:0,avoidance:0,qingTrust:0,zheTrust:0,studyEffort:0},
+  consequencesDone:{},unlocked:[],log:[]
+}}
+let state=freshState(),activeEvent=null,typing=false,timer=null,fullText="",afterType=()=>{},schedulePick=[];
+const CLASS_INDEX_KEY="our14_v12_class_index";
+const ACTIVE_CLASS_KEY="our14_v12_active_class";
+const CLASS_PREFIX="our14_v12_class_";
+const MIGRATION_KEY="our14_v12_migrated_v11";
+
+function newClassId(){
+  if(globalThis.crypto?.randomUUID)return crypto.randomUUID().replace(/-/g,"").slice(0,18);
+  return "c"+Date.now().toString(36)+Math.random().toString(36).slice(2,9);
+}
+function getClassIndex(){
+  try{return JSON.parse(localStorage.getItem(CLASS_INDEX_KEY)||"[]");}catch(e){return [];}
+}
+function setClassIndex(li
+
+===== #14 AFTERMATH @ 1548146 =====
+didates.length)return null;
+  candidates.sort((a,b)=>riskFaces(b)-riskFaces(a));
+  return candidates[0];
+}
+function decaySoftRisks(){
+  ["memeRisk","jokeRisk","cheatRisk","answerRisk"].forEach(k=>{
+    if((state.hidden[k]||0)>0)state.hidden[k]=Math.max(0,state.hidden[k]-1);
+  });
+}
+
+function freshState(){return {
+  classId:"",className:"",week:1,idx:0,
+  extraTarget:0,extraSeen:0,usedExtras:[],pendingExtraId:null,
+  scheduleDone:false,weekPlan:[],planUnits:[],planCursor:0,executedUnits:[],
+  weekAbsorbSamples:[],weekAvoidanceStart:0,
+  pendingHealthEvent:false,pendingRiskContext:null,pendingDice:null,pendingConsequenceId:null,
+  money:300,dailyBasicCost:35,basicDaysPaid:0,basicDaysPerWeek:7,
+  daySerial:0,energy:80,fatigue:20,stress:20,
+  prologueSeen:false,finished:false,examEpilogueSeen:false,chapter1Review:null,sickTurns:0,healthCooldown:0,
+  stats:{study:45,social:40,family:55,mood:60,self:30,confidence:55},
+  mastery:{chinese:58,english:60,math:48,science:55,social:57},
+  prep:{chinese:0,english:0,math:0,science:0,social:0},
+  habit:{stableStreak:0,chaosStreak:0,trait:"none"},
+  traitPoints:{stable:0,lastMinute:0,relationship:0,grind:0,anxious:0,face:0,avoid:0,rebound:0},
+  activityFamiliarity:{},weeklyWish:null,ignoredWishStreak:0,
+  chapter:1,
+  chapterStart:{
+    money:300,energy:80,fatigue:20,stress:20,
+    stats:{study:45,social:40,family:55,mood:60,self:30,confidence:55},
+    mastery:{chinese:58,english:60,math:48,science:55,social:57},
+    relations:{qing:"還不熟",zhe:"還不熟",jiahao:"還不熟",mom:"日常互動"}
+  },
+  relationships:{
+    qing:{affinity:0,interactions:0,shared:0,crises:0,repairs:0,moments:[],trustGate:false,importantGate:false},
+    zhe:{affinity:0,interactions:0,shared:0,crises:0,repairs:0,moments:[],trustGate:false,importantGate:false},
+    jiahao:{affinity:0,interactions:0,shared:0,crises:0,repairs:0,moments:[],trustGate:false,importantGate:false},
+    mom:{affinity:1,interactions:0,shared:0,crises:0,repairs:0,moments:[],trustGate:true,importantGate:false}
+  },
+  relationshipEventsSeen:{},
+  history:{confidenceMin:55},
+  examVariance:null,riskMeta:{},discipline:{warning:0,minorDemerit:0},formalConsequences:{fakeSignDemeritApplied:false},
+  pendingAftermaths:[],
+  hidden:{sleepDebt:0,mathPrep:0,friendTrust:0,familyTrust:1,selfControl:0,avoidance:0,qingTrust:0,zheTrust:0,studyEffort:0},
+  consequencesDone:{},unlocked:[],log:[]
+}}
+let state=freshState(),activeEvent=null,typing=false,timer=null,fullText="",afterType=()=>{},schedulePick=[];
+const CLASS_INDEX_KEY="our14_v12_class_index";
+const ACTIVE_CLASS_KEY="our14_v12_active_class";
+const CLASS_PREFIX="our14_v12_class_";
+const MIGRATION_KEY="our14_v12_migrated_v11";
+
+function newClassId(){
+  if(globalThis.crypto?.randomUUID)return crypto.randomUUID().replace(/-/g,"").slice(0,18);
+  return "c"+Date.now().toString(36)+Math.random().toString(36).slice(2,9);
+}
+function getClassIndex(){
+  try{return JSON.parse(localStorage.getItem(CLASS_INDEX_KEY)||"[]");}catch(e){return [];}
+}
+function setClassIndex(list){localStorage.setItem(CLASS_INDEX_KEY,JSON.stringify(list));}
+function classKey(id){return CLASS_PREFIX+id;}
+function activeClassId(){return localStorage.getItem(ACTIVE_CLASS_KEY)||"";}
+function setActiveClass(id){if(id)localStorage.setItem(ACTIVE_CLASS_KEY,id);else localStorage.removeItem(ACTIVE_CLASS_KEY);}
+function escapeHtml(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+function fmtTime(ts){
+  if(!ts)return "尚未開始";
+  try{return new Date(ts).toLocaleString("zh-TW",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"});}catch(e){return "";}
+}
+function upsertClassMeta(){
+  if(!state.classId)return;
+  const list=getClassIndex();
+  const meta={
+    id:state.classId,
+    name:state.className||"未命名班級",
+    updated:Date.now(),
+    week:state.week||1,
+    finished:!!state.finished,
+    grade:state.chapter1Review?.grade||"",
+    warnings:state.discipline?.warning||0,
+    demerits:state.discipline?.minorDemerit||0
+  };
+  const i=list.findIndex(x=>x.id===state.classId);
+  if(i>=0)list[i]=meta;else list.push(meta);
+  list.sort((a,b)=>(b.updated||0)-(a.updated||0));
+  setClassIndex(list);
+}
+
+const OUR14_CLOUD_URL="https://efqmwxrxnvuyhrllhowq.supabase.co/functions/v1/our14-cloud-save";
+const CLOUD_HASH_PREFIX="#cloud=";
+let cloudSaveTimer=null;
+let cloudSaveInFlight=false;
+let cloudSavePending=false;
+
+function cloudToast(msg){try{toast(msg)}catch(e){console.log(msg)}}
+async function cloudRequest(payload){
+  const r=await fetch(OUR14_CLOUD_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+  let data={}; try{data=await r.json()}catch(e){}
+  if(!r.ok||!data.ok)throw new Error(data.error||`雲端連線失敗（${r.status}）`);
+  return data;
+}
+function tokenFromUrl(input=location.href){
+  try{
+    const u=new URL(input,location.href);
+    if(u.hash.startsWith(CLOUD_HASH_PREFIX))return u.hash.slice(CLOUD_HASH_PREFIX.length).trim();
+    const q=u.searchParams.get("cloud");
+    return (q||"").trim();
+  }catch(e){return "";}
+}
+function currentCloudToken(){return (state&&state.cloudToken) || "";}
+function cloudUrlFor(token){
+  const u=new URL(location.href);
+  u.searchParams.delete("cloud");
+  u.hash=CLOUD_HASH_PREFIX+token;
+  return u.toString();
+}
+function setCloudUrl(token,replace=true){
+  if(!token)return;
+  if(state)state.cloudToken=token;
+  const u=cloudUrlFor(token);
+  if(replace)history.replaceState(null,"",u);else history.pushState(null,"",u);
+}
+const TEACHER_TOKEN_KEY="our14_teacher_token_v1";
+function validTeacherToken(token){return /^[A-Za-z0-9_-]{32,160}$/.test(String(token||""));}
+function teacherTokenFromUrl(input=location.href){
+  try{return new URL(input,location.href).searchParams.get("teacher")||"";}catch(e){return "";}
+}
+function currentTeacherToken(){
+  const fromUrl=teacherTokenFromUrl();
+  if(validTeacherToken(fromUrl))return fromUrl;
+  const local=localStorage.getItem(TEACHER_TOKEN_KEY)||"";
+  return validTeacherToken(local)?local:"";
+}
+function teacherUrlFor(token){
+  const u=new URL(location.href);
+  u.searchParams.set("teacher",token);
+  u.searchParams.delete("cloud");
+  u.hash="";
+  return u.toString();
+}
+async function ensureTeacherSpace(){
+  let token=currentTeacherToken();
+  if(!token){
+    const data=await cloudRequest({action:"teacher_create"});
+    token=data.teacher_token||"";
+    if(!validTeacherTok
+
+===== #15 AFTERMATH @ 1567495 =====
+t reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const data=JSON.parse(reader.result);
+      if(data.format!=="our14-all-classes-v12"||!Array.isArray(data.classes))throw new Error("format");
+      if(!confirm(`備份檔包含 ${data.classes.length} 個班級。\n\n同 ID 的班級會以備份檔內容取代，其他現有班級會保留。確定匯入？`))return;
+      const index=getClassIndex();
+      data.classes.forEach(item=>{
+        if(!item?.state)return;
+        const s=Object.assign(freshState(),item.state);normalizeExternalState(s);
+        let id=s.classId||item.meta?.id||newClassId();
+        s.classId=id;
+        localStorage.setItem(classKey(id),JSON.stringify(s));
+        const meta={id,name:s.className||item.meta?.name||"匯入班級",updated:Date.now(),week:s.week||1,finished:!!s.finished,grade:s.chapter1Review?.grade||"",warnings:s.discipline?.warning||0,demerits:s.discipline?.minorDemerit||0};
+        const i=index.findIndex(x=>x.id===id);if(i>=0)index[i]=meta;else index.push(meta);
+      });
+      index.sort((a,b)=>(b.updated||0)-(a.updated||0));setClassIndex(index);
+      if(data.activeClassId&&index.some(x=>x.id===data.activeClassId))setActiveClass(data.activeClassId);
+      else if(index[0])setActiveClass(index[0].id);
+      renderClassManager();refreshMenu();toast("全部班級已還原");
+    }catch(e){alert("這不是有效的《我們的14歲》全部班級備份檔。");}
+  };
+  reader.readAsText(file);
+}
+function normalizeExternalState(s){
+  s.stats=s.stats||{};
+  s.stats.confidence=s.stats.confidence??55;
+  s.discipline=s.discipline||{warning:0,minorDemerit:0};
+  s.formalConsequences=s.formalConsequences||{fakeSignDemeritApplied:false};
+  s.chapter1Review=s.chapter1Review||null;
+  s.traitPoints=s.traitPoints||{stable:0,lastMinute:0,relationship:0,grind:0,anxious:0,face:0,avoid:0,rebound:0};
+  s.activityFamiliarity=s.activityFamiliarity||{};
+  s.chapter=s.chapter||1;
+  s.chapterStart=s.chapterStart||{
+    money:300,energy:80,fatigue:20,stress:20,
+    stats:{study:45,social:40,family:55,mood:60,self:30,confidence:55},
+    mastery:{chinese:58,english:60,math:48,science:55,social:57},
+    relations:{qing:"還不熟",zhe:"還不熟",jiahao:"還不熟",mom:"日常互動"}
+  };
+  s.relationshipEventsSeen=s.relationshipEventsSeen||{};
+  s.relationships=s.relationships||{};
+  s.pendingAftermaths=Array.isArray(s.pendingAftermaths)?s.pendingAftermaths:[];
+  s.pendingAftermaths=s.pendingAftermaths.map(x=>typeof x==="string"?{
+    id:x,dueWeek:s.week||1,dueDay:(s.daySerial||0)+1,
+    queuedWeek:s.week||1,queuedDay:s.daySerial||0
+  }:x);
+  s.history=s.history||{confidenceMin:s.stats.confidence??55};
+}
+function toast(t){const el=document.getElementById("toast");el.textContent=t;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1700);}
+function switchScreen(id){document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='menu')refreshMenu();}
+function round1(n){return Math.round(n*10)/10;}
+function learningAbsorption(){
+  let r=100;
+  if(state.fatigue>=90) r-=55; else if(state.fatigue>=80) r-=40; else if(state.fatigue>=65) r-=25; else if(state.fatigue>=50) r-=10;
+  const mood=state.stats.mood;
+  if(mood<20) r-=35; else if(mood<35) r-=22; else if(mood<50) r-=8;
+  if(state.stress>=80) r-=15; else if(state.stress>=65) r-=8;
+  if(state.stats.confidence<25)r-=10; else if(state.stats.confidence<40)r-=5;
+  if(state.habit?.trait==="stable") r+=5;
+  if(state.habit?.trait==="pileup") r-=8;
+  if(state.sickTurns>0) r=Math.min(r,35);
+  return clamp(Math.round(r),25,100);
+}
+function healthLabel(){
+  if(state.sickTurns>0) return ["🤒 生病中：上課容易想睡、念書吸收率大幅下降","statusBad"];
+  if(state.fatigue>=85) return ["🥴 過度疲勞：再硬撐，生病風險很高","statusBad"];
+  if(state.stats.mood<=25) return ["🌧️ 心情非常低落：動力與吸收都下降，也可能身體不舒服","statusBad"];
+  if(state.fatigue>=65 || state.stats.mood<40) return ["⚠️ 狀態不佳：需要安排休息","statusWarn"];
+  return ["🙂 狀態穩定","statusGood"];
+}
+
+function addTraitPoint(k,v){
+  if(!TRAIT_DEFS[k]||!v)return;
+  state.traitPoints=state.traitPoints||{};
+  state.traitPoints[k]=Math.max(0,round1((state.traitPoints[k]||0)+v));
+  const score=state.traitPoints[k];
+  const cg=TRAIT_DEFS[k].cg;
+  if(score>=6 && cg) unlock(cg);
+}
+function traitScores(){
+  const p=state.traitPoints||{};
+  const h=state.hidden||{};
+  const hist=state.history||{confidenceMin:state.stats.confidence};
+  const prepSum=Object.values(state.prep||{}).reduce((a,b)=>a+b,0);
+  return {
+    stable:(p.stable||0)+(h.selfControl||0)*.6+(state.habit?.stableStreak||0)*3+Math.max(0,70-state.fatigue)*.035,
+    lastMinute:(p.lastMinute||0)+(state.week>=6?prepSum*.35:0)+(h.avoidance||0)*.25,
+    relationship:(p.relationship||0)+Math.max(0,state.stats.social-40)*.08+(ensureRelation("qing").affinity+ensureRelation("zhe").affinity+ensureRelation("jiahao").affinity)*.55,
+    grind:(p.grind||0)+(h.studyEffort||0)*.18+Math.max(0,state.fatigue-62)*.035,
+    anxious:(p.anxious||0)+Math.max(0,state.stress-45)*.12+Math.max(0,48-state.stats.mood)*.08,
+    face:(p.face||0)+Math.max(0,state.stats.self-35)*.055+(h.selfControl||0)*.3-(h.avoidance||0)*.12,
+    avoid:(p.avoid||0)+(h.avoidance||0)*.75,
+    rebound:(p.rebound||0)+Math.max(0,state.stats.confidence-(hist.confidenceMin??55))*.25
+  };
+}
+function currentTraits(){
+  const scores=traitScores();
+  return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([key,score])=>({key,score,def:TRAIT_DEFS[key]}));
+}
+function trackTraitsFromEffect(e,before){
+  const st=e.stats||{},hd=e.hidden||{};
+  if((hd.selfControl||0)>0||(st.self||0)>1)addTraitPoint("stable",.7);
+  if((st.social||0)>1||(hd.qingTrust||0)>0||(hd.zheTrust||0)>0||(hd.friendTrust||0)>0)addTraitPoint("relationship",.8);
+  if((hd.avoidance||0)>0)addTraitPoint("avoid",1.0);
+  if((e.stress||0)>2||(st.mood||0)<-2||(st.confidence||0)<-3)addTraitPoint("anxious",.7);
+  if(e.mastery||(st.study||0)>1)addTraitPoint("grind",.45);
+  const riskReduced=["fakeSign","hideScore","memeRisk","cheatRisk","answerRisk","jokeRisk","loanRisk"].some(k=>(hd[k]||0)<0);
+  if(riskReduced||(st.self||0)>=3)addTraitPoint("face",.75);
+  if((st.confidence||0)>0)addTraitPoint("rebound",.7);
+  state.history=state.history||{confidenceMin:55};
+  state.history.confidenceMin=Math.min(state.history.confidenceMin??55,state.stats.confidence);
+}
+
+const REL_NAMES={qing:"小晴",zhe:"阿哲",jiahao:"家豪",mom:"媽媽"};
+
+function blankRelation(person){
+  return {
+    affinity:person==="mom"?1:0,
+    interactions:0,shared:0,crises:0,repairs:0,
+    moments:[],tr
+
+===== #16 AFTERMATH @ 1590561 =====
+():["故事剛開始。"]).map(t=>`<div>• ${t}</div>`).join("");
+}
+function currentEvent(){const weekEvents=EVENTS.filter(ev=>ev.week===state.week);return weekEvents[state.idx]||null;}
+function dynamicText(ev){
+  if(ev.dynamic==="storeMoney") return `週五放學前，群組開始約週末出去。
+
+六個人很快都說「+1」。阿哲直接傳：「你一定會來吧？」
+
+你也想去。只是你看了一眼錢包：現在還有 ${state.money} 元，而這週還沒有結束。`;
+  if(ev.dynamic==="grouping") return `「四個人一組，下週上台。」
+
+教室立刻開始搬椅子。阿哲朝你招手：「我們這邊還差一個！」
+家豪也還沒有組。${relationStage("qing").n>=1?"\n小晴抬頭看了你一眼，好像也在等你決定。":""}
+
+分組看起來像在選朋友，但一週後還要一起把東西做完。`;
+  if(ev.dynamic==="night"){let line="還有好多。"; if((state.hidden.mathPrep||0)>=5 && state.stress<55) line="還有一些沒看完，但你知道自己不是完全沒準備。"; else if(state.stress>=55) line="每翻一頁，都覺得還有另一頁更重要。"; else if((state.hidden.avoidance||0)>=5) line="你開始想到前幾天那些『明天再說』。"; return `${line}
+
+時間：23:48。群組裡還有人傳「我社會還沒看完」。
+明天早上，就是第一次段考。`; }
+  return ev.text;
+}
+
+function setEventSceneMode(mode="off"){
+  const layout=document.getElementById("gameLayout");
+  const dialogue=document.getElementById("dialogue");
+  const intro=document.getElementById("eventIntroOverlay");
+  const data=document.getElementById("eventDataBar");
+  const topbar=document.querySelector("#game .topbar");
+
+  layout?.classList.remove("eventSceneMode","riskSceneMode");
+  dialogue?.classList.remove("eventDialogueMode","riskDialogueMode");
+  intro?.classList.remove("show");
+  data?.classList.remove("show");
+  topbar?.classList.remove("cinematicHidden");
+
+  if(mode==="intro"){
+    layout?.classList.add("eventSceneMode");
+    dialogue?.classList.add("cinematicHidden");
+    intro?.classList.add("show");
+    data?.classList.add("show");
+    topbar?.classList.remove("cinematicHidden");
+  }else if(mode==="play"){
+    layout?.classList.add("eventSceneMode");
+    dialogue?.classList.remove("cinematicHidden");
+    dialogue?.classList.add("eventDialogueMode");
+    data?.classList.add("show");
+  }else if(mode==="risk"){
+    layout?.classList.add("riskSceneMode");
+    dialogue?.classList.remove("cinematicHidden");
+    dialogue?.classList.add("riskDialogueMode");
+    data?.classList.add("show");
+  }else{
+    dialogue?.classList.remove("cinematicHidden");
+  }
+}
+function eventKindLabel(ev){
+  if(ev?.cinematic)return "CG MOMENT｜關鍵場景";
+  if(ev?.isAftermath)return "AFTERMATH｜後續影響";
+  if(ev?.isConsequence)return "CONSEQUENCE｜後果事件";
+  if(ev?.isHealth)return "HEALTH｜健康事件";
+  if(ev?.relationMoment||ev?.relationMoments||ev?.crisisCg)return "RELATION｜關係事件";
+  if(ev?.isExtra)return "DAILY｜生活事件";
+  return "STORY｜主線事件";
+}
+function relevantEventPerson(ev){
+  const map={"小晴":"qing","阿哲":"zhe","家豪":"jiahao","媽媽":"mom","家人":"mom"};
+  if(map[ev?.speaker])return map[ev.speaker];
+  const impacts=(ev?.choices||[]).flatMap(c=>Object.keys(c.relationImpact||{}));
+  return impacts.length?impacts[0]:null;
+}
+function renderEventDataBar(){
+  const el=document.getElementById("eventDataBar");if(!el)return;
+  const subjectChips=Object.entries(state.mastery).map(([k,v])=>
+    `<span class="eventDataChip">${SUBJECT_NAMES[k]} <b>${round1(v)}</b></span>`
+  ).join("");
+  const life=[
+    ["💰",moneyLabel()],
+    ["⚡",Math.round(state.energy)],
+    ["🥱",Math.round(state.fatigue)],
+    ["😵",Math.round(state.stress)],
+    ["❤️",Math.round(state.stats.mood)],
+    ["💪",Math.round(state.stats.confidence)]
+  ].map(([n,v])=>`<span class="eventDataChip">${n} <b>${v}</b></span>`).join("");
+  const p=relevantEventPerson(activeEvent);
+  const rel=p?`<span class="eventDataChip relation">🤝 ${REL_NAMES[p]} <b>${relationStage(p).name}</b></span>`:"";
+  const discipline=(state.discipline?.warning||0)+(state.discipline?.minorDemerit||0)>0
+    ?`<span class="eventDataChip">📋 <b>警告 ${state.discipline?.warning||0}／小過 ${state.discipline?.minorDemerit||0}</b></span>`:"";
+  el.innerHTML=
+    `<div class="eventDataGroup subjects">${subjectChips}</div>`+
+    `<div class="eventDataGroup status">${life}${rel}${discipline}</div>`;
+}
+function showEventIntro(){
+  renderEventDataBar();
+  setEventSceneMode("intro");
+  const kind=document.getElementById("eventIntroKind");
+  const title=document.getElementById("eventIntroTitle");
+  const isMain=activeEvent&&Number.isFinite(activeEvent.week)&&!activeEvent.isExtra&&!activeEvent.isAftermath&&!activeEvent.isHealth&&!activeEvent.isConsequence;
+  if(kind)kind.textContent=isMain?`WEEK ${activeEvent.week}｜${WEEK_LABELS[activeEvent.week]||"主線故事"}`:eventKindLabel(activeEvent);
+  if(title)title.textContent=activeEvent?.label||"事件";
+}
+function enterCurrentEvent(){
+  if(!activeEvent)return;
+  setEventSceneMode("play");
+  renderEventDataBar();
+  document.getElementById("eventDataBar")?.classList.add("show");
+  document.querySelector("#game .topbar")?.classList.remove("cinematicHidden");
+  document.getElementById('speaker').textContent=activeEvent.speaker||"旁白";
+  document.getElementById('hint').textContent=
+    activeEvent.isAftermath?"這是前面選擇留下的後續影響。":
+    activeEvent.isHealth?"健康狀況會影響後續生活與學習。":
+    activeEvent.isConsequence?"這是前面的風險真正變成後果。":
+    activeEvent.isExtra?"這是目前生活狀態帶出的事件。":
+    "看完情境後，全班一起決定。";
+  document.getElementById('widget').innerHTML="";
+  document.getElementById('choices').innerHTML="";
+  typewrite(dynamicText(activeEvent),()=>renderChoices(activeEvent));
+}
+function visibleChoiceSnapshot(){
+  return {
+    money:state.money,energy:state.energy,fatigue:state.fatigue,stress:state.stress,
+    study:state.stats.study,social:state.stats.social,family:state.stats.family,
+    mood:state.stats.mood,self:state.stats.self,confidence:state.stats.confidence,
+    chinese:state.mastery.chinese,english:state.mastery.english,math:state.mastery.math,
+    science:state.mastery.science,socialM:state.mastery.social,
+    warning:state.discipline?.warning||0,minorDemerit:state.discipline?.minorDemerit||0
+  };
+}
+function changeNum(n){
+  const v=round1(n);
+  return `${v>0?"+":""}${v}`;
+}
+function buildChoiceChangeSummary(before,relationChanges=[],riskBefore=null,choice=null){
+  const now=visibleChoiceSnapshot();
+  const defs=[
+    ["money","💰 金錢"],["energy","⚡ 體力"],["fatigue","🥱 疲勞"],["stress","😵 壓力"],
+    ["mood","❤️ 心情"],["confidence","💪 信心"],["study","📝 學習習慣"],
+    ["social","💬 人際"],["family","🏠 家庭"],["self","🌱 自我"],
+    ["chinese","國文"],["english","英文"],["math","數學"],["science","自然"],["socialM","社會"],
+    ["warning","📋 警告"],["minorDemerit","📋 小過"]
+  ];
+  const chips=[];
+  defs.forEach(([k,label])=>{
+    const d=round1(now[k]-before[k]);
+    if(Math.abs(d)>=.1){
+      const badHigh=["fatigue","stress"
+
+===== #17 AFTERMATH @ 1592513 =====
+ematicHidden");
+    dialogue?.classList.add("riskDialogueMode");
+    data?.classList.add("show");
+  }else{
+    dialogue?.classList.remove("cinematicHidden");
+  }
+}
+function eventKindLabel(ev){
+  if(ev?.cinematic)return "CG MOMENT｜關鍵場景";
+  if(ev?.isAftermath)return "AFTERMATH｜後續影響";
+  if(ev?.isConsequence)return "CONSEQUENCE｜後果事件";
+  if(ev?.isHealth)return "HEALTH｜健康事件";
+  if(ev?.relationMoment||ev?.relationMoments||ev?.crisisCg)return "RELATION｜關係事件";
+  if(ev?.isExtra)return "DAILY｜生活事件";
+  return "STORY｜主線事件";
+}
+function relevantEventPerson(ev){
+  const map={"小晴":"qing","阿哲":"zhe","家豪":"jiahao","媽媽":"mom","家人":"mom"};
+  if(map[ev?.speaker])return map[ev.speaker];
+  const impacts=(ev?.choices||[]).flatMap(c=>Object.keys(c.relationImpact||{}));
+  return impacts.length?impacts[0]:null;
+}
+function renderEventDataBar(){
+  const el=document.getElementById("eventDataBar");if(!el)return;
+  const subjectChips=Object.entries(state.mastery).map(([k,v])=>
+    `<span class="eventDataChip">${SUBJECT_NAMES[k]} <b>${round1(v)}</b></span>`
+  ).join("");
+  const life=[
+    ["💰",moneyLabel()],
+    ["⚡",Math.round(state.energy)],
+    ["🥱",Math.round(state.fatigue)],
+    ["😵",Math.round(state.stress)],
+    ["❤️",Math.round(state.stats.mood)],
+    ["💪",Math.round(state.stats.confidence)]
+  ].map(([n,v])=>`<span class="eventDataChip">${n} <b>${v}</b></span>`).join("");
+  const p=relevantEventPerson(activeEvent);
+  const rel=p?`<span class="eventDataChip relation">🤝 ${REL_NAMES[p]} <b>${relationStage(p).name}</b></span>`:"";
+  const discipline=(state.discipline?.warning||0)+(state.discipline?.minorDemerit||0)>0
+    ?`<span class="eventDataChip">📋 <b>警告 ${state.discipline?.warning||0}／小過 ${state.discipline?.minorDemerit||0}</b></span>`:"";
+  el.innerHTML=
+    `<div class="eventDataGroup subjects">${subjectChips}</div>`+
+    `<div class="eventDataGroup status">${life}${rel}${discipline}</div>`;
+}
+function showEventIntro(){
+  renderEventDataBar();
+  setEventSceneMode("intro");
+  const kind=document.getElementById("eventIntroKind");
+  const title=document.getElementById("eventIntroTitle");
+  const isMain=activeEvent&&Number.isFinite(activeEvent.week)&&!activeEvent.isExtra&&!activeEvent.isAftermath&&!activeEvent.isHealth&&!activeEvent.isConsequence;
+  if(kind)kind.textContent=isMain?`WEEK ${activeEvent.week}｜${WEEK_LABELS[activeEvent.week]||"主線故事"}`:eventKindLabel(activeEvent);
+  if(title)title.textContent=activeEvent?.label||"事件";
+}
+function enterCurrentEvent(){
+  if(!activeEvent)return;
+  setEventSceneMode("play");
+  renderEventDataBar();
+  document.getElementById("eventDataBar")?.classList.add("show");
+  document.querySelector("#game .topbar")?.classList.remove("cinematicHidden");
+  document.getElementById('speaker').textContent=activeEvent.speaker||"旁白";
+  document.getElementById('hint').textContent=
+    activeEvent.isAftermath?"這是前面選擇留下的後續影響。":
+    activeEvent.isHealth?"健康狀況會影響後續生活與學習。":
+    activeEvent.isConsequence?"這是前面的風險真正變成後果。":
+    activeEvent.isExtra?"這是目前生活狀態帶出的事件。":
+    "看完情境後，全班一起決定。";
+  document.getElementById('widget').innerHTML="";
+  document.getElementById('choices').innerHTML="";
+  typewrite(dynamicText(activeEvent),()=>renderChoices(activeEvent));
+}
+function visibleChoiceSnapshot(){
+  return {
+    money:state.money,energy:state.energy,fatigue:state.fatigue,stress:state.stress,
+    study:state.stats.study,social:state.stats.social,family:state.stats.family,
+    mood:state.stats.mood,self:state.stats.self,confidence:state.stats.confidence,
+    chinese:state.mastery.chinese,english:state.mastery.english,math:state.mastery.math,
+    science:state.mastery.science,socialM:state.mastery.social,
+    warning:state.discipline?.warning||0,minorDemerit:state.discipline?.minorDemerit||0
+  };
+}
+function changeNum(n){
+  const v=round1(n);
+  return `${v>0?"+":""}${v}`;
+}
+function buildChoiceChangeSummary(before,relationChanges=[],riskBefore=null,choice=null){
+  const now=visibleChoiceSnapshot();
+  const defs=[
+    ["money","💰 金錢"],["energy","⚡ 體力"],["fatigue","🥱 疲勞"],["stress","😵 壓力"],
+    ["mood","❤️ 心情"],["confidence","💪 信心"],["study","📝 學習習慣"],
+    ["social","💬 人際"],["family","🏠 家庭"],["self","🌱 自我"],
+    ["chinese","國文"],["english","英文"],["math","數學"],["science","自然"],["socialM","社會"],
+    ["warning","📋 警告"],["minorDemerit","📋 小過"]
+  ];
+  const chips=[];
+  defs.forEach(([k,label])=>{
+    const d=round1(now[k]-before[k]);
+    if(Math.abs(d)>=.1){
+      const badHigh=["fatigue","stress","warning","minorDemerit"].includes(k);
+      const cls=(badHigh?(d>0?"down":"up"):(d>0?"up":"down"));
+      chips.push(`<span class="changeChip ${cls}">${label} ${changeNum(d)}</span>`);
+    }
+  });
+  relationChanges.filter(x=>Math.abs(x.delta)>=.05).forEach(x=>{
+    chips.push(`<span class="changeChip ${x.delta>0?"up":"down"}">🤝 ${REL_NAMES[x.person]} ${x.delta>0?"靠近":"距離"} ${changeNum(x.delta)}</span>`);
+  });
+  if(riskBefore){
+    const after=riskSnapshot();
+    const raised=Object.keys(after).some(k=>(after[k]||0)>(riskBefore[k]||0));
+    if(raised)chips.push(`<span class="changeChip warn">⚠️ 留下後續風險</span>`);
+  }
+  if(choice?.aftermath)chips.push(`<span class="changeChip warn">↪ 後續會在之後出現</span>`);
+  if(!chips.length)chips.push(`<span class="changeChip neutral">這次沒有立即可見的數值變化，影響可能在後續才出現。</span>`);
+  return `<div class="changeSummary">${chips.slice(0,10).join("")}</div>`;
+}
+function setVisual(ev){
+  document.getElementById('visual').style.backgroundImage=`url("${A[ev.bg||'bg_classroom']}")`;
+  const tag=document.getElementById('tag');
+  tag.textContent=ev.label;
+  tag.className='tag'+(ev.isHealth?' consequence':ev.isConsequence?' consequence':ev.isExtra?' random':'');
+  if(ev.sprite){document.getElementById('spriteImg').src=A[ev.sprite]; document.getElementById('spriteWrap').style.display='block';} else document.getElementById('spriteWrap').style.display='none';
+  if(ev.unlock) unlock(ev.unlock);
+}
+function renderWidget(ev){
+  const box=document.getElementById('widget'); box.innerHTML="";
+  if(ev.widget==="examScope"){
+    const rows=[["國文",7],["英文",5],["數學",9],["自然",6],["社會",8]];
+    box.innerHTML=`<div class="scopeBox"><div class="scopeCap">長條代表這次段考各科要準備的內容多寡／負擔，越長表示範圍越多，不是分數。</div>${rows.map(([n,v])=>`<div class="scopeRow"><div>${n}</div><div class="scopeBar"><div class="scopeFill" style="width:${v*10}%"></div></div><div>${v}/10</div></div>`).join('')}</div>`;
+  }
+}
+function renderChoices(ev){
+  renderWidget(ev);
+
+
+===== #18 AFTERMATH @ 1595400 =====
+nt.isHealth?"健康狀況會影響後續生活與學習。":
+    activeEvent.isConsequence?"這是前面的風險真正變成後果。":
+    activeEvent.isExtra?"這是目前生活狀態帶出的事件。":
+    "看完情境後，全班一起決定。";
+  document.getElementById('widget').innerHTML="";
+  document.getElementById('choices').innerHTML="";
+  typewrite(dynamicText(activeEvent),()=>renderChoices(activeEvent));
+}
+function visibleChoiceSnapshot(){
+  return {
+    money:state.money,energy:state.energy,fatigue:state.fatigue,stress:state.stress,
+    study:state.stats.study,social:state.stats.social,family:state.stats.family,
+    mood:state.stats.mood,self:state.stats.self,confidence:state.stats.confidence,
+    chinese:state.mastery.chinese,english:state.mastery.english,math:state.mastery.math,
+    science:state.mastery.science,socialM:state.mastery.social,
+    warning:state.discipline?.warning||0,minorDemerit:state.discipline?.minorDemerit||0
+  };
+}
+function changeNum(n){
+  const v=round1(n);
+  return `${v>0?"+":""}${v}`;
+}
+function buildChoiceChangeSummary(before,relationChanges=[],riskBefore=null,choice=null){
+  const now=visibleChoiceSnapshot();
+  const defs=[
+    ["money","💰 金錢"],["energy","⚡ 體力"],["fatigue","🥱 疲勞"],["stress","😵 壓力"],
+    ["mood","❤️ 心情"],["confidence","💪 信心"],["study","📝 學習習慣"],
+    ["social","💬 人際"],["family","🏠 家庭"],["self","🌱 自我"],
+    ["chinese","國文"],["english","英文"],["math","數學"],["science","自然"],["socialM","社會"],
+    ["warning","📋 警告"],["minorDemerit","📋 小過"]
+  ];
+  const chips=[];
+  defs.forEach(([k,label])=>{
+    const d=round1(now[k]-before[k]);
+    if(Math.abs(d)>=.1){
+      const badHigh=["fatigue","stress","warning","minorDemerit"].includes(k);
+      const cls=(badHigh?(d>0?"down":"up"):(d>0?"up":"down"));
+      chips.push(`<span class="changeChip ${cls}">${label} ${changeNum(d)}</span>`);
+    }
+  });
+  relationChanges.filter(x=>Math.abs(x.delta)>=.05).forEach(x=>{
+    chips.push(`<span class="changeChip ${x.delta>0?"up":"down"}">🤝 ${REL_NAMES[x.person]} ${x.delta>0?"靠近":"距離"} ${changeNum(x.delta)}</span>`);
+  });
+  if(riskBefore){
+    const after=riskSnapshot();
+    const raised=Object.keys(after).some(k=>(after[k]||0)>(riskBefore[k]||0));
+    if(raised)chips.push(`<span class="changeChip warn">⚠️ 留下後續風險</span>`);
+  }
+  if(choice?.aftermath)chips.push(`<span class="changeChip warn">↪ 後續會在之後出現</span>`);
+  if(!chips.length)chips.push(`<span class="changeChip neutral">這次沒有立即可見的數值變化，影響可能在後續才出現。</span>`);
+  return `<div class="changeSummary">${chips.slice(0,10).join("")}</div>`;
+}
+function setVisual(ev){
+  document.getElementById('visual').style.backgroundImage=`url("${A[ev.bg||'bg_classroom']}")`;
+  const tag=document.getElementById('tag');
+  tag.textContent=ev.label;
+  tag.className='tag'+(ev.isHealth?' consequence':ev.isConsequence?' consequence':ev.isExtra?' random':'');
+  if(ev.sprite){document.getElementById('spriteImg').src=A[ev.sprite]; document.getElementById('spriteWrap').style.display='block';} else document.getElementById('spriteWrap').style.display='none';
+  if(ev.unlock) unlock(ev.unlock);
+}
+function renderWidget(ev){
+  const box=document.getElementById('widget'); box.innerHTML="";
+  if(ev.widget==="examScope"){
+    const rows=[["國文",7],["英文",5],["數學",9],["自然",6],["社會",8]];
+    box.innerHTML=`<div class="scopeBox"><div class="scopeCap">長條代表這次段考各科要準備的內容多寡／負擔，越長表示範圍越多，不是分數。</div>${rows.map(([n,v])=>`<div class="scopeRow"><div>${n}</div><div class="scopeBar"><div class="scopeFill" style="width:${v*10}%"></div></div><div>${v}/10</div></div>`).join('')}</div>`;
+  }
+}
+function renderChoices(ev){
+  renderWidget(ev);
+  const remaining=Math.max(0,(state.basicDaysPerWeek||7)-(state.basicDaysPaid||0));
+  const futureBasic=remaining*(state.dailyBasicCost||35);
+  document.getElementById('choices').innerHTML=ev.choices.map((c,i)=>{
+    const spend=Math.max(0,-(c.effect?.money||0));
+    const insufficient=spend>0&&state.money<spend;
+    const eatsBasics=spend>0&&!insufficient&&(state.money-spend)<futureBasic;
+    let note=c.cost||"";
+    if(insufficient)note=`💰 錢不夠（需要 ${spend} 元，目前 ${Math.round(state.money)} 元）`;
+    else if(eatsBasics)note=`${note}${note?"｜":""}⚠️ 付得起，但會吃到後面基本生活費`;
+    return `<button class="choice" ${insufficient?'disabled style="opacity:.48;cursor:not-allowed"':''} onclick="${insufficient?'':`chooseOption(${i})`}"><div><span class="letter">${c.letter}</span>${c.text}<span class="cost">${note}</span></div><span class="adopt">${insufficient?'無法選':'採用 '+c.letter}</span></button>`;
+  }).join('');
+}
+let activeEventAbsorb=100;
+
+function showEvent(ev=null){
+  setChapterCGIntroMode(false);
+  setEventSceneMode("off");
+  document.getElementById('dialogue')?.classList.remove('chapterReviewMode');
+  document.getElementById('gameLayout')?.classList.remove('chapterOverlayMode');
+  renderSide();
+  if(state.finished)return showExam();
+  activeEvent=ev||currentEvent();
+  if(!activeEvent)return finishWeek();
+  activeEventAbsorb=learningAbsorption();
+  document.getElementById('speaker').textContent="";
+  document.getElementById('story').textContent="";
+  document.getElementById('hint').textContent="";
+  document.getElementById('widget').innerHTML="";
+  document.getElementById('choices').innerHTML="";
+  setVisual(activeEvent);
+  showEventIntro();
+  saveLocal(false);
+}
+function isSchoolEvent(ev){
+  return ev&&!ev.isHealth&&!ev.isConsequence&&(ev.bg==="bg_classroom"||ev.speaker==="老師");
+}
+function riskBeforeChoice(){return riskSnapshot();}
+function completeDayForEvent(ev){
+  if(ev.isConsequence)return;
+  state.daySerial=(state.daySerial||0)+1;
+  chargeDailyBasicExpense();
+  if(isSchoolEvent(ev)){
+    state.weekAbsorbSamples=state.weekAbsorbSamples||[];
+    state.weekAbsorbSamples.push(activeEventAbsorb);
+  }
+  if(state.scheduleDone&&!ev.isHealth)executeNextPlanUnit();
+}
+function chooseOption(i){
+  const c=activeEvent.choices[i];
+  const before=riskBeforeChoice();
+  const beforeVisible=visibleChoiceSnapshot();
+  const beforeRel=relationSnapshot();
+  applyEffect(c.effect||{});
+  const relationChanges=processRelationshipChoice(activeEvent,c);
+  notifyRelationshipChanges(beforeRel,relationChanges);
+  const visibleSummary=buildChoiceChangeSummary(beforeVisible,relationChanges,before,c);
+  if(activeEvent?.isConsequence&&((c.effect?.stats?.self||0)>=3))unlock("cg_trait_face");
+  addLog(c.log||"做了一個選擇");
+
+  if(activeEvent.isConsequence){
+    state.pendingConsequenceId=null;
+    if(c.aftermath)queueAftermath(c.aftermath);
+  }else if(activeEvent.isAftermath){
+    // 
+
+===== #19 isConsequence @ 1598449 =====
+widget'); box.innerHTML="";
+  if(ev.widget==="examScope"){
+    const rows=[["國文",7],["英文",5],["數學",9],["自然",6],["社會",8]];
+    box.innerHTML=`<div class="scopeBox"><div class="scopeCap">長條代表這次段考各科要準備的內容多寡／負擔，越長表示範圍越多，不是分數。</div>${rows.map(([n,v])=>`<div class="scopeRow"><div>${n}</div><div class="scopeBar"><div class="scopeFill" style="width:${v*10}%"></div></div><div>${v}/10</div></div>`).join('')}</div>`;
+  }
+}
+function renderChoices(ev){
+  renderWidget(ev);
+  const remaining=Math.max(0,(state.basicDaysPerWeek||7)-(state.basicDaysPaid||0));
+  const futureBasic=remaining*(state.dailyBasicCost||35);
+  document.getElementById('choices').innerHTML=ev.choices.map((c,i)=>{
+    const spend=Math.max(0,-(c.effect?.money||0));
+    const insufficient=spend>0&&state.money<spend;
+    const eatsBasics=spend>0&&!insufficient&&(state.money-spend)<futureBasic;
+    let note=c.cost||"";
+    if(insufficient)note=`💰 錢不夠（需要 ${spend} 元，目前 ${Math.round(state.money)} 元）`;
+    else if(eatsBasics)note=`${note}${note?"｜":""}⚠️ 付得起，但會吃到後面基本生活費`;
+    return `<button class="choice" ${insufficient?'disabled style="opacity:.48;cursor:not-allowed"':''} onclick="${insufficient?'':`chooseOption(${i})`}"><div><span class="letter">${c.letter}</span>${c.text}<span class="cost">${note}</span></div><span class="adopt">${insufficient?'無法選':'採用 '+c.letter}</span></button>`;
+  }).join('');
+}
+let activeEventAbsorb=100;
+
+function showEvent(ev=null){
+  setChapterCGIntroMode(false);
+  setEventSceneMode("off");
+  document.getElementById('dialogue')?.classList.remove('chapterReviewMode');
+  document.getElementById('gameLayout')?.classList.remove('chapterOverlayMode');
+  renderSide();
+  if(state.finished)return showExam();
+  activeEvent=ev||currentEvent();
+  if(!activeEvent)return finishWeek();
+  activeEventAbsorb=learningAbsorption();
+  document.getElementById('speaker').textContent="";
+  document.getElementById('story').textContent="";
+  document.getElementById('hint').textContent="";
+  document.getElementById('widget').innerHTML="";
+  document.getElementById('choices').innerHTML="";
+  setVisual(activeEvent);
+  showEventIntro();
+  saveLocal(false);
+}
+function isSchoolEvent(ev){
+  return ev&&!ev.isHealth&&!ev.isConsequence&&(ev.bg==="bg_classroom"||ev.speaker==="老師");
+}
+function riskBeforeChoice(){return riskSnapshot();}
+function completeDayForEvent(ev){
+  if(ev.isConsequence)return;
+  state.daySerial=(state.daySerial||0)+1;
+  chargeDailyBasicExpense();
+  if(isSchoolEvent(ev)){
+    state.weekAbsorbSamples=state.weekAbsorbSamples||[];
+    state.weekAbsorbSamples.push(activeEventAbsorb);
+  }
+  if(state.scheduleDone&&!ev.isHealth)executeNextPlanUnit();
+}
+function chooseOption(i){
+  const c=activeEvent.choices[i];
+  const before=riskBeforeChoice();
+  const beforeVisible=visibleChoiceSnapshot();
+  const beforeRel=relationSnapshot();
+  applyEffect(c.effect||{});
+  const relationChanges=processRelationshipChoice(activeEvent,c);
+  notifyRelationshipChanges(beforeRel,relationChanges);
+  const visibleSummary=buildChoiceChangeSummary(beforeVisible,relationChanges,before,c);
+  if(activeEvent?.isConsequence&&((c.effect?.stats?.self||0)>=3))unlock("cg_trait_face");
+  addLog(c.log||"做了一個選擇");
+
+  if(activeEvent.isConsequence){
+    state.pendingConsequenceId=null;
+    if(c.aftermath)queueAftermath(c.aftermath);
+  }else if(activeEvent.isAftermath){
+    // 後續影響事件只負責演出，不額外推進主線格數。
+  }else if(activeEvent.isHealth){
+    state.pendingHealthEvent=false;
+  }else if(activeEvent.isExtra){
+    state.extraSeen=(state.extraSeen||0)+1;
+    if(activeEvent.unique){
+      state.relationshipEventsSeen=state.relationshipEventsSeen||{};
+      state.relationshipEventsSeen[activeEvent.id]=true;
+    }
+    if(state.pendingExtraId&&!state.usedExtras.includes(state.pendingExtraId))state.usedExtras.push(state.pendingExtraId);
+    state.pendingExtraId=null;
+  }else{
+    state.idx+=1;
+  }
+
+  if(!activeEvent.isAftermath)completeDayForEvent(activeEvent);
+  markRaisedRisks(before);
+
+  if(!activeEvent.isConsequence&&!activeEvent.isHealth&&!activeEvent.isAftermath){
+    state.pendingRiskContext=eventContexts(activeEvent);
+  }
+
+  if(!activeEvent.isHealth&&!activeEvent.isAftermath&&state.sickTurns>0){
+    state.sickTurns=Math.max(0,state.sickTurns-1);
+    if(state.sickTurns===0)state.healthCooldown=2;
+  }else if(state.healthCooldown>0&&!activeEvent.isHealth&&!activeEvent.isAftermath){
+    state.healthCooldown=Math.max(0,state.healthCooldown-1);
+  }
+  checkHealthRisk();
+
+  renderSide();
+  renderEventDataBar();
+  document.getElementById('speaker').textContent=activeEvent.isAftermath?"後續影響":"結果";
+  document.getElementById('hint').textContent=activeEvent.isAftermath?"後果不會立刻消失，這些影響會繼續留在生活裡。":activeEvent.isHealth?"身體狀態會繼續影響後面的安排。":activeEvent.isConsequence?"處理當下只是第一步，後續影響仍可能繼續。":"下面先顯示這次選擇的立即變化；有些影響會延後才出現。";
+  document.getElementById('widget').innerHTML=visibleSummary;
+  document.getElementById('choices').innerHTML="";
+  typewrite(c.result,()=>{document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先玩到這裡</button><button class="nextBtn" onclick="continueAfterChoice()">如果還有時間，繼續</button></div>`;});
+  saveLocal(false);
+}
+function showDicePrompt(){
+  const pd=state.pendingDice;if(!pd)return resumeFlow();
+  const rule=DICE_RULES.find(r=>r.id===pd.ruleId);if(!rule){state.pendingDice=null;return resumeFlow();}
+  activeEvent={label:`🎲 風險判定｜${rule.name}`,speaker:"風險骰",bg:pd.bg||"bg_classroom",isDice:true};
+  setVisual(activeEvent);
+  setEventSceneMode("risk");
+  renderEventDataBar();
+
+  document.getElementById('speaker').textContent="🎲 風險判定";
+  document.getElementById('hint').textContent="危險面越多，代表前面的選擇越容易在這次相關情境中變成後果。";
+  document.getElementById('subjectStrip').innerHTML="";
+  document.getElementById('widget').innerHTML=`<div class="riskFaces">${[1,2,3,4,5,6].map(n=>`<span class="riskFace ${n<=pd.faces?'hot':''}">${n}</span>`).join("")}</div>`;
+  document.getElementById('choices').innerHTML="";
+  typewrite(`前面的選擇留下了「${rule.name}」風險。\n目前危險面：${pd.faces} / 6。\n這次剛好遇到相關情境。`,()=>{
+    document.getElementById('choices').innerHTML=`<button class="choice" onclick="rollRiskDice()"><div><span class="letter">🎲</span>擲骰子<span class="cost">1～${pd.faces}：出現後果；${pd.faces+1}～6：這次沒事</span></div><span class="adopt">擲骰</span></button>`;
+  });
+  saveLocal(false);
+}
+function beginDice(rule){
+  state.pendingDice={ruleId:rule.id,faces:riskFaces(rule),bg:ru
+
+===== #20 AFTERMATH @ 1600136 =====
+urn showExam();
+  activeEvent=ev||currentEvent();
+  if(!activeEvent)return finishWeek();
+  activeEventAbsorb=learningAbsorption();
+  document.getElementById('speaker').textContent="";
+  document.getElementById('story').textContent="";
+  document.getElementById('hint').textContent="";
+  document.getElementById('widget').innerHTML="";
+  document.getElementById('choices').innerHTML="";
+  setVisual(activeEvent);
+  showEventIntro();
+  saveLocal(false);
+}
+function isSchoolEvent(ev){
+  return ev&&!ev.isHealth&&!ev.isConsequence&&(ev.bg==="bg_classroom"||ev.speaker==="老師");
+}
+function riskBeforeChoice(){return riskSnapshot();}
+function completeDayForEvent(ev){
+  if(ev.isConsequence)return;
+  state.daySerial=(state.daySerial||0)+1;
+  chargeDailyBasicExpense();
+  if(isSchoolEvent(ev)){
+    state.weekAbsorbSamples=state.weekAbsorbSamples||[];
+    state.weekAbsorbSamples.push(activeEventAbsorb);
+  }
+  if(state.scheduleDone&&!ev.isHealth)executeNextPlanUnit();
+}
+function chooseOption(i){
+  const c=activeEvent.choices[i];
+  const before=riskBeforeChoice();
+  const beforeVisible=visibleChoiceSnapshot();
+  const beforeRel=relationSnapshot();
+  applyEffect(c.effect||{});
+  const relationChanges=processRelationshipChoice(activeEvent,c);
+  notifyRelationshipChanges(beforeRel,relationChanges);
+  const visibleSummary=buildChoiceChangeSummary(beforeVisible,relationChanges,before,c);
+  if(activeEvent?.isConsequence&&((c.effect?.stats?.self||0)>=3))unlock("cg_trait_face");
+  addLog(c.log||"做了一個選擇");
+
+  if(activeEvent.isConsequence){
+    state.pendingConsequenceId=null;
+    if(c.aftermath)queueAftermath(c.aftermath);
+  }else if(activeEvent.isAftermath){
+    // 後續影響事件只負責演出，不額外推進主線格數。
+  }else if(activeEvent.isHealth){
+    state.pendingHealthEvent=false;
+  }else if(activeEvent.isExtra){
+    state.extraSeen=(state.extraSeen||0)+1;
+    if(activeEvent.unique){
+      state.relationshipEventsSeen=state.relationshipEventsSeen||{};
+      state.relationshipEventsSeen[activeEvent.id]=true;
+    }
+    if(state.pendingExtraId&&!state.usedExtras.includes(state.pendingExtraId))state.usedExtras.push(state.pendingExtraId);
+    state.pendingExtraId=null;
+  }else{
+    state.idx+=1;
+  }
+
+  if(!activeEvent.isAftermath)completeDayForEvent(activeEvent);
+  markRaisedRisks(before);
+
+  if(!activeEvent.isConsequence&&!activeEvent.isHealth&&!activeEvent.isAftermath){
+    state.pendingRiskContext=eventContexts(activeEvent);
+  }
+
+  if(!activeEvent.isHealth&&!activeEvent.isAftermath&&state.sickTurns>0){
+    state.sickTurns=Math.max(0,state.sickTurns-1);
+    if(state.sickTurns===0)state.healthCooldown=2;
+  }else if(state.healthCooldown>0&&!activeEvent.isHealth&&!activeEvent.isAftermath){
+    state.healthCooldown=Math.max(0,state.healthCooldown-1);
+  }
+  checkHealthRisk();
+
+  renderSide();
+  renderEventDataBar();
+  document.getElementById('speaker').textContent=activeEvent.isAftermath?"後續影響":"結果";
+  document.getElementById('hint').textContent=activeEvent.isAftermath?"後果不會立刻消失，這些影響會繼續留在生活裡。":activeEvent.isHealth?"身體狀態會繼續影響後面的安排。":activeEvent.isConsequence?"處理當下只是第一步，後續影響仍可能繼續。":"下面先顯示這次選擇的立即變化；有些影響會延後才出現。";
+  document.getElementById('widget').innerHTML=visibleSummary;
+  document.getElementById('choices').innerHTML="";
+  typewrite(c.result,()=>{document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先玩到這裡</button><button class="nextBtn" onclick="continueAfterChoice()">如果還有時間，繼續</button></div>`;});
+  saveLocal(false);
+}
+function showDicePrompt(){
+  const pd=state.pendingDice;if(!pd)return resumeFlow();
+  const rule=DICE_RULES.find(r=>r.id===pd.ruleId);if(!rule){state.pendingDice=null;return resumeFlow();}
+  activeEvent={label:`🎲 風險判定｜${rule.name}`,speaker:"風險骰",bg:pd.bg||"bg_classroom",isDice:true};
+  setVisual(activeEvent);
+  setEventSceneMode("risk");
+  renderEventDataBar();
+
+  document.getElementById('speaker').textContent="🎲 風險判定";
+  document.getElementById('hint').textContent="危險面越多，代表前面的選擇越容易在這次相關情境中變成後果。";
+  document.getElementById('subjectStrip').innerHTML="";
+  document.getElementById('widget').innerHTML=`<div class="riskFaces">${[1,2,3,4,5,6].map(n=>`<span class="riskFace ${n<=pd.faces?'hot':''}">${n}</span>`).join("")}</div>`;
+  document.getElementById('choices').innerHTML="";
+  typewrite(`前面的選擇留下了「${rule.name}」風險。\n目前危險面：${pd.faces} / 6。\n這次剛好遇到相關情境。`,()=>{
+    document.getElementById('choices').innerHTML=`<button class="choice" onclick="rollRiskDice()"><div><span class="letter">🎲</span>擲骰子<span class="cost">1～${pd.faces}：出現後果；${pd.faces+1}～6：這次沒事</span></div><span class="adopt">擲骰</span></button>`;
+  });
+  saveLocal(false);
+}
+function beginDice(rule){
+  state.pendingDice={ruleId:rule.id,faces:riskFaces(rule),bg:rule.contexts.includes("family")?"bg_home":"bg_classroom"};
+  state.pendingRiskContext=null;
+  showDicePrompt();
+  return true;
+}
+function rollRiskDice(){
+  const pd=state.pendingDice;if(!pd)return;
+  const rule=DICE_RULES.find(r=>r.id===pd.ruleId);if(!rule)return;
+  const roll=1+Math.floor(Math.random()*6);
+  const hit=roll<=pd.faces;
+  state.riskMeta=state.riskMeta||{};
+  state.riskMeta[rule.id]=state.riskMeta[rule.id]||{};
+  state.riskMeta[rule.id].lastCheckWeek=state.week;
+  setEventSceneMode("risk");
+  renderEventDataBar();
+  document.getElementById('widget').innerHTML=`<div class="diceBig">🎲 ${roll}</div>`;
+  document.getElementById('speaker').textContent=hit?"骰中了":"這次沒有骰中";
+  if(hit){
+    state.consequencesDone[rule.id]=true;
+    state.pendingConsequenceId=rule.id;
+    state.pendingDice=null;
+    document.getElementById('story').textContent=`骰到 ${roll}。目前危險面是 1～${pd.faces}。\n\n這次，前面的風險真的變成了後果。`;
+    document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先到這裡</button><button class="nextBtn" onclick="showPendingConsequence()">面對後果</button></div>`;
+  }else{
+    if(rule.safeEffect)applyEffect(rule.safeEffect);
+    if(rule.resolveOnSafe)state.consequencesDone[rule.id]=true;
+    state.pendingDice=null;
+    document.getElementById('story').textContent=`骰到 ${roll}。目前危險面是 1～${pd.faces}。\n\n${rule.safeText||"這一次沒有出事。但如果風險本身沒有被處理，未來遇到相關情境仍可能再判定。"}`;
+    document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先到這裡</button><button class="nextBtn" onclick="resumeFlow()">繼續</button></div>`;
+  }
+  renderSide();saveLocal(false);
+}
+function showPend
+
+===== #21 後果 @ 1601916 =====
+isExtra){
+    state.extraSeen=(state.extraSeen||0)+1;
+    if(activeEvent.unique){
+      state.relationshipEventsSeen=state.relationshipEventsSeen||{};
+      state.relationshipEventsSeen[activeEvent.id]=true;
+    }
+    if(state.pendingExtraId&&!state.usedExtras.includes(state.pendingExtraId))state.usedExtras.push(state.pendingExtraId);
+    state.pendingExtraId=null;
+  }else{
+    state.idx+=1;
+  }
+
+  if(!activeEvent.isAftermath)completeDayForEvent(activeEvent);
+  markRaisedRisks(before);
+
+  if(!activeEvent.isConsequence&&!activeEvent.isHealth&&!activeEvent.isAftermath){
+    state.pendingRiskContext=eventContexts(activeEvent);
+  }
+
+  if(!activeEvent.isHealth&&!activeEvent.isAftermath&&state.sickTurns>0){
+    state.sickTurns=Math.max(0,state.sickTurns-1);
+    if(state.sickTurns===0)state.healthCooldown=2;
+  }else if(state.healthCooldown>0&&!activeEvent.isHealth&&!activeEvent.isAftermath){
+    state.healthCooldown=Math.max(0,state.healthCooldown-1);
+  }
+  checkHealthRisk();
+
+  renderSide();
+  renderEventDataBar();
+  document.getElementById('speaker').textContent=activeEvent.isAftermath?"後續影響":"結果";
+  document.getElementById('hint').textContent=activeEvent.isAftermath?"後果不會立刻消失，這些影響會繼續留在生活裡。":activeEvent.isHealth?"身體狀態會繼續影響後面的安排。":activeEvent.isConsequence?"處理當下只是第一步，後續影響仍可能繼續。":"下面先顯示這次選擇的立即變化；有些影響會延後才出現。";
+  document.getElementById('widget').innerHTML=visibleSummary;
+  document.getElementById('choices').innerHTML="";
+  typewrite(c.result,()=>{document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先玩到這裡</button><button class="nextBtn" onclick="continueAfterChoice()">如果還有時間，繼續</button></div>`;});
+  saveLocal(false);
+}
+function showDicePrompt(){
+  const pd=state.pendingDice;if(!pd)return resumeFlow();
+  const rule=DICE_RULES.find(r=>r.id===pd.ruleId);if(!rule){state.pendingDice=null;return resumeFlow();}
+  activeEvent={label:`🎲 風險判定｜${rule.name}`,speaker:"風險骰",bg:pd.bg||"bg_classroom",isDice:true};
+  setVisual(activeEvent);
+  setEventSceneMode("risk");
+  renderEventDataBar();
+
+  document.getElementById('speaker').textContent="🎲 風險判定";
+  document.getElementById('hint').textContent="危險面越多，代表前面的選擇越容易在這次相關情境中變成後果。";
+  document.getElementById('subjectStrip').innerHTML="";
+  document.getElementById('widget').innerHTML=`<div class="riskFaces">${[1,2,3,4,5,6].map(n=>`<span class="riskFace ${n<=pd.faces?'hot':''}">${n}</span>`).join("")}</div>`;
+  document.getElementById('choices').innerHTML="";
+  typewrite(`前面的選擇留下了「${rule.name}」風險。\n目前危險面：${pd.faces} / 6。\n這次剛好遇到相關情境。`,()=>{
+    document.getElementById('choices').innerHTML=`<button class="choice" onclick="rollRiskDice()"><div><span class="letter">🎲</span>擲骰子<span class="cost">1～${pd.faces}：出現後果；${pd.faces+1}～6：這次沒事</span></div><span class="adopt">擲骰</span></button>`;
+  });
+  saveLocal(false);
+}
+function beginDice(rule){
+  state.pendingDice={ruleId:rule.id,faces:riskFaces(rule),bg:rule.contexts.includes("family")?"bg_home":"bg_classroom"};
+  state.pendingRiskContext=null;
+  showDicePrompt();
+  return true;
+}
+function rollRiskDice(){
+  const pd=state.pendingDice;if(!pd)return;
+  const rule=DICE_RULES.find(r=>r.id===pd.ruleId);if(!rule)return;
+  const roll=1+Math.floor(Math.random()*6);
+  const hit=roll<=pd.faces;
+  state.riskMeta=state.riskMeta||{};
+  state.riskMeta[rule.id]=state.riskMeta[rule.id]||{};
+  state.riskMeta[rule.id].lastCheckWeek=state.week;
+  setEventSceneMode("risk");
+  renderEventDataBar();
+  document.getElementById('widget').innerHTML=`<div class="diceBig">🎲 ${roll}</div>`;
+  document.getElementById('speaker').textContent=hit?"骰中了":"這次沒有骰中";
+  if(hit){
+    state.consequencesDone[rule.id]=true;
+    state.pendingConsequenceId=rule.id;
+    state.pendingDice=null;
+    document.getElementById('story').textContent=`骰到 ${roll}。目前危險面是 1～${pd.faces}。\n\n這次，前面的風險真的變成了後果。`;
+    document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先到這裡</button><button class="nextBtn" onclick="showPendingConsequence()">面對後果</button></div>`;
+  }else{
+    if(rule.safeEffect)applyEffect(rule.safeEffect);
+    if(rule.resolveOnSafe)state.consequencesDone[rule.id]=true;
+    state.pendingDice=null;
+    document.getElementById('story').textContent=`骰到 ${roll}。目前危險面是 1～${pd.faces}。\n\n${rule.safeText||"這一次沒有出事。但如果風險本身沒有被處理，未來遇到相關情境仍可能再判定。"}`;
+    document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先到這裡</button><button class="nextBtn" onclick="resumeFlow()">繼續</button></div>`;
+  }
+  renderSide();saveLocal(false);
+}
+function showPendingConsequence(){
+  if(!state.pendingConsequenceId)return resumeFlow();
+  const rule=DICE_RULES.find(r=>r.id===state.pendingConsequenceId);
+  if(!rule){state.pendingConsequenceId=null;return resumeFlow();}
+  if(rule.id==="fakeSign"){
+    state.formalConsequences=state.formalConsequences||{fakeSignDemeritApplied:false};
+    if(!state.formalConsequences.fakeSignDemeritApplied){
+      addMinorDemerit(1);
+      state.formalConsequences.fakeSignDemeritApplied=true;
+      state.stats.confidence=clamp(state.stats.confidence-4);
+      state.stats.mood=clamp(state.stats.mood-3);
+      state.stress=clamp(state.stress+5);
+      addLog("偷簽家長簽名被確認：通知導師與家長，記小過1次。");
+      toast("📋 校規處理：小過 1 次");
+      saveLocal(false);
+    }
+  }
+  showEvent(rule.consequence());
+}
+function maybeStartDice(){
+  const rule=findRiskForContext(state.pendingRiskContext||[]);
+  state.pendingRiskContext=null;
+  if(rule)return beginDice(rule);
+  return false;
+}
+function nextExtraEvent(){
+  ensureWeekSetup();
+  let base=state.pendingExtraId?extraById(state.pendingExtraId):pickExtraNow();
+  return base?{...base,isExtra:true}:null;
+}
+function continueNormalFlow(){
+  ensureWeekSetup();
+  const target=state.extraTarget||3;
+  const due=Math.min(state.idx,Math.min(3,target));
+  if((state.extraSeen||0)<due){
+    const ex=nextExtraEvent();if(ex){showEvent(ex);return;}
+  }
+  if(state.idx<3){showEvent();return;}
+  if((state.extraSeen||0)<target){
+    const ex=nextExtraEvent();
+    if(ex){showEvent(ex);return;}
+    state.extraSeen=target;
+  }
+  finishWeek();
+}
+function resumeFlow(){
+  if(state.pendingDice){showDicePrompt();return;}
+  if(state.pendingConsequenceId){showPendingConsequence();return;}
+  if(hasDueAftermath()){showQueuedAftermath();return;}
+  // 每週第一個主線事件後，先安排本週接下來的生活。
+  if(state.idx>=1&&!st
+
+===== #22 後果 @ 1603557 =====
+Choice()">如果還有時間，繼續</button></div>`;});
+  saveLocal(false);
+}
+function showDicePrompt(){
+  const pd=state.pendingDice;if(!pd)return resumeFlow();
+  const rule=DICE_RULES.find(r=>r.id===pd.ruleId);if(!rule){state.pendingDice=null;return resumeFlow();}
+  activeEvent={label:`🎲 風險判定｜${rule.name}`,speaker:"風險骰",bg:pd.bg||"bg_classroom",isDice:true};
+  setVisual(activeEvent);
+  setEventSceneMode("risk");
+  renderEventDataBar();
+
+  document.getElementById('speaker').textContent="🎲 風險判定";
+  document.getElementById('hint').textContent="危險面越多，代表前面的選擇越容易在這次相關情境中變成後果。";
+  document.getElementById('subjectStrip').innerHTML="";
+  document.getElementById('widget').innerHTML=`<div class="riskFaces">${[1,2,3,4,5,6].map(n=>`<span class="riskFace ${n<=pd.faces?'hot':''}">${n}</span>`).join("")}</div>`;
+  document.getElementById('choices').innerHTML="";
+  typewrite(`前面的選擇留下了「${rule.name}」風險。\n目前危險面：${pd.faces} / 6。\n這次剛好遇到相關情境。`,()=>{
+    document.getElementById('choices').innerHTML=`<button class="choice" onclick="rollRiskDice()"><div><span class="letter">🎲</span>擲骰子<span class="cost">1～${pd.faces}：出現後果；${pd.faces+1}～6：這次沒事</span></div><span class="adopt">擲骰</span></button>`;
+  });
+  saveLocal(false);
+}
+function beginDice(rule){
+  state.pendingDice={ruleId:rule.id,faces:riskFaces(rule),bg:rule.contexts.includes("family")?"bg_home":"bg_classroom"};
+  state.pendingRiskContext=null;
+  showDicePrompt();
+  return true;
+}
+function rollRiskDice(){
+  const pd=state.pendingDice;if(!pd)return;
+  const rule=DICE_RULES.find(r=>r.id===pd.ruleId);if(!rule)return;
+  const roll=1+Math.floor(Math.random()*6);
+  const hit=roll<=pd.faces;
+  state.riskMeta=state.riskMeta||{};
+  state.riskMeta[rule.id]=state.riskMeta[rule.id]||{};
+  state.riskMeta[rule.id].lastCheckWeek=state.week;
+  setEventSceneMode("risk");
+  renderEventDataBar();
+  document.getElementById('widget').innerHTML=`<div class="diceBig">🎲 ${roll}</div>`;
+  document.getElementById('speaker').textContent=hit?"骰中了":"這次沒有骰中";
+  if(hit){
+    state.consequencesDone[rule.id]=true;
+    state.pendingConsequenceId=rule.id;
+    state.pendingDice=null;
+    document.getElementById('story').textContent=`骰到 ${roll}。目前危險面是 1～${pd.faces}。\n\n這次，前面的風險真的變成了後果。`;
+    document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先到這裡</button><button class="nextBtn" onclick="showPendingConsequence()">面對後果</button></div>`;
+  }else{
+    if(rule.safeEffect)applyEffect(rule.safeEffect);
+    if(rule.resolveOnSafe)state.consequencesDone[rule.id]=true;
+    state.pendingDice=null;
+    document.getElementById('story').textContent=`骰到 ${roll}。目前危險面是 1～${pd.faces}。\n\n${rule.safeText||"這一次沒有出事。但如果風險本身沒有被處理，未來遇到相關情境仍可能再判定。"}`;
+    document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先到這裡</button><button class="nextBtn" onclick="resumeFlow()">繼續</button></div>`;
+  }
+  renderSide();saveLocal(false);
+}
+function showPendingConsequence(){
+  if(!state.pendingConsequenceId)return resumeFlow();
+  const rule=DICE_RULES.find(r=>r.id===state.pendingConsequenceId);
+  if(!rule){state.pendingConsequenceId=null;return resumeFlow();}
+  if(rule.id==="fakeSign"){
+    state.formalConsequences=state.formalConsequences||{fakeSignDemeritApplied:false};
+    if(!state.formalConsequences.fakeSignDemeritApplied){
+      addMinorDemerit(1);
+      state.formalConsequences.fakeSignDemeritApplied=true;
+      state.stats.confidence=clamp(state.stats.confidence-4);
+      state.stats.mood=clamp(state.stats.mood-3);
+      state.stress=clamp(state.stress+5);
+      addLog("偷簽家長簽名被確認：通知導師與家長，記小過1次。");
+      toast("📋 校規處理：小過 1 次");
+      saveLocal(false);
+    }
+  }
+  showEvent(rule.consequence());
+}
+function maybeStartDice(){
+  const rule=findRiskForContext(state.pendingRiskContext||[]);
+  state.pendingRiskContext=null;
+  if(rule)return beginDice(rule);
+  return false;
+}
+function nextExtraEvent(){
+  ensureWeekSetup();
+  let base=state.pendingExtraId?extraById(state.pendingExtraId):pickExtraNow();
+  return base?{...base,isExtra:true}:null;
+}
+function continueNormalFlow(){
+  ensureWeekSetup();
+  const target=state.extraTarget||3;
+  const due=Math.min(state.idx,Math.min(3,target));
+  if((state.extraSeen||0)<due){
+    const ex=nextExtraEvent();if(ex){showEvent(ex);return;}
+  }
+  if(state.idx<3){showEvent();return;}
+  if((state.extraSeen||0)<target){
+    const ex=nextExtraEvent();
+    if(ex){showEvent(ex);return;}
+    state.extraSeen=target;
+  }
+  finishWeek();
+}
+function resumeFlow(){
+  if(state.pendingDice){showDicePrompt();return;}
+  if(state.pendingConsequenceId){showPendingConsequence();return;}
+  if(hasDueAftermath()){showQueuedAftermath();return;}
+  // 每週第一個主線事件後，先安排本週接下來的生活。
+  if(state.idx>=1&&!state.scheduleDone){openSchedule();return;}
+  if(state.pendingHealthEvent){showEvent(makeHealthEvent());return;}
+  if(state.pendingRiskContext&&maybeStartDice())return;
+  continueNormalFlow();
+}
+function continueAfterChoice(){resumeFlow();}
+function stopToday(){
+  saveLocal(false);
+  document.getElementById('speaker').textContent="SAVE";
+  document.getElementById('story').textContent="進度已儲存。\n\n下次開啟同一個網址可以從這裡繼續；如果要換教室電腦，請先按上方「複製續玩網址」。";
+  document.getElementById('hint').textContent="下課啦。";
+  document.getElementById('widget').innerHTML="";
+  document.getElementById('choices').innerHTML=`<button class="choice" onclick="backToMenu()"><div><span class="letter">✓</span>回到主選單</div><span class="adopt">完成</span></button>`;
+}
+const WEEK_TIME_BUDGET=6;
+function timeUsed(){return schedulePick.reduce((sum,id)=>sum+(activities.find(a=>a.id===id)?.time||1),0);}
+function masteryDifficulty(sub){
+  const m=state.mastery[sub];
+  if(m<55)return 1;
+  if(m<70)return .80;
+  if(m<85)return .55;
+  return .35;
+}
+function activityPreview(a){
+  if(a.kind==="studyOne"||a.kind==="studyPair"){
+    const absorb=learningAbsorption()/100;
+    const gains=a.subjects.map(sub=>round1(a.baseGain*absorb*masteryDifficulty(sub)));
+    const names=a.subjects.map(s=>SUBJECT_NAMES[s]).join("＋");
+    const gainText=a.subjects.length===1?`約 +${gains[0]}`:`約各 +${gains.join("／+")}`;
+    return `⏱ ${a.time}格｜${names}熟練度 ${gainText}／疲勞約 +${a.fatigue}｜${familiarityName(a.id)}`;
+  }
+  if(a.id==="library")return `⏱ 2格｜集中補目前最弱科｜疲勞較低｜${familiarityName(a.id)}`;
+  if(a.id==="qing_review")return `⏱ 2格｜一起訂正弱科／關係也會慢慢累積｜${familiarityName(a.id)}`;
+  if(a.id==="zhe_move")retur
+
+===== #23 AFTERMATH @ 1606021 =====
+t(rule.safeEffect);
+    if(rule.resolveOnSafe)state.consequencesDone[rule.id]=true;
+    state.pendingDice=null;
+    document.getElementById('story').textContent=`骰到 ${roll}。目前危險面是 1～${pd.faces}。\n\n${rule.safeText||"這一次沒有出事。但如果風險本身沒有被處理，未來遇到相關情境仍可能再判定。"}`;
+    document.getElementById('choices').innerHTML=`<div class="resultBtns"><button class="stopBtn" onclick="stopToday()">今天先到這裡</button><button class="nextBtn" onclick="resumeFlow()">繼續</button></div>`;
+  }
+  renderSide();saveLocal(false);
+}
+function showPendingConsequence(){
+  if(!state.pendingConsequenceId)return resumeFlow();
+  const rule=DICE_RULES.find(r=>r.id===state.pendingConsequenceId);
+  if(!rule){state.pendingConsequenceId=null;return resumeFlow();}
+  if(rule.id==="fakeSign"){
+    state.formalConsequences=state.formalConsequences||{fakeSignDemeritApplied:false};
+    if(!state.formalConsequences.fakeSignDemeritApplied){
+      addMinorDemerit(1);
+      state.formalConsequences.fakeSignDemeritApplied=true;
+      state.stats.confidence=clamp(state.stats.confidence-4);
+      state.stats.mood=clamp(state.stats.mood-3);
+      state.stress=clamp(state.stress+5);
+      addLog("偷簽家長簽名被確認：通知導師與家長，記小過1次。");
+      toast("📋 校規處理：小過 1 次");
+      saveLocal(false);
+    }
+  }
+  showEvent(rule.consequence());
+}
+function maybeStartDice(){
+  const rule=findRiskForContext(state.pendingRiskContext||[]);
+  state.pendingRiskContext=null;
+  if(rule)return beginDice(rule);
+  return false;
+}
+function nextExtraEvent(){
+  ensureWeekSetup();
+  let base=state.pendingExtraId?extraById(state.pendingExtraId):pickExtraNow();
+  return base?{...base,isExtra:true}:null;
+}
+function continueNormalFlow(){
+  ensureWeekSetup();
+  const target=state.extraTarget||3;
+  const due=Math.min(state.idx,Math.min(3,target));
+  if((state.extraSeen||0)<due){
+    const ex=nextExtraEvent();if(ex){showEvent(ex);return;}
+  }
+  if(state.idx<3){showEvent();return;}
+  if((state.extraSeen||0)<target){
+    const ex=nextExtraEvent();
+    if(ex){showEvent(ex);return;}
+    state.extraSeen=target;
+  }
+  finishWeek();
+}
+function resumeFlow(){
+  if(state.pendingDice){showDicePrompt();return;}
+  if(state.pendingConsequenceId){showPendingConsequence();return;}
+  if(hasDueAftermath()){showQueuedAftermath();return;}
+  // 每週第一個主線事件後，先安排本週接下來的生活。
+  if(state.idx>=1&&!state.scheduleDone){openSchedule();return;}
+  if(state.pendingHealthEvent){showEvent(makeHealthEvent());return;}
+  if(state.pendingRiskContext&&maybeStartDice())return;
+  continueNormalFlow();
+}
+function continueAfterChoice(){resumeFlow();}
+function stopToday(){
+  saveLocal(false);
+  document.getElementById('speaker').textContent="SAVE";
+  document.getElementById('story').textContent="進度已儲存。\n\n下次開啟同一個網址可以從這裡繼續；如果要換教室電腦，請先按上方「複製續玩網址」。";
+  document.getElementById('hint').textContent="下課啦。";
+  document.getElementById('widget').innerHTML="";
+  document.getElementById('choices').innerHTML=`<button class="choice" onclick="backToMenu()"><div><span class="letter">✓</span>回到主選單</div><span class="adopt">完成</span></button>`;
+}
+const WEEK_TIME_BUDGET=6;
+function timeUsed(){return schedulePick.reduce((sum,id)=>sum+(activities.find(a=>a.id===id)?.time||1),0);}
+function masteryDifficulty(sub){
+  const m=state.mastery[sub];
+  if(m<55)return 1;
+  if(m<70)return .80;
+  if(m<85)return .55;
+  return .35;
+}
+function activityPreview(a){
+  if(a.kind==="studyOne"||a.kind==="studyPair"){
+    const absorb=learningAbsorption()/100;
+    const gains=a.subjects.map(sub=>round1(a.baseGain*absorb*masteryDifficulty(sub)));
+    const names=a.subjects.map(s=>SUBJECT_NAMES[s]).join("＋");
+    const gainText=a.subjects.length===1?`約 +${gains[0]}`:`約各 +${gains.join("／+")}`;
+    return `⏱ ${a.time}格｜${names}熟練度 ${gainText}／疲勞約 +${a.fatigue}｜${familiarityName(a.id)}`;
+  }
+  if(a.id==="library")return `⏱ 2格｜集中補目前最弱科｜疲勞較低｜${familiarityName(a.id)}`;
+  if(a.id==="qing_review")return `⏱ 2格｜一起訂正弱科／關係也會慢慢累積｜${familiarityName(a.id)}`;
+  if(a.id==="zhe_move")return `⏱ 1格｜心情、人際、壓力調整｜${familiarityName(a.id)}`;
+  if(a.id==="club")return `⏱ 1格｜自我、心情、信心｜${familiarityName(a.id)}`;
+  return `⏱ ${a.time}格｜${a.desc}｜${familiarityName(a.id)}`;
+}
+function renderSchedule(){
+  const [hl,hc]=healthLabel();
+  const used=timeUsed(),remain=WEEK_TIME_BUDGET-used;
+  const future=Math.max(0,((state.basicDaysPerWeek||7)-(state.basicDaysPaid||0))*(state.dailyBasicCost||35));
+  const wish=ensureWeeklyWish();
+  document.getElementById('scheduleHealthHint').innerHTML=`目前：<b class="${hc}">${hl}</b><br>吸收率 <b>${learningAbsorption()}%</b>。熟練度越高越難提升；同一活動做久了也會逐漸熟悉。<div class="wishBox">💭 <b>主角這週的心聲</b><br>${wish.text}<br><span style="color:#9da9bb">可以不照做，但長期完全忽略自己的需求，心情與自我感受也會受影響。</span></div>`;
+  document.getElementById('timeBudget').innerHTML=`本週自由時間：<b>${WEEK_TIME_BUDGET} 格</b>　已用 <b>${used}</b>　剩餘 <b>${remain}</b><br>目前現金 ${moneyLabel()}；本週後面仍約有 <b>${future} 元</b>基本生活費。`;
+  document.getElementById('pickedList').innerHTML=schedulePick.length?schedulePick.map((id,i)=>{
+    const a=activities.find(x=>x.id===id);
+    return `<div class="pickedItem"><span>${i+1}. ${a.name}　<small style="color:#aeb8c9">(${a.time}格)</small></span><button class="ghost" style="padding:5px 8px" onclick="removeActivity(${i})">移除</button></div>`;
+  }).join(''):`<div style="color:#7e899c;font-size:12px">尚未安排。請把 6 格時間分配完。</div>`;
+  const study=activities.filter(a=>a.kind==="studyOne"||a.kind==="studyPair"||a.kind==="specialStudy");
+  const life=activities.filter(a=>a.kind==="life"||a.kind==="specialLife");
+  const btn=a=>{
+    const ok=activityUnlocked(a),tier=studyTier(a);
+    return `<button class="activity ${a.kind} ${ok?"":"lockedAct"}" ${ok?`onclick="addActivity('${a.id}')"`:"disabled"}><strong>${a.name}${tier?`<span class="tierTag">${tier}</span>`:""}</strong><span>${activityPreview(a)}${ok?"":`<span class="unlockReason">🔒 ${activityUnlockReason(a)}</span>`}</span></button>`;
+  };
+  document.getElementById('activities').innerHTML=`<div style="grid-column:1/-1;font-weight:900;color:#9fe0b3;margin-top:4px">📚 學習／解鎖課程</div>`+
+    study.map(btn).join('')+
+    `<div style="grid-column:1/-1;font-weight:900;color:#f2d783;margin-top:10px">🌿 生活／關係／恢復</div>`+
+    life.map(btn).join('');
+}
+function addActivity(id){
+  const a=activities.find(x=>x.id===id);if(!a)return;
+  if(!activityUnlocked(a))return toast("這個行程還沒有解鎖");
+  if(timeUsed()+a.time>WEEK_TIME_BUDGET)return toast("這週剩下的時間不夠安排這個活動");
+  schedulePick.push(id);renderSchedule();
+}
+functio
+
+===== #24 AFTERMATH @ 1619937 =====
+m<45)return .62;
+  if(m<55)return .76;
+  if(m<70)return .92;
+  return 1;
+}
+function averageWeekAbsorption(){
+  const arr=state.weekAbsorbSamples||[];
+  if(!arr.length)return learningAbsorption();
+  return arr.reduce((a,b)=>a+b,0)/arr.length;
+}
+function applyWeeklyClassLearning(){
+  const avg=averageWeekAbsorption()/100;
+  const msgs=[];
+  Object.keys(state.mastery).forEach(k=>{
+    let gain=.78*avg*classFoundationFactor(state.mastery[k]);
+    if(state.habit?.trait==="stable")gain*=1.06;
+    if(state.habit?.trait==="pileup")gain*=.90;
+    gain=round1(gain);
+    state.mastery[k]=clamp(round1(state.mastery[k]+gain));
+    msgs.push(`${SUBJECT_NAMES[k]}+${gain}`);
+  });
+  addLog(`本週平日上課平均吸收率 ${Math.round(avg*100)}%：${msgs.join("、")}`);
+}
+function decayPrep(){
+  Object.keys(state.prep).forEach(k=>state.prep[k]=round1(state.prep[k]*.55));
+}
+function finishRemainingDays(){
+  while((state.basicDaysPaid||0)<(state.basicDaysPerWeek||7)){
+    chargeDailyBasicExpense();
+    if(state.planCursor<state.planUnits.length)executeNextPlanUnit();
+  }
+  if(state.planCursor<state.planUnits.length){
+    const missed=state.planUnits.length-state.planCursor;
+    addLog(`本週因時間／健康狀況，有 ${missed} 格原訂行程沒有完成。`);
+  }
+}
+function confirmSchedule(){
+  if(timeUsed()!==WEEK_TIME_BUDGET)return toast(`還有 ${WEEK_TIME_BUDGET-timeUsed()} 格時間沒有安排`);
+  state.weekPlan=[...schedulePick];
+  if(wishSatisfied(schedulePick)){
+    state.stats.mood=clamp(state.stats.mood+1);state.stats.self=clamp(state.stats.self+1);state.ignoredWishStreak=0;
+    addLog("本週安排有回應到主角自己的需要。");
+  }else{
+    state.ignoredWishStreak=(state.ignoredWishStreak||0)+1;
+    if(state.ignoredWishStreak>=2){state.stats.mood=clamp(state.stats.mood-1);state.stats.self=clamp(state.stats.self-1);addLog("連續幾週都沒有顧到自己的需要，心情有點被擠到後面。");}
+  }
+  state.planUnits=buildPlanUnits(schedulePick);
+  state.planCursor=0;state.executedUnits=[];state.scheduleDone=true;
+  addLog("本週計畫："+schedulePick.map(id=>activities.find(a=>a.id===id).name.replace(/[^\u4e00-\u9fff＋]/g,"")).join("、"));
+  closeOverlay('scheduleOverlay');
+  saveLocal(false);
+  resumeFlow();
+}
+function finishWeek(){
+  if(state.finished)return showExam();
+  if(state.week>=7 && Array.isArray(state.pendingAftermaths) && state.pendingAftermaths.length){
+    showQueuedAftermath(true);
+    return;
+  }
+  finishRemainingDays();
+  applyWeeklyClassLearning();
+  updateHabit();
+  checkHealthRisk();
+  if(state.week>=7){
+    state.finished=true;unlock('bg_gate');saveLocal(false);showExam();return;
+  }
+  decayPrep();
+  decaySoftRisks();
+  state.week+=1;state.idx=0;
+  state.extraTarget=0;state.extraSeen=0;state.usedExtras=[];state.pendingExtraId=null;
+  state.scheduleDone=false;state.weekPlan=[];state.planUnits=[];state.planCursor=0;state.executedUnits=[];
+  state.weekAbsorbSamples=[];state.weekAvoidanceStart=state.hidden.avoidance||0;state.weeklyWish=null;
+  state.basicDaysPaid=0;
+  state.pendingRiskContext=null;
+  state.money+=300;
+  if((state.hidden.familyAdvance||0)>0){
+    const repay=Math.min(state.hidden.familyAdvance,state.money);
+    state.money-=repay;state.hidden.familyAdvance-=repay;
+    addLog(`新一週先償還家人預支 ${repay} 元。`);
+  }
+  if((state.hidden.loanFromFriend||0)>0&&state.money>=state.hidden.loanFromFriend){
+    const repay=state.hidden.loanFromFriend;
+    state.money-=repay;state.hidden.loanFromFriend=0;
+    addLog(`新一週先把向朋友借的 ${repay} 元還掉。`);
+  }
+  state.energy=clamp(state.energy+8);state.fatigue=clamp(state.fatigue-8);state.stress=clamp(state.stress-2);
+  if(state.habit?.trait==="pileup")state.stress=clamp(state.stress+2);
+  addLog("星期一收到本週零用錢 300 元（若有預支或借款，先償還）。");
+  toast("💰 新的一週：零用錢 +300");
+  ensureWeekSetup();saveLocal(false);resumeFlow();
+}
+
+function scoreBreakdown(){
+  const condition =
+    (state.fatigue>=90?-10:state.fatigue>=80?-7:state.fatigue>=65?-4:state.fatigue>=50?-2:0) +
+    (state.stats.mood<20?-7:state.stats.mood<35?-4:state.stats.mood<50?-1:0) +
+    (state.stress>=80?-6:state.stress>=65?-3:0) +
+    (state.energy<35?-5:state.energy<50?-2:0) +
+    (state.stats.confidence<25?-4:state.stats.confidence<40?-2:0) +
+    (state.sickTurns>0?-7:0);
+  return {condition,absorption:learningAbsorption(),fatigue:Math.round(state.fatigue),mood:Math.round(state.stats.mood),stress:Math.round(state.stress)};
+}
+function ensureExamVariance(){
+  if(state.examVariance)return;
+  const r=()=>Math.floor(Math.random()*7)-3;
+  state.examVariance={chinese:r(),english:r(),math:r(),science:r(),social:r()};
+}
+function calcScores(){
+  ensureExamVariance();
+  const b=scoreBreakdown();
+  const one=sub=>{
+    const mastery=state.mastery[sub];
+    const prep=Math.min(3.5,state.prep[sub]||0);
+    const variance=state.examVariance[sub]||0;
+    return Math.round(clamp(mastery+prep+b.condition+variance,25,95));
+  };
+  const zh=one("chinese"),en=one("english"),ma=one("math"),sc=one("science"),so=one("social");
+  return {國文:zh,英文:en,數學:ma,自然:sc,社會:so,平均:Math.round((zh+en+ma+sc+so)/5),breakdown:b};
+}
+function showExam(){
+  if(!state.examEpilogueSeen){
+    state.examEpilogueSeen=true;
+    switchScreen('game');
+    renderSide();
+    unlock('bg_gate');
+    activeEvent={label:"第一章｜考完之後",speaker:"旁白",bg:"bg_gate",cinematic:true};
+    setVisual(activeEvent);
+    setEventSceneMode("play");
+    renderEventDataBar();
+    document.getElementById("eventDataBar")?.classList.add("show");
+    document.querySelector("#game .topbar")?.classList.remove("cinematicHidden");
+    document.getElementById('speaker').textContent="旁白";
+    document.getElementById('widget').innerHTML="";
+    document.getElementById('story').textContent="鐘聲響了。\n\n有人立刻開始對答案，有人趴在桌上，也有人只想先去買杯飲料。\n\n你把筆收進鉛筆盒。這張考卷會有分數，但這七週留下來的，不只有分數。\n\n七週前，你第一次站在這個班的門口。現在，你已經做過很多只有自己才知道代價的選擇。";
+    document.getElementById('hint').textContent="先不要急著看分數。回頭看看，這七週留下了什麼。";
+    document.getElementById('choices').innerHTML='<button class="choice" onclick="setEventSceneMode(\'off\');showExamResults()"><div><span class="letter">01</span>看看這七週留下的結果</div><span class="adopt">繼續</span></button>';
+    saveLocal(false);
+    return;
+  }
+  showExamResults();
+}
+function showExamResults(){
+  switchScreen('game'); renderSide(); unlock('bg_gate');
+  const s=calcScores(),b=s.breakdown;
+  let title="開始找到自己節奏的人";
+  if(state.habit?.trait==="stable")title="慢慢建立穩定生活節奏的人";
+  if(state.habit?.trait==="pileup")title="事情有點堆起來、正在學著拉回節奏的人";
+  if(state.stats.social>=65 && state.habit?.trait!=="pileup")title="很重視關係，也在找自己節奏的人";
+  if(state.sickTurns>

@@ -1,4 +1,4 @@
-name: Patch Our14 v28.5 story branching and opening CG
+name: Patch Our14 v28.5 story branching
 
 on:
   push:
@@ -16,11 +16,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build opening CG asset
+      - name: Use safe opening background for v28.5
         run: |
           set -euo pipefail
-          base64 -d our14-v28/cg_opening_v285.webp.b64 > our14-v28/cg_opening_v285.webp
-          test -s our14-v28/cg_opening_v285.webp
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.github/scripts/patch_our14_v285.py')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace("data['assets']['cg_opening']='cg_opening_v285.webp'", "data['assets']['cg_opening']=data['assets']['bg_classroom']")
+          p.write_text(s,encoding='utf-8')
+          PY
 
       - name: Apply v28.5 story patch
         run: python .github/scripts/patch_our14_v285.py
@@ -28,17 +33,15 @@ jobs:
       - name: Verify v28.5
         run: |
           grep -Fq 'v28.5 劇情分歧・章節CG版' our14-v28/index.html
-          grep -Fq 'cg_opening_v285.webp' our14-v28/index.html
           grep -Fq 'WEEK ${activeEvent.week}' our14-v28/index.html
           grep -Fq '跟同學語音快問30分鐘' our14-v28/index.html
           grep -Fq '這張考卷會有分數' our14-v28/index.html
-          test -s our14-v28/cg_opening_v285.webp
+          grep -Fq 'teacherCloudList' our14-v28/index.html
 
       - name: Commit v28.5
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
-          git add our14-v28/index.html our14-v28/cg_opening_v285.webp
-          git rm -f our14-v28/cg_opening_v285.webp.b64
-          git commit -m 'Refine story choices and add opening chapter CG in v28.5'
+          git add our14-v28/index.html
+          git commit -m 'Refine story choices in v28.5'
           git push

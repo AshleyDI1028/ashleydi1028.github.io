@@ -1,4 +1,4 @@
-name: Patch Our14 v28.3 teacher cloud hub
+name: Patch Our14 v28.4 story and CG
 
 on:
   push:
@@ -15,18 +15,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply teacher cloud hub patch
-        run: python .github/scripts/patch_our14_v283.py
-      - name: Verify patch
+      - name: Apply v28.4 story and CG patch
+        run: python .github/scripts/patch_our14_v284.py
+      - name: Verify v28.4
         run: |
-          grep -Fq 'v28.3 老師總網址雲端版' our14-v28/index.html
+          grep -Fq 'v28.4 劇情・CG演出版' our14-v28/index.html
+          grep -Fq 'CG MOMENT｜關鍵場景' our14-v28/index.html
+          grep -Fq '第一章｜考完之後' our14-v28/index.html
+          grep -Fq '我在這個班，是誰？' our14-v28/index.html
           grep -Fq 'teacherCloudList' our14-v28/index.html
           grep -Fq 'teacher_list' our14-v28/index.html
           grep -Fq 'copyTeacherUrl()' our14-v28/index.html
-      - name: Commit v28.3
+      - name: Commit v28.4
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
           git add our14-v28/index.html
-          git commit -m 'Add teacher cloud hub and single master URL'
+          git commit -m 'Upgrade story and CG presentation to v28.4'
           git push

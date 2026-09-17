@@ -1,4 +1,4 @@
-name: Patch Our14 v28.2 multi-class cloud
+name: Patch Our14 v28.3 teacher cloud hub
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Make cloud token belong to each class
+      - name: Add one teacher URL and cloud class list
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -29,55 +29,211 @@ jobs:
                   raise SystemExit(f'missing expected source for {label}')
               s=s.replace(old,new,1)
 
-          # A class owns its token. Never let the URL of the previous class override it.
+          # Main menu: show the cloud class list directly.
+          if 'id="teacherCloudList"' not in s:
+              replace_once(
+                  '<div id="menuClassHint" class="menuClassHint"></div>',
+                  '''<div id="menuClassHint" class="menuClassHint"></div>\n    <div style="margin-top:14px">\n      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px">\n        <b>☁ 我的雲端班級</b>\n        <button class="ghost" onclick="refreshTeacherCloudList(true)">重新整理</button>\n      </div>\n      <div id="teacherCloudList" class="classManagerList"><div class="menuClassHint">正在讀取雲端班級……</div></div>\n    </div>''',
+                  'teacher cloud list on menu'
+              )
+
+          # Add a button that copies the single teacher URL.
+          if 'onclick="copyTeacherUrl()"' not in s:
+              replace_once(
+                  '<button class="ghost" onclick="openClassManager()">🏫 選擇／管理班級</button>',
+                  '<button class="ghost" onclick="openClassManager()">🏫 選擇／管理班級</button>\n      <button class="ghost" onclick="copyTeacherUrl()">🔗 複製老師總網址</button>',
+                  'copy teacher url button'
+              )
+
+          # On the menu the old current-class reload button is confusing; make it refresh the teacher cloud list.
+          old_menu_cloud='<button class="ghost" onclick="cloudReloadCurrent()">☁ 從雲端重新讀取</button>'
+          if old_menu_cloud in s:
+              s=s.replace(old_menu_cloud,'<button class="ghost" onclick="refreshTeacherCloudList(true)">☁ 讀取雲端班級</button>',1)
+
+          # Class manager also gets the cloud list, so a new computer can switch classes immediately.
+          if 'id="classManagerCloudList"' not in s:
+              replace_once(
+                  '<div id="classManagerList" class="classManagerList"></div>',
+                  '''<h3>☁ 雲端班級</h3>\n  <div id="classManagerCloudList" class="classManagerList"><div class="menuClassHint">正在讀取雲端班級……</div></div>\n  <h3 style="margin-top:18px">💻 這台電腦的班級</h3>\n  <div id="classManagerList" class="classManagerList"></div>''',
+                  'teacher cloud list in manager'
+              )
+
+          teacher_helpers = r'''const TEACHER_TOKEN_KEY="our14_teacher_token_v1";
+function validTeacherToken(token){return /^[A-Za-z0-9_-]{32,160}$/.test(String(token||""));}
+function teacherTokenFromUrl(input=location.href){
+  try{return new URL(input,location.href).searchParams.get("teacher")||"";}catch(e){return "";}
+}
+function currentTeacherToken(){
+  const fromUrl=teacherTokenFromUrl();
+  if(validTeacherToken(fromUrl))return fromUrl;
+  const local=localStorage.getItem(TEACHER_TOKEN_KEY)||"";
+  return validTeacherToken(local)?local:"";
+}
+function teacherUrlFor(token){
+  const u=new URL(location.href);
+  u.searchParams.set("teacher",token);
+  u.searchParams.delete("cloud");
+  u.hash="";
+  return u.toString();
+}
+async function ensureTeacherSpace(){
+  let token=currentTeacherToken();
+  if(!token){
+    const data=await cloudRequest({action:"teacher_create"});
+    token=data.teacher_token||"";
+    if(!validTeacherToken(token))throw new Error("無法建立老師雲端空間");
+  }
+  localStorage.setItem(TEACHER_TOKEN_KEY,token);
+  const u=new URL(location.href);
+  if(u.searchParams.get("teacher")!==token){
+    u.searchParams.set("teacher",token);
+    history.replaceState(null,"",u.toString());
+  }
+  return token;
+}
+async function copyTeacherUrl(){
+  try{
+    const token=await ensureTeacherSpace();
+    const url=teacherUrlFor(token);
+    try{await navigator.clipboard.writeText(url);cloudToast("🔗 已複製老師總網址");}
+    catch(e){prompt("請複製這個老師總網址：",url);}
+  }catch(e){alert("無法取得老師總網址："+(e?.message||e));}
+}
+'''
+          if 'const TEACHER_TOKEN_KEY=' not in s:
+              marker='async function ensureCloudLink(showToast=false){'
+              if marker not in s: raise SystemExit('ensureCloudLink marker missing')
+              s=s.replace(marker,teacher_helpers+marker,1)
+
+          # Every new class is automatically attached to the teacher space.
           replace_once(
-              'function currentCloudToken(){return tokenFromUrl() || (state&&state.cloudToken) || "";}',
-              'function currentCloudToken(){return (state&&state.cloudToken) || "";}',
-              'currentCloudToken'
+              '  const data=await cloudRequest({action:"link_create",class_name:state.className,save_data:state});',
+              '  const teacherToken=await ensureTeacherSpace();\n  const data=await cloudRequest({action:"link_create",teacher_token:teacherToken,class_name:state.className,save_data:state});',
+              'link_create teacher token'
           )
 
-          # Do not copy the current address-bar token into whichever class happens to save next.
+          # Existing classes are also adopted into this teacher space on their next save.
           replace_once(
-              '  const token=tokenFromUrl();\n  if(token)state.cloudToken=token;\n  localStorage.setItem(classKey(state.classId),JSON.stringify(state));',
-              '  localStorage.setItem(classKey(state.classId),JSON.stringify(state));',
-              'saveLocal url inheritance'
+              '    await cloudRequest({action:"link_save",save_token:token,class_name:state.className,save_data:state});',
+              '    const teacherToken=await ensureTeacherSpace();\n    await cloudRequest({action:"link_save",teacher_token:teacherToken,save_token:token,class_name:state.className,save_data:state});',
+              'link_save teacher token'
           )
 
-          # Loading/normalizing a local class must preserve only that class token.
+          teacher_list_funcs = r'''let teacherCloudClasses=[];
+function teacherClassTime(value){
+  if(!value)return "";
+  try{return new Date(value).toLocaleString("zh-TW",{hour12:false});}catch(e){return String(value);}
+}
+function teacherClassRow(c){
+  const token=String(c.save_token||"");
+  const name=escapeHtml(c.class_name||"未命名班級");
+  const progress=c.finished?"第一章已告一段落":"第 "+(c.week||1)+" 週";
+  const grade=c.grade?"｜階段評價 "+escapeHtml(c.grade):"";
+  return `<div class="classSaveRow">
+    <div>
+      <div class="classSaveName">${name}</div>
+      <div class="classSaveMeta">${progress}${grade}<br>雲端最後儲存：${teacherClassTime(c.updated_at)}</div>
+    </div>
+    <div class="classSaveBtns">
+      <button class="primary" onclick="openTeacherClass('${token}')">開啟</button>
+      <button class="ghost" onclick="deleteTeacherCloudClass('${token}')">刪除雲端</button>
+    </div>
+  </div>`;
+}
+function renderTeacherCloudClasses(classes){
+  teacherCloudClasses=Array.isArray(classes)?classes:[];
+  const html=teacherCloudClasses.length
+    ?teacherCloudClasses.map(teacherClassRow).join("")
+    :'<div class="menuClassHint">雲端目前沒有正式班級。按「建立新班級」後會自動出現在這裡。</div>';
+  const menu=document.getElementById("teacherCloudList");
+  const manager=document.getElementById("classManagerCloudList");
+  if(menu)menu.innerHTML=html;
+  if(manager)manager.innerHTML=html;
+}
+async function refreshTeacherCloudList(showToast=false){
+  try{
+    const token=await ensureTeacherSpace();
+    const data=await cloudRequest({action:"teacher_list",teacher_token:token});
+    renderTeacherCloudClasses(data.classes||[]);
+    if(showToast)cloudToast("☁ 雲端班級清單已更新");
+    return data.classes||[];
+  }catch(e){
+    const msg='<div class="menuClassHint">雲端班級讀取失敗：'+escapeHtml(e?.message||String(e))+'</div>';
+    const menu=document.getElementById("teacherCloudList");
+    const manager=document.getElementById("classManagerCloudList");
+    if(menu)menu.innerHTML=msg;
+    if(manager)manager.innerHTML=msg;
+    return [];
+  }
+}
+async function openTeacherClass(token){
+  try{
+    await loadCloudToken(token,true);
+    await refreshTeacherCloudList(false);
+  }catch(e){alert("雲端班級讀取失敗："+(e?.message||e));}
+}
+async function deleteTeacherCloudClass(token){
+  const info=teacherCloudClasses.find(c=>c.save_token===token);
+  const name=info?.class_name||"這個班級";
+  if(!confirm(`確定刪除「${name}」的雲端進度？\n\n刪除後無法復原。`))return;
+  try{
+    await cloudRequest({action:"link_delete",save_token:token});
+    const keep=[];
+    for(const meta of getClassIndex()){
+      const raw=localStorage.getItem(classKey(meta.id));
+      let same=false;
+      try{same=!!raw&&JSON.parse(raw).cloudToken===token;}catch(e){}
+      if(same)localStorage.removeItem(classKey(meta.id));else keep.push(meta);
+    }
+    setClassIndex(keep);
+    if(state&&state.cloudToken===token){
+      state=freshState();
+      const u=new URL(location.href);u.hash="";history.replaceState(null,"",u.toString());
+      switchScreen("menu");
+    }
+    refreshMenu();
+    await refreshTeacherCloudList(false);
+    cloudToast("已刪除雲端班級");
+  }catch(e){alert("刪除失敗："+(e?.message||e));}
+}
+'''
+          if 'let teacherCloudClasses=[];' not in s:
+              marker='function refreshMenu(){'
+              if marker not in s: raise SystemExit('refreshMenu marker missing')
+              s=s.replace(marker,teacher_list_funcs+marker,1)
+
           replace_once(
-              '  state.cloudToken=state.cloudToken||tokenFromUrl()||"";',
-              '  state.cloudToken=state.cloudToken||"";',
-              'normalizeState cloud token'
+              '''function openClassManager(){\n  if(state.classId)saveLocal(false);\n  renderClassManager();\n  document.getElementById("classManagerOverlay").classList.add("show");\n}''',
+              '''function openClassManager(){\n  if(state.classId)saveLocal(false);\n  renderClassManager();\n  refreshTeacherCloudList(false);\n  document.getElementById("classManagerOverlay").classList.add("show");\n}''',
+              'openClassManager refresh cloud'
           )
 
-          # A newly-created class must start clean and get a brand-new cloud token.
           replace_once(
-              '  state=freshState();\n  state.classId=newClassId();\n  state.className=name;',
-              '  state=freshState();\n  state.cloudToken="";\n  history.replaceState(null,"",location.pathname+location.search);\n  state.classId=newClassId();\n  state.className=name;',
-              'newGame token reset'
+              '  try{await ensureCloudLink(true);await cloudSaveNow(true);}catch(e){console.warn("首次雲端建立失敗，之後會再自動嘗試",e);toast("目前先存本機；連線恢復後會再同步雲端");}',
+              '  try{await ensureCloudLink(true);await cloudSaveNow(true);await refreshTeacherCloudList(false);}catch(e){console.warn("首次雲端建立失敗，之後會再自動嘗試",e);toast("目前先存本機；連線恢復後會再同步雲端");}',
+              'newGame refresh cloud list'
           )
 
-          # Cloud reload always reloads the active class token, never another token left in the URL.
-          old_reload='''async function cloudReloadCurrent(){\n  const token=currentCloudToken();\n  if(!token){\n    alert("這個網址目前沒有綁定雲端存檔。請使用網址最後有 #cloud=…… 的完整班級網址。");\n    return;\n  }\n  try{\n    await loadCloudToken(token,true);\n  }catch(e){\n    alert("雲端讀取失敗："+(e?.message||e));\n  }\n}'''
-          new_reload='''async function cloudReloadCurrent(){\n  const token=(state&&state.cloudToken)||"";\n  if(!token){\n    alert("這個班級還沒有自己的雲端存檔。請先按一次「儲存」，系統會自動建立這個班級的雲端網址。");\n    return;\n  }\n  try{\n    await loadCloudToken(token,true);\n  }catch(e){\n    alert("雲端讀取失敗："+(e?.message||e));\n  }\n}'''
-          if old_reload in s:
-              s=s.replace(old_reload,new_reload,1)
-          elif new_reload not in s:
-              raise SystemExit('cloudReloadCurrent source not found')
+          old_init='''async function initOur14(){\n  migrateLegacyV11();\n  refreshMenu();\n  const loaded=await loadFromHash();\n  if(!loaded)switchScreen('menu');\n}'''
+          new_init='''async function initOur14(){\n  migrateLegacyV11();\n  try{await ensureTeacherSpace();}catch(e){console.warn("老師雲端空間初始化失敗",e);}\n  refreshMenu();\n  await refreshTeacherCloudList(false);\n  const loaded=await loadFromHash();\n  if(!loaded)switchScreen('menu');\n}'''
+          replace_once(old_init,new_init,'init teacher cloud hub')
 
-          s=s.replace('v28.1 網址雲端自動存檔版：','v28.2 多班級雲端存檔版：',1)
+          s=s.replace('v28.2 多班級雲端存檔版：','v28.3 老師總網址雲端版：',1)
+          s=s.replace('<b>同一個網址就是同一份雲端進度</b>：不需要老師密碼、不需要班級代碼，換任何電腦開同一網址即可繼續','<b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級',1)
+
           p.write_text(s,encoding='utf-8')
           PY
 
-          grep -Fq 'function currentCloudToken(){return (state&&state.cloudToken) || "";}' our14-v28/index.html
-          grep -Fq 'state.cloudToken=state.cloudToken||"";' our14-v28/index.html
-          grep -Fq 'state.cloudToken="";' our14-v28/index.html
-          if grep -Fq 'state.cloudToken=state.cloudToken||tokenFromUrl()' our14-v28/index.html; then exit 1; fi
+          grep -Fq 'v28.3 老師總網址雲端版' our14-v28/index.html
+          grep -Fq 'teacherCloudList' our14-v28/index.html
+          grep -Fq 'teacher_list' our14-v28/index.html
+          grep -Fq 'teacher_token:teacherToken' our14-v28/index.html
+          grep -Fq 'copyTeacherUrl()' our14-v28/index.html
 
-      - name: Commit v28.2
+      - name: Commit v28.3
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
           git add our14-v28/index.html
-          git commit -m 'Fix multi-class cloud save token switching'
+          git commit -m 'Add teacher cloud hub and single master URL'
           git push

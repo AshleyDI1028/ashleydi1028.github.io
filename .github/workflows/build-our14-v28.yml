@@ -1,4 +1,4 @@
-name: Patch Our14 v28.4 story and CG
+name: Patch Our14 v28.5 story branching and opening CG
 
 on:
   push:
@@ -15,21 +15,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply v28.4 story and CG patch
-        run: python .github/scripts/patch_our14_v284.py
-      - name: Verify v28.4
+
+      - name: Build opening CG asset
         run: |
-          grep -Fq 'v28.4 劇情・CG演出版' our14-v28/index.html
-          grep -Fq 'CG MOMENT｜關鍵場景' our14-v28/index.html
-          grep -Fq '第一章｜考完之後' our14-v28/index.html
-          grep -Fq '我在這個班，是誰？' our14-v28/index.html
-          grep -Fq 'teacherCloudList' our14-v28/index.html
-          grep -Fq 'teacher_list' our14-v28/index.html
-          grep -Fq 'copyTeacherUrl()' our14-v28/index.html
-      - name: Commit v28.4
+          set -euo pipefail
+          base64 -d our14-v28/cg_opening_v285.webp.b64 > our14-v28/cg_opening_v285.webp
+          test -s our14-v28/cg_opening_v285.webp
+
+      - name: Apply v28.5 story patch
+        run: python .github/scripts/patch_our14_v285.py
+
+      - name: Verify v28.5
+        run: |
+          grep -Fq 'v28.5 劇情分歧・章節CG版' our14-v28/index.html
+          grep -Fq 'cg_opening_v285.webp' our14-v28/index.html
+          grep -Fq 'WEEK ${activeEvent.week}' our14-v28/index.html
+          grep -Fq '跟同學語音快問30分鐘' our14-v28/index.html
+          grep -Fq '這張考卷會有分數' our14-v28/index.html
+          test -s our14-v28/cg_opening_v285.webp
+
+      - name: Commit v28.5
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
-          git add our14-v28/index.html
-          git commit -m 'Upgrade story and CG presentation to v28.4'
+          git add our14-v28/index.html our14-v28/cg_opening_v285.webp
+          git rm -f our14-v28/cg_opening_v285.webp.b64
+          git commit -m 'Refine story choices and add opening chapter CG in v28.5'
           git push

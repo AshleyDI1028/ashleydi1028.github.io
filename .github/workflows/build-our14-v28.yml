@@ -1,4 +1,4 @@
-name: Patch Our14 v28.5.1 restore numeric ability strip
+name: Patch Our14 v28.5.2 larger ability stats
 
 on:
   push:
@@ -16,21 +16,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore numeric ability strip
-        run: python .github/scripts/patch_our14_v2851_restore_stats.py
+      - name: Enlarge ability stats for classroom projection
+        run: python .github/scripts/patch_our14_v2852_big_stats.py
 
-      - name: Verify v28.5.1
+      - name: Verify v28.5.2
         run: |
-          grep -Fq 'v28.5.1 劇情分歧・能力面板修正版' our14-v28/index.html
-          grep -Fq 'v2851-stat-fix' our14-v28/index.html
-          grep -Fq 'document.getElementById("eventDataBar")?.classList.add("show")' our14-v28/index.html
-          grep -Fq 'data?.classList.add("show")' our14-v28/index.html
+          grep -Fq 'v28.5.2 劇情分歧・大字能力面板版' our14-v28/index.html
+          grep -Fq 'v2852-big-stats' our14-v28/index.html
+          grep -Fq 'font-size:17px!important' our14-v28/index.html
           grep -Fq 'teacherCloudList' our14-v28/index.html
 
-      - name: Commit v28.5.1
+      - name: Commit v28.5.2
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
           git add our14-v28/index.html
-          git commit -m 'Restore numeric ability strip in event and CG scenes'
+          git commit -m 'Enlarge ability stats for classroom projection in v28.5.2'
           git push

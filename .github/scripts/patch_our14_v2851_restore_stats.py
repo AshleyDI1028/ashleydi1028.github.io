@@ -14,9 +14,8 @@ new='''  setEventSceneMode("play");
   renderEventDataBar();
   document.querySelector("#game .topbar")?.classList.remove("cinematicHidden");
   document.getElementById('speaker').textContent=activeEvent.speaker||"旁白";'''
-if old not in s:
-    raise SystemExit('event entry cinematic stat-hiding block not found')
-s=s.replace(old,new,1)
+if old in s:
+    s=s.replace(old,new,1)
 
 old_exam='''    setVisual(activeEvent);
     setEventSceneMode("play");
@@ -28,15 +27,19 @@ new_exam='''    setVisual(activeEvent);
     renderEventDataBar();
     document.querySelector("#game .topbar")?.classList.remove("cinematicHidden");
     document.getElementById('speaker').textContent="旁白";'''
-if old_exam not in s:
-    raise SystemExit('exam cinematic stat-hiding block not found')
-s=s.replace(old_exam,new_exam,1)
+if old_exam in s:
+    s=s.replace(old_exam,new_exam,1)
 
-# Safety net: even if a stale cinematicHidden class remains from a previous screen,
-# the top ability/status bar must stay visible during gameplay.
+# Remove any remaining logic that hides the top ability/status bar in cinematic mode.
+s=s.replace('document.querySelector("#game .topbar")?.classList.add("cinematicHidden");',
+            'document.querySelector("#game .topbar")?.classList.remove("cinematicHidden");')
+
+# Safety net: if a stale class remains from an older saved UI state, keep the bar visible.
 style='''\n<style id="v2851-stat-fix">\n#game .topbar.cinematicHidden{opacity:1!important;visibility:visible!important;transform:none!important;pointer-events:auto!important;}\n</style>\n'''
 if 'id="v2851-stat-fix"' not in s:
     s=s.replace('</head>',style+'</head>',1)
 
-s=s.replace('v28.5 劇情分歧・章節CG版','v28.5.1 劇情分歧・能力面板修正版',1)
+if 'v28.5.1 劇情分歧・能力面板修正版' not in s:
+    s=s.replace('v28.5 劇情分歧・章節CG版','v28.5.1 劇情分歧・能力面板修正版',1)
+
 p.write_text(s,encoding='utf-8')

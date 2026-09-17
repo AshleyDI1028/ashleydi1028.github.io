@@ -1,4 +1,4 @@
-name: Patch Our14 v28.5.2 larger ability stats
+name: Patch Our14 v28.5.3 projection schedule cards
 
 on:
   push:
@@ -16,20 +16,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Enlarge ability stats for classroom projection
-        run: python .github/scripts/patch_our14_v2852_big_stats.py
+      - name: Enlarge after-school schedule for classroom projection
+        run: python .github/scripts/patch_our14_v2853_schedule_projection.py
 
-      - name: Verify v28.5.2
+      - name: Verify v28.5.3
         run: |
-          grep -Fq 'v28.5.2 劇情分歧・大字能力面板版' our14-v28/index.html
-          grep -Fq 'v2852-big-stats' our14-v28/index.html
-          grep -Fq 'font-size:17px!important' our14-v28/index.html
+          grep -Fq 'v28.5.3 課後生活・教室投影大字版' our14-v28/index.html
+          grep -Fq 'v2853-schedule-projection' our14-v28/index.html
+          grep -Fq 'font-size:25px!important' our14-v28/index.html
+          grep -Fq 'grid-template-columns:repeat(2,minmax(0,1fr))!important' our14-v28/index.html
           grep -Fq 'teacherCloudList' our14-v28/index.html
 
-      - name: Commit v28.5.2
+      - name: Commit v28.5.3
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
           git add our14-v28/index.html
-          git commit -m 'Enlarge ability stats for classroom projection in v28.5.2'
+          git commit -m 'Enlarge after-school scheduling cards for classroom projection in v28.5.3'
           git push

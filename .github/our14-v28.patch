@@ -1,0 +1,362 @@
+--- v27
++++ v28
+@@ -3,7 +3,7 @@
+ <head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+-<title>我們的14歲｜v27 完整CG・雲端存檔版</title>
++<title>我們的14歲｜v28 網址雲端自動存檔版</title>
+ <style>
+ :root{--bg:#080b14;--panel:rgba(10,14,25,.94);--line:rgba(255,255,255,.16);--text:#f8fafc;--muted:#cbd5e1;--gold:#f0ca63;--red:#ff9c9c;--green:#86e5a3;--blue:#8dbbff;}
+ *{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC",sans-serif;min-height:100%}
+@@ -530,11 +530,10 @@
+       <button class="ghost" onclick="openClassManager()">🏫 選擇／管理班級</button>
+       <button class="ghost" onclick="exportAllClasses()">💾 備份全部班級</button>
+       <button class="ghost" onclick="document.getElementById('allClassImport').click()">📥 還原全部班級</button>
+-      <button class="ghost" onclick="loadResumeFromPrompt()">🔗 匯入續玩網址</button>
+-      <button class="ghost" onclick="cloudLoadPrompt()">☁ 從雲端讀取班級</button>
++      <button class="ghost" onclick="cloudLoadPrompt()">🔗 開啟雲端續玩網址</button>
+     </div>
+     <div id="menuClassHint" class="menuClassHint"></div>
+-    <div class="note">v27 完整CG・雲端存檔版：<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
++    <div class="note">v28 網址雲端自動存檔版：<br>• <b>同一個網址就是同一份雲端進度</b>：不需要老師密碼、不需要班級代碼，換任何電腦開同一網址即可繼續　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
+   </div></div>
+ </section>
+ 
+@@ -544,10 +543,10 @@
+     <div><div class="name">我們的14歲</div><div class="chapter">第一章｜九月，新生活開始了</div></div>
+     <div class="actions">
+       <button onclick="openGallery()">🖼 回憶</button>
+-      <button onclick="saveLocal(true)">💾 儲存</button>
+-      <button onclick="cloudSavePrompt()">☁ 雲端同步</button>
+-      <button onclick="cloudLoadPrompt()">☁ 雲端讀取</button>
+-      <button onclick="copyResumeLink()">🔗 複製續玩網址</button>
++      <button onclick="saveLocal(true)">☁ 儲存並確認雲端</button>
++      <button onclick="cloudSavePrompt()">☁ 立即確認同步</button>
++      <button onclick="cloudLoadPrompt()">🔗 開啟其他雲端網址</button>
++      <button onclick="copyResumeLink()">🔗 複製這個班級網址</button>
+       <button onclick="toggleFull()">⛶ 全螢幕</button>
+       <button onclick="openClassManager()">🏫 切換班級</button><button onclick="backToMenu()">選單</button>
+     </div>
+@@ -1648,9 +1647,11 @@
+ }
+ 
+ const OUR14_CLOUD_URL="https://efqmwxrxnvuyhrllhowq.supabase.co/functions/v1/our14-cloud-save";
+-const CLOUD_SESSION_KEY="our14_cloud_session_v1";
+-function getCloudSession(){try{return JSON.parse(sessionStorage.getItem(CLOUD_SESSION_KEY)||"null")||null}catch(e){return null}}
+-function setCloudSession(v){if(v)sessionStorage.setItem(CLOUD_SESSION_KEY,JSON.stringify(v));else sessionStorage.removeItem(CLOUD_SESSION_KEY)}
++const CLOUD_HASH_PREFIX="#cloud=";
++let cloudSaveTimer=null;
++let cloudSaveInFlight=false;
++let cloudSavePending=false;
++
+ function cloudToast(msg){try{toast(msg)}catch(e){console.log(msg)}}
+ async function cloudRequest(payload){
+   const r=await fetch(OUR14_CLOUD_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+@@ -1658,70 +1659,133 @@
+   if(!r.ok||!data.ok)throw new Error(data.error||`雲端連線失敗（${r.status}）`);
+   return data;
+ }
+-async function cloudSaveWith(classId,password,quiet=false){
++function tokenFromUrl(input=location.href){
++  try{
++    const u=new URL(input,location.href);
++    if(u.hash.startsWith(CLOUD_HASH_PREFIX))return u.hash.slice(CLOUD_HASH_PREFIX.length).trim();
++    const q=u.searchParams.get("cloud");
++    return (q||"").trim();
++  }catch(e){return "";}
++}
++function currentCloudToken(){return tokenFromUrl() || (state&&state.cloudToken) || "";}
++function cloudUrlFor(token){
++  const u=new URL(location.href);
++  u.searchParams.delete("cloud");
++  u.hash=CLOUD_HASH_PREFIX+token;
++  return u.toString();
++}
++function setCloudUrl(token,replace=true){
++  if(!token)return;
++  if(state)state.cloudToken=token;
++  const u=cloudUrlFor(token);
++  if(replace)history.replaceState(null,"",u);else history.pushState(null,"",u);
++}
++async function ensureCloudLink(showToast=false){
++  let token=currentCloudToken();
++  if(token){
++    if(state)state.cloudToken=token;
++    return token;
++  }
++  if(!state||!state.className)return "";
++  const data=await cloudRequest({action:"link_create",class_name:state.className,save_data:state});
++  token=data.save_token;
++  state.cloudToken=token;
++  setCloudUrl(token,true);
++  localStorage.setItem(classKey(state.classId),JSON.stringify(state));
++  if(showToast)cloudToast("☁ 已建立這個班級的雲端續玩網址");
++  return token;
++}
++function cloudStateSignature(obj){
++  obj=obj||{};
++  return [obj.classId||"",obj.className||"",obj.week??"",obj.idx??"",obj.daySerial??"",obj.finished?1:0].join("|");
++}
++async function verifyCloudSave(token){
++  const check=await cloudRequest({action:"link_load",save_token:token});
++  const remote=check.save_data||{};
++  if(cloudStateSignature(remote)!==cloudStateSignature(state)){
++    throw new Error("伺服器回讀的進度和目前畫面不同，請不要關閉此頁");
++  }
++  return check;
++}
++async function cloudSaveNow(quiet=true,verify=false){
+   if(!state||!state.className)return false;
+-  const data=await cloudRequest({action:"save",class_id:classId,class_name:state.className,password,save_data:state});
+-  state.cloudId=classId;
+-  setCloudSession({classId,password});
+-  localStorage.setItem(classKey(state.classId),JSON.stringify(state));
+-  if(!quiet)cloudToast("☁ 雲端已同步");
+-  return true;
++  if(cloudSaveInFlight){cloudSavePending=true;return false;}
++  cloudSaveInFlight=true;
++  try{
++    const token=await ensureCloudLink(false);
++    if(!token)throw new Error("無法建立雲端存檔網址");
++    await cloudRequest({action:"link_save",save_token:token,class_name:state.className,save_data:state});
++    state.cloudToken=token;
++    localStorage.setItem(classKey(state.classId),JSON.stringify(state));
++    if(verify)await verifyCloudSave(token);
++    if(!quiet)cloudToast(verify?"☁ 雲端已儲存並回讀確認":"☁ 已同步到雲端");
++    return true;
++  }finally{
++    cloudSaveInFlight=false;
++    if(cloudSavePending){cloudSavePending=false;setTimeout(()=>cloudSaveNow(true,false).catch(e=>console.warn("雲端自動同步失敗",e)),120);}
++  }
++}
++function cloudAutoSave(){
++  if(!state||!state.className)return;
++  clearTimeout(cloudSaveTimer);
++  cloudSaveTimer=setTimeout(()=>cloudSaveNow(true).catch(e=>console.warn("雲端自動同步失敗",e)),250);
+ }
+ async function cloudSavePrompt(){
+   try{
+-    const sess=getCloudSession();
+-    const defaultId=(state&&state.cloudId)||sess?.classId||(state&&state.className)||"";
+-    const classId=(prompt("雲端班級代碼（建議直接用班級名稱，例如：國二14班）",defaultId)||"").trim();
+-    if(!classId)return;
+-    const password=prompt("老師密碼（至少4碼）",sess?.classId===classId?sess.password:"")||"";
+-    if(password.length<4){alert("老師密碼至少要4碼。後續換電腦時會用這組密碼讀取進度。");return;}
+-    await cloudSaveWith(classId,password,false);
++    await cloudSaveNow(false,true);
++    await copyResumeLink(false);
+   }catch(e){alert("雲端同步失敗："+(e?.message||e));}
+ }
++async function loadCloudToken(token,showToast=true){
++  const data=await cloudRequest({action:"link_load",save_token:token});
++  const loaded=Object.assign(freshState(),data.save_data||{});
++  if(!loaded.classId)loaded.classId=newClassId();
++  loaded.cloudToken=token;
++  state=loaded;
++  normalizeState();
++  localStorage.setItem(classKey(state.classId),JSON.stringify(state));
++  setActiveClass(state.classId);
++  upsertClassMeta();
++  setCloudUrl(token,true);
++  refreshMenu();
++  closeOverlay("classManagerOverlay");
++  switchScreen("game");
++  if(state.finished)showChapterReview();
++  else if(!state.prologueSeen&&state.week===1&&state.idx===0)startPrologue();
++  else resumeFlow();
++  if(showToast)cloudToast("☁ 已從雲端接續："+(state.className||"班級"));
++  return true;
++}
+ async function cloudLoadPrompt(){
+-  try{
+-    const sess=getCloudSession();
+-    const classId=(prompt("輸入雲端班級代碼（例如：國二14班）",sess?.classId||"")||"").trim();
+-    if(!classId)return;
+-    const password=prompt("輸入老師密碼",sess?.classId===classId?sess.password:"")||"";
+-    if(!password)return;
+-    const data=await cloudRequest({action:"load",class_id:classId,password});
+-    const loaded=Object.assign(freshState(),data.save_data||{});
+-    if(!loaded.classId)loaded.classId=newClassId();
+-    loaded.cloudId=classId;
+-    state=loaded;
+-    normalizeState();
+-    localStorage.setItem(classKey(state.classId),JSON.stringify(state));
+-    setActiveClass(state.classId);
+-    upsertClassMeta();
+-    setCloudSession({classId,password});
+-    refreshMenu();
+-    closeOverlay("classManagerOverlay");
+-    switchScreen("game");
+-    if(state.finished)showChapterReview();
+-    else if(!state.prologueSeen&&state.week===1&&state.idx===0)startPrologue();
+-    else resumeFlow();
+-    cloudToast("☁ 已從雲端讀取："+(state.className||classId));
+-  }catch(e){alert("雲端讀取失敗："+(e?.message||e));}
+-}
+-function cloudAutoSave(){
+-  const sess=getCloudSession();
+-  if(!sess||!state||!state.className)return;
+-  if(state.cloudId&&state.cloudId!==sess.classId)return;
+-  cloudSaveWith(sess.classId,sess.password,true).catch(e=>console.warn("雲端自動同步失敗",e));
+-}
+-
+-function saveLocal(show=false){
++  const u=prompt("貼上《我們的14歲》的雲端續玩網址：","");
++  if(!u)return;
++  const token=tokenFromUrl(u);
++  if(!token){alert("這不是有效的雲端續玩網址。網址最後應該會有 #cloud=……");return;}
++  try{await loadCloudToken(token,true);}catch(e){alert("雲端讀取失敗："+(e?.message||e));}
++}
++
++async function saveLocal(show=false){
+   if(!state.classId){
+     state.classId=newClassId();
+     if(!state.className)state.className="未命名班級";
+   }
++  const token=tokenFromUrl();
++  if(token)state.cloudToken=token;
+   localStorage.setItem(classKey(state.classId),JSON.stringify(state));
+   setActiveClass(state.classId);
+   upsertClassMeta();
+   refreshMenu();
+-  if(show)toast(`已儲存：${state.className}`);
+-  cloudAutoSave();
++  if(show){
++    cloudToast("本機已儲存，正在確認雲端……");
++    try{
++      await cloudSaveNow(true,true);
++      cloudToast("☁ 雲端儲存完成，已回讀確認");
++    }catch(e){
++      alert("本機進度還在，但雲端儲存失敗："+(e?.message||e)+"\n\n請先不要關閉這個頁面。");
++    }
++  }else{
++    cloudAutoSave();
++  }
+ }
+ function migrateLegacyV11(){
+   if(localStorage.getItem(MIGRATION_KEY))return;
+@@ -1795,6 +1859,7 @@
+     state.classId=id;
+     normalizeState();
+     setActiveClass(id);
++    if(state.cloudToken)setCloudUrl(state.cloudToken,true);else history.replaceState(null,"",location.pathname+location.search);
+     closeOverlay("classManagerOverlay");
+     switchScreen("game");
+     if(state.finished)showChapterReview();
+@@ -1810,7 +1875,7 @@
+   s.className=name;
+   localStorage.setItem(classKey(id),JSON.stringify(s));
+   const list=getClassIndex();const m=list.find(x=>x.id===id);if(m){m.name=name;m.updated=Date.now();setClassIndex(list);}
+-  if(state.classId===id)state.className=name;
++  if(state.classId===id){state.className=name;saveLocal(false);}
+   renderClassManager();refreshMenu();
+ }
+ function deleteClass(id){
+@@ -3211,19 +3276,36 @@
+   document.getElementById('gallery').innerHTML = memories.map(m=>`<div class="memory ${u.includes(m.key)?'':'locked'}"><img src="${A[m.key]}"><div class="memName">${m.name}</div></div>`).join('');
+   document.getElementById('galleryOverlay').classList.add('show');
+ }
+-function copyResumeLink(){
+-  const raw = btoa(unescape(encodeURIComponent(JSON.stringify(state)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+-  const url = location.origin + location.pathname + '#save=' + raw;
+-  if(navigator.clipboard) navigator.clipboard.writeText(url).then(()=>toast("續玩網址已複製")).catch(()=>prompt("複製這個續玩網址：",url));
+-  else prompt("複製這個續玩網址：",url);
++async function copyResumeLink(showToast=true){
++  try{
++    const token=await ensureCloudLink(false);
++    if(!token)throw new Error("尚未建立班級");
++    await cloudSaveNow(true,true);
++    const url=cloudUrlFor(token);
++    if(navigator.clipboard){
++      await navigator.clipboard.writeText(url);
++      if(showToast)toast("這個班級的雲端續玩網址已複製");
++    }else{
++      prompt("複製這個班級網址：",url);
++    }
++    return url;
++  }catch(e){
++    alert("無法建立續玩網址："+(e?.message||e));
++    return "";
++  }
+ }
+ function decodeSave(hashVal){ let s=hashVal.replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4)s+='='; return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+-function loadFromHash(){
++async function loadFromHash(){
++  if(location.hash.startsWith(CLOUD_HASH_PREFIX)){
++    const token=tokenFromUrl();
++    try{await loadCloudToken(token,false);return true;}catch(e){console.error(e);alert("雲端存檔讀取失敗："+(e?.message||e));return false;}
++  }
++  // 舊版 #save= 長網址仍可匯入一次，匯入後會自動建立新的短雲端網址。
+   if(location.hash.startsWith('#save=')){
+     try{
+       const obj=decodeSave(location.hash.slice(6));
+       history.replaceState(null,'',location.pathname+location.search);
+-      importSharedState(obj,"網址匯入");
++      importSharedState(obj,"舊網址匯入");
+       return true;
+     }catch(e){console.error(e);}
+   }
+@@ -3233,6 +3315,7 @@
+   state=Object.assign(freshState(),obj);
+   normalizeState();
+   state.classId=newClassId();
++  delete state.cloudToken;
+   state.className=((state.className||"班級")+"（"+suffix+"）").replace(/（網址匯入）（網址匯入）/g,"（網址匯入）");
+   saveLocal(false);
+   switchScreen("game");
+@@ -3240,15 +3323,9 @@
+   else if(!state.prologueSeen&&state.week===1&&state.idx===0)startPrologue();
+   else resumeFlow();
+ }
+-function loadResumeFromPrompt(){
+-  const u=prompt("貼上續玩網址：");if(!u)return;
+-  try{
+-    const hash=new URL(u).hash;
+-    if(!hash.startsWith('#save='))throw new Error();
+-    importSharedState(decodeSave(hash.slice(6)),"網址匯入");
+-  }catch(e){alert("這不是有效的續玩網址");}
+-}
++function loadResumeFromPrompt(){cloudLoadPrompt();}
+ function normalizeState(){
++  state.cloudToken=state.cloudToken||tokenFromUrl()||"";
+   state.fatigue=state.fatigue??20;
+   state.sickTurns=state.sickTurns??0;
+   state.healthCooldown=state.healthCooldown??0;
+@@ -3299,16 +3376,18 @@
+   state.history.confidenceMin=state.history.confidenceMin??(state.stats.confidence??55);
+   if(state.chapter1Review&&!state.chapter1Review.mainTrait)state.chapter1Review=null;
+ }
+-function newGame(){
++async function newGame(){
+   const name=(prompt("班級名稱（例如：國一3班、技高一美工）","")||"").trim();
+   if(!name)return;
+   state=freshState();
+   state.classId=newClassId();
+   state.className=name;
+   ensureWeekSetup();
+-  saveLocal(false);
++  localStorage.setItem(classKey(state.classId),JSON.stringify(state));
++  setActiveClass(state.classId);upsertClassMeta();refreshMenu();
+   closeOverlay("classManagerOverlay");
+   switchScreen('game');
++  try{await ensureCloudLink(true);await cloudSaveNow(true);}catch(e){console.warn("首次雲端建立失敗，之後會再自動嘗試",e);toast("目前先存本機；連線恢復後會再同步雲端");}
+   startPrologue();
+ }
+ function continueGame(){
+@@ -3328,8 +3407,12 @@
+ function nextPrologue(){ if(proTyping){clearTimeout(proTimer); proTyping=false; document.getElementById('proText').textContent=proFull; document.getElementById('proNext').style.visibility='visible'; return;} proI++; if(proI>=PROLOGUE.length) return finishPrologue(); showPro(); }
+ function finishPrologue(){ clearTimeout(proTimer); proTyping=false; document.getElementById('prologue').classList.remove('show'); state.prologueSeen=true; saveLocal(false); resumeFlow(); }
+ document.getElementById('menuBg').style.backgroundImage=`url("${A.bg_gate}")`;
+-migrateLegacyV11();
+-refreshMenu();
+-if(!loadFromHash())switchScreen('menu');
++async function initOur14(){
++  migrateLegacyV11();
++  refreshMenu();
++  const loaded=await loadFromHash();
++  if(!loaded)switchScreen('menu');
++}
++initOur14();
+ </script>
+ </body></html>

@@ -1,4 +1,4 @@
-name: Patch Our14 v28.5 story branching
+name: Patch Our14 v28.5.1 restore ability stats
 
 on:
   push:
@@ -16,32 +16,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use safe opening background for v28.5
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('.github/scripts/patch_our14_v285.py')
-          s=p.read_text(encoding='utf-8')
-          s=s.replace("data['assets']['cg_opening']='cg_opening_v285.webp'", "data['assets']['cg_opening']=data['assets']['bg_classroom']")
-          p.write_text(s,encoding='utf-8')
-          PY
+      - name: Restore ability status bar
+        run: python .github/scripts/patch_our14_v2851_restore_stats.py
 
-      - name: Apply v28.5 story patch
-        run: python .github/scripts/patch_our14_v285.py
-
-      - name: Verify v28.5
+      - name: Verify v28.5.1
         run: |
-          grep -Fq 'v28.5 劇情分歧・章節CG版' our14-v28/index.html
-          grep -Fq 'WEEK ${activeEvent.week}' our14-v28/index.html
-          grep -Fq '跟同學語音快問30分鐘' our14-v28/index.html
-          grep -Fq '這張考卷會有分數' our14-v28/index.html
+          grep -Fq 'v28.5.1 劇情分歧・能力面板修正版' our14-v28/index.html
+          grep -Fq 'v2851-stat-fix' our14-v28/index.html
+          grep -Fq 'classList.remove("cinematicHidden")' our14-v28/index.html
+          if grep -Fq 'classList.add("cinematicHidden")' our14-v28/index.html; then exit 1; fi
           grep -Fq 'teacherCloudList' our14-v28/index.html
 
-      - name: Commit v28.5
+      - name: Commit v28.5.1
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
           git add our14-v28/index.html
-          git commit -m 'Refine story choices in v28.5'
+          git commit -m 'Restore ability stats during story and CG scenes'
           git push

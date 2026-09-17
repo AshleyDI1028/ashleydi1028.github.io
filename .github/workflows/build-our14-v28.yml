@@ -1,4 +1,4 @@
-name: Build Our14 v28
+name: Patch Our14 v28.1 cloud reload
 
 on:
   push:
@@ -10,39 +10,46 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  patch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download complete v27 game
-        env:
-          SOURCE_URL: 'https://our14-v27-final-6dgoaxb0b-milkway0521-5766s-projects.vercel.app/?_vercel_share=BEKJW4PSKeR5tQOIGFj0nVIGL25awXTf'
+      - name: Remove old cloud prompt flow from UI
         run: |
-          set -euo pipefail
-          mkdir -p our14-v28
-          curl --fail --location --max-redirs 12 --cookie-jar /tmp/vercel.cookies --cookie /tmp/vercel.cookies "$SOURCE_URL" -o our14-v28/index.html
-          test $(wc -c < our14-v28/index.html) -gt 1000000
-          grep -q 'v27 完整CG・雲端存檔版' our14-v28/index.html
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('our14-v28/index.html')
+          s=p.read_text(encoding='utf-8')
 
-      - name: Apply v28 cloud URL save patch
-        run: |
-          set -euo pipefail
-          patch our14-v28/index.html < .github/our14-v28.patch
-          grep -q 'v28 網址雲端自動存檔版' our14-v28/index.html
-          grep -q 'action:"link_save"' our14-v28/index.html
-          grep -q 'action:"link_load"' our14-v28/index.html
-          grep -q 'CLOUD_HASH_PREFIX="#cloud="' our14-v28/index.html
+          replacements={
+            '<button class="ghost" onclick="cloudLoadPrompt()">🔗 開啟雲端續玩網址</button>':'<button class="ghost" onclick="cloudReloadCurrent()">☁ 從雲端重新讀取</button>',
+            '<button onclick="cloudLoadPrompt()">🔗 開啟其他雲端網址</button>':'<button onclick="cloudReloadCurrent()">☁ 從雲端重新讀取</button>'
+          }
+          for old,new in replacements.items():
+            if old not in s:
+              raise SystemExit(f'missing expected button: {old}')
+            s=s.replace(old,new)
 
-      - name: Commit complete v28 game
+          marker='async function saveLocal(show=false){'
+          fn='''async function cloudReloadCurrent(){\n  const token=currentCloudToken();\n  if(!token){\n    alert("這個網址目前沒有綁定雲端存檔。請使用網址最後有 #cloud=…… 的完整班級網址。");\n    return;\n  }\n  try{\n    await loadCloudToken(token,true);\n  }catch(e){\n    alert("雲端讀取失敗："+(e?.message||e));\n  }\n}\n\n'''
+          if 'async function cloudReloadCurrent()' not in s:
+            if marker not in s:
+              raise SystemExit('saveLocal marker missing')
+            s=s.replace(marker,fn+marker,1)
+
+          s=s.replace('v28 網址雲端自動存檔版：','v28.1 網址雲端自動存檔版：',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+
+          grep -q 'cloudReloadCurrent()' our14-v28/index.html
+          grep -q '☁ 從雲端重新讀取' our14-v28/index.html
+          if grep -q '開啟其他雲端網址' our14-v28/index.html; then exit 1; fi
+
+      - name: Commit v28.1
         run: |
-          set -euo pipefail
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
           git add our14-v28/index.html
-          if git diff --cached --quiet; then
-            echo 'No changes to commit.'
-            exit 0
-          fi
-          git commit -m 'Deploy Our14 v28 URL cloud save version'
+          git commit -m 'Fix cloud reload UI and remove password-style flow'
           git push

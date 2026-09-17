@@ -528,12 +528,20 @@ h1{font-size:clamp(44px,7vw,84px);line-height:1;margin:12px 0 18px}
       <button class="primary" onclick="newGame()">＋ 建立新班級</button>
       <button class="ghost" id="continueBtn" onclick="continueGame()">▶ 繼續上次班級</button>
       <button class="ghost" onclick="openClassManager()">🏫 選擇／管理班級</button>
+      <button class="ghost" onclick="copyTeacherUrl()">🔗 複製老師總網址</button>
       <button class="ghost" onclick="exportAllClasses()">💾 備份全部班級</button>
       <button class="ghost" onclick="document.getElementById('allClassImport').click()">📥 還原全部班級</button>
-      <button class="ghost" onclick="cloudReloadCurrent()">☁ 從雲端重新讀取</button>
+      <button class="ghost" onclick="refreshTeacherCloudList(true)">☁ 讀取雲端班級</button>
     </div>
     <div id="menuClassHint" class="menuClassHint"></div>
-    <div class="note">v28.2 多班級雲端存檔版：<br>• <b>同一個網址就是同一份雲端進度</b>：不需要老師密碼、不需要班級代碼，換任何電腦開同一網址即可繼續　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
+    <div style="margin-top:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px">
+        <b>☁ 我的雲端班級</b>
+        <button class="ghost" onclick="refreshTeacherCloudList(true)">重新整理</button>
+      </div>
+      <div id="teacherCloudList" class="classManagerList"><div class="menuClassHint">正在讀取雲端班級……</div></div>
+    </div>
+    <div class="note">v28.3 老師總網址雲端版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
   </div></div>
 </section>
 
@@ -602,6 +610,9 @@ h1{font-size:clamp(44px,7vw,84px);line-height:1;margin:12px 0 18px}
 <div id="classManagerOverlay" class="overlay"><div class="modal">
   <h2>🏫 班級存檔</h2>
   <p>每個班級都有自己的進度。切換班級不會覆蓋其他班的資料。</p>
+  <h3>☁ 雲端班級</h3>
+  <div id="classManagerCloudList" class="classManagerList"><div class="menuClassHint">正在讀取雲端班級……</div></div>
+  <h3 style="margin-top:18px">💻 這台電腦的班級</h3>
   <div id="classManagerList" class="classManagerList"></div>
   <div class="modalBtns">
     <button class="secondary" onclick="newGame()">＋ 建立新班級</button>
@@ -1680,6 +1691,47 @@ function setCloudUrl(token,replace=true){
   const u=cloudUrlFor(token);
   if(replace)history.replaceState(null,"",u);else history.pushState(null,"",u);
 }
+const TEACHER_TOKEN_KEY="our14_teacher_token_v1";
+function validTeacherToken(token){return /^[A-Za-z0-9_-]{32,160}$/.test(String(token||""));}
+function teacherTokenFromUrl(input=location.href){
+  try{return new URL(input,location.href).searchParams.get("teacher")||"";}catch(e){return "";}
+}
+function currentTeacherToken(){
+  const fromUrl=teacherTokenFromUrl();
+  if(validTeacherToken(fromUrl))return fromUrl;
+  const local=localStorage.getItem(TEACHER_TOKEN_KEY)||"";
+  return validTeacherToken(local)?local:"";
+}
+function teacherUrlFor(token){
+  const u=new URL(location.href);
+  u.searchParams.set("teacher",token);
+  u.searchParams.delete("cloud");
+  u.hash="";
+  return u.toString();
+}
+async function ensureTeacherSpace(){
+  let token=currentTeacherToken();
+  if(!token){
+    const data=await cloudRequest({action:"teacher_create"});
+    token=data.teacher_token||"";
+    if(!validTeacherToken(token))throw new Error("無法建立老師雲端空間");
+  }
+  localStorage.setItem(TEACHER_TOKEN_KEY,token);
+  const u=new URL(location.href);
+  if(u.searchParams.get("teacher")!==token){
+    u.searchParams.set("teacher",token);
+    history.replaceState(null,"",u.toString());
+  }
+  return token;
+}
+async function copyTeacherUrl(){
+  try{
+    const token=await ensureTeacherSpace();
+    const url=teacherUrlFor(token);
+    try{await navigator.clipboard.writeText(url);cloudToast("🔗 已複製老師總網址");}
+    catch(e){prompt("請複製這個老師總網址：",url);}
+  }catch(e){alert("無法取得老師總網址："+(e?.message||e));}
+}
 async function ensureCloudLink(showToast=false){
   let token=currentCloudToken();
   if(token){
@@ -1687,7 +1739,8 @@ async function ensureCloudLink(showToast=false){
     return token;
   }
   if(!state||!state.className)return "";
-  const data=await cloudRequest({action:"link_create",class_name:state.className,save_data:state});
+  const teacherToken=await ensureTeacherSpace();
+  const data=await cloudRequest({action:"link_create",teacher_token:teacherToken,class_name:state.className,save_data:state});
   token=data.save_token;
   state.cloudToken=token;
   setCloudUrl(token,true);
@@ -1714,7 +1767,8 @@ async function cloudSaveNow(quiet=true,verify=false){
   try{
     const token=await ensureCloudLink(false);
     if(!token)throw new Error("無法建立雲端存檔網址");
-    await cloudRequest({action:"link_save",save_token:token,class_name:state.className,save_data:state});
+    const teacherToken=await ensureTeacherSpace();
+    await cloudRequest({action:"link_save",teacher_token:teacherToken,save_token:token,class_name:state.className,save_data:state});
     state.cloudToken=token;
     localStorage.setItem(classKey(state.classId),JSON.stringify(state));
     if(verify)await verifyCloudSave(token);
@@ -1817,6 +1871,76 @@ function migrateLegacyV11(){
   }
   localStorage.setItem(MIGRATION_KEY,"1");
 }
+let teacherCloudClasses=[];
+function teacherClassTime(value){
+  if(!value)return "";
+  try{return new Date(value).toLocaleString("zh-TW",{hour12:false});}catch(e){return String(value);}
+}
+function teacherClassRow(c){
+  const token=String(c.save_token||"");
+  const name=escapeHtml(c.class_name||"未命名班級");
+  const progress=c.finished?"第一章已告一段落":"第 "+(c.week||1)+" 週";
+  const grade=c.grade?"｜階段評價 "+escapeHtml(c.grade):"";
+  return `<div class="classSaveRow">
+    <div>
+      <div class="classSaveName">${name}</div>
+      <div class="classSaveMeta">${progress}${grade}<br>雲端最後儲存：${teacherClassTime(c.updated_at)}</div>
+    </div>
+    <div class="classSaveBtns">
+      <button class="primary" onclick="openTeacherClass('${token}')">開啟</button>
+      <button class="ghost" onclick="deleteTeacherCloudClass('${token}')">刪除雲端</button>
+    </div>
+  </div>`;
+}
+function renderTeacherCloudClasses(classes){
+  teacherCloudClasses=Array.isArray(classes)?classes:[];
+  const html=teacherCloudClasses.length?teacherCloudClasses.map(teacherClassRow).join(""):'<div class="menuClassHint">雲端目前沒有正式班級。按「建立新班級」後會自動出現在這裡。</div>';
+  const menu=document.getElementById("teacherCloudList");
+  const manager=document.getElementById("classManagerCloudList");
+  if(menu)menu.innerHTML=html;
+  if(manager)manager.innerHTML=html;
+}
+async function refreshTeacherCloudList(showToast=false){
+  try{
+    const token=await ensureTeacherSpace();
+    const data=await cloudRequest({action:"teacher_list",teacher_token:token});
+    renderTeacherCloudClasses(data.classes||[]);
+    if(showToast)cloudToast("☁ 雲端班級清單已更新");
+    return data.classes||[];
+  }catch(e){
+    const msg='<div class="menuClassHint">雲端班級讀取失敗：'+escapeHtml(e?.message||String(e))+'</div>';
+    const menu=document.getElementById("teacherCloudList");
+    const manager=document.getElementById("classManagerCloudList");
+    if(menu)menu.innerHTML=msg;
+    if(manager)manager.innerHTML=msg;
+    return [];
+  }
+}
+async function openTeacherClass(token){
+  try{await loadCloudToken(token,true);await refreshTeacherCloudList(false);}catch(e){alert("雲端班級讀取失敗："+(e?.message||e));}
+}
+async function deleteTeacherCloudClass(token){
+  const info=teacherCloudClasses.find(c=>c.save_token===token);
+  const name=info?.class_name||"這個班級";
+  if(!confirm(`確定刪除「${name}」的雲端進度？
+
+刪除後無法復原。`))return;
+  try{
+    await cloudRequest({action:"link_delete",save_token:token});
+    const keep=[];
+    for(const meta of getClassIndex()){
+      const raw=localStorage.getItem(classKey(meta.id));
+      let same=false;
+      try{same=!!raw&&JSON.parse(raw).cloudToken===token;}catch(e){}
+      if(same)localStorage.removeItem(classKey(meta.id));else keep.push(meta);
+    }
+    setClassIndex(keep);
+    if(state&&state.cloudToken===token){state=freshState();const u=new URL(location.href);u.hash="";history.replaceState(null,"",u.toString());switchScreen("menu");}
+    refreshMenu();
+    await refreshTeacherCloudList(false);
+    cloudToast("已刪除雲端班級");
+  }catch(e){alert("刪除失敗："+(e?.message||e));}
+}
 function refreshMenu(){
   const list=getClassIndex();
   const active=activeClassId();
@@ -1860,6 +1984,7 @@ function renderClassManager(){
 function openClassManager(){
   if(state.classId)saveLocal(false);
   renderClassManager();
+  refreshTeacherCloudList(false);
   document.getElementById("classManagerOverlay").classList.add("show");
 }
 function loadClass(id){
@@ -3400,7 +3525,7 @@ async function newGame(){
   setActiveClass(state.classId);upsertClassMeta();refreshMenu();
   closeOverlay("classManagerOverlay");
   switchScreen('game');
-  try{await ensureCloudLink(true);await cloudSaveNow(true);}catch(e){console.warn("首次雲端建立失敗，之後會再自動嘗試",e);toast("目前先存本機；連線恢復後會再同步雲端");}
+  try{await ensureCloudLink(true);await cloudSaveNow(true);await refreshTeacherCloudList(false);}catch(e){console.warn("首次雲端建立失敗，之後會再自動嘗試",e);toast("目前先存本機；連線恢復後會再同步雲端");}
   startPrologue();
 }
 function continueGame(){
@@ -3422,7 +3547,9 @@ function finishPrologue(){ clearTimeout(proTimer); proTyping=false; document.get
 document.getElementById('menuBg').style.backgroundImage=`url("${A.bg_gate}")`;
 async function initOur14(){
   migrateLegacyV11();
+  try{await ensureTeacherSpace();}catch(e){console.warn("老師雲端空間初始化失敗",e);}
   refreshMenu();
+  await refreshTeacherCloudList(false);
   const loaded=await loadFromHash();
   if(!loaded)switchScreen('menu');
 }

@@ -765,7 +765,7 @@ h1{font-size:clamp(44px,7vw,84px);line-height:1;margin:12px 0 18px}
       </div>
       <div id="teacherCloudList" class="classManagerList"><div class="menuClassHint">正在讀取雲端班級……</div></div>
     </div>
-    <div class="note">v28.5.5 後果CG・第一批掛載版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
+    <div class="note">v28.5.6 後果CG・第二批掛載版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
   </div></div>
 </section>
 
@@ -2912,6 +2912,7 @@ function buildChoiceChangeSummary(before,relationChanges=[],riskBefore=null,choi
   return `<div class="changeSummary">${chips.slice(0,10).join("")}</div>`;
 }
 const AFTERMATH_CG_SPRITE="assets/cg_consequence_sprite.jpg";
+const AFTERMATH_CG_SPRITE_2="assets/cg_aftermath_batch2_sprite.jpg";
 function eventCgPanel(ev){
   if(Number.isFinite(ev?.cgPanel))return ev.cgPanel;
   const label=String(ev?.label||"");
@@ -2921,10 +2922,36 @@ function eventCgPanel(ev){
   if(label.includes("48分"))return 2;
   return null;
 }
+function eventCgPanel2(ev){
+  if(Number.isFinite(ev?.cgPanel2))return ev.cgPanel2;
+  const id=String(ev?.aftermathId||"");
+  const label=String(ev?.label||"");
+
+  // 0 群組壓力
+  if(id==="meme_silent"||id==="meme_cleanup"||label.includes("群組梗圖傳到老師"))return 0;
+  // 1 生活指導／作弊後果
+  if(id.startsWith("cheat_")||label.includes("答案怎麼這麼像"))return 1;
+  // 2 道歉／修復
+  if(id==="joke_apologize"||label.includes("道歉")||label.includes("抱歉"))return 2;
+  // 3 人際尷尬／孤立感
+  if(id==="meme_warn"||id==="joke_ignore"||id==="joke_stop"||label.includes("綽號")||label.includes("尷尬"))return 3;
+  // 4 熬夜／疲憊
+  if(label.includes("只剩三天")||label.includes("熬夜")||label.includes("疲憊"))return 4;
+  // 5 朋友也撐不住／無聲陪伴
+  if(label.includes("今天怎麼這麼安靜")||label.includes("真的讀不下去")||label.includes("撐不住"))return 5;
+  return null;
+}
 function setVisual(ev){
   const visual=document.getElementById('visual');
+  const cgPanel2=eventCgPanel2(ev);
   const cgPanel=eventCgPanel(ev);
-  if(cgPanel!==null){
+  if(cgPanel2!==null){
+    const pos=[[0,0],[50,0],[100,0],[0,100],[50,100],[100,100]][cgPanel2]||[0,0];
+    visual.style.backgroundImage=`url("${AFTERMATH_CG_SPRITE_2}")`;
+    visual.style.backgroundSize="300% 200%";
+    visual.style.backgroundPosition=`${pos[0]}% ${pos[1]}%`;
+    visual.style.backgroundRepeat="no-repeat";
+  }else if(cgPanel!==null){
     visual.style.backgroundImage=`url("${AFTERMATH_CG_SPRITE}")`;
     visual.style.backgroundSize="100% 600%";
     visual.style.backgroundPosition=`center ${cgPanel*20}%`;

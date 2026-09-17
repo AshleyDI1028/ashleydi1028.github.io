@@ -1,1 +1,84 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>我們的14歲｜載入中</title><style>html,body{margin:0;background:#080b14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;height:100%}.wrap{height:100%;display:grid;place-items:center}.box{text-align:center;max-width:760px;padding:32px}.spinner{width:42px;height:42px;margin:0 auto 16px;border:4px solid rgba(255,255,255,.18);border-top-color:#f0ca63;border-radius:50%;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}small{display:block;color:#b8c2d4;margin-top:10px}.err{color:#ff9d9d;white-space:pre-wrap;word-break:break-word;margin-top:16px}</style></head><body><div class="wrap"><div class="box"><div class="spinner"></div><h1>正在載入《我們的14歲》…</h1><small id="status">準備遊戲資料</small><div class="err" id="err"></div></div></div><script>(async()=>{const status=document.getElementById('status'),err=document.getElementById('err');try{const base='https://raw.githubusercontent.com/AshleyDI1028/ashleydi1028.github.io/main/our14/';const names=Array.from({length:7},(_,i)=>`p${String(i).padStart(2,'0')}.txt`);const parts=[];for(let i=0;i<names.length;i++){status.textContent=`載入遊戲資料 ${i+1}/${names.length}`;let r;try{r=await fetch(base+names[i]+'?v='+Date.now(),{cache:'no-store',mode:'cors'});}catch(e){throw new Error(`讀取 ${names[i]} 失敗：${e.message}`)}if(!r.ok)throw new Error(`讀取 ${names[i]} 失敗：HTTP ${r.status}`);parts.push(await r.text())}status.textContent='正在解壓縮遊戲…';const b64=parts.join('').replace(/\s+/g,'');let bin;try{bin=atob(b64)}catch(e){throw new Error('Base64 資料損壞：'+e.message)}const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);if(!('DecompressionStream' in window))throw new Error('瀏覽器不支援解壓縮，請改用最新版 Chrome');let html;try{const ds=new DecompressionStream('gzip');const stream=new Blob([bytes]).stream().pipeThrough(ds);html=await new Response(stream).text()}catch(e){throw new Error('解壓縮失敗：'+e.message)}if(!html||html.length<1000)throw new Error('遊戲資料不完整');document.open();document.write(html);document.close()}catch(e){status.textContent='載入失敗';err.textContent=e.message;console.error(e)}})();</script></body></html>
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>我們的14歲｜載入中</title><style>html,body{margin:0;background:#080b14;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;height:100%}.wrap{height:100%;display:grid;place-items:center}.box{text-align:center;max-width:760px;padding:32px}.spinner{width:42px;height:42px;margin:0 auto 16px;border:4px solid rgba(255,255,255,.18);border-top-color:#f0ca63;border-radius:50%;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}small{display:block;color:#b8c2d4;margin-top:10px}.err{color:#ff9d9d;white-space:pre-wrap;word-break:break-word;margin-top:16px}.retry{display:none;margin:18px auto 0;padding:10px 16px;border:0;border-radius:10px;background:#f0ca63;color:#251f16;font-weight:800;cursor:pointer}</style></head><body><div class="wrap"><div class="box"><div class="spinner"></div><h1>正在載入《我們的14歲》…</h1><small id="status">準備遊戲資料</small><div class="err" id="err"></div><button class="retry" id="retry">重新載入</button></div></div><script>
+(()=>{
+const status=document.getElementById('status'),err=document.getElementById('err'),retry=document.getElementById('retry');
+retry.onclick=()=>location.reload();
+const names=Array.from({length:7},(_,i)=>`p${String(i).padStart(2,'0')}.txt`);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function readPart(name,index){
+  const local=new URL(name,location.href).href;
+  const raw=`https://raw.githubusercontent.com/AshleyDI1028/ashleydi1028.github.io/main/our14/${name}`;
+  const urls=[local,raw];
+  let last='';
+  for(const url of urls){
+    for(let attempt=1;attempt<=2;attempt++){
+      try{
+        const sep=url.includes('?')?'&':'?';
+        const r=await fetch(url+sep+'v=20260917b-'+index+'-'+attempt,{cache:'no-store'});
+        if(!r.ok){last=`HTTP ${r.status}`;continue;}
+        const txt=(await r.text()).replace(/\s+/g,'');
+        if(txt.length<100){last='資料過短';continue;}
+        return txt;
+      }catch(e){last=e&&e.message?e.message:String(e);}
+      await sleep(250);
+    }
+  }
+  throw new Error(`讀取 ${name} 失敗：${last}`);
+}
+function b64ToBytes(b64){
+  let bin;
+  try{bin=atob(b64)}catch(e){throw new Error('Base64 資料損壞：'+e.message)}
+  const bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+  if(bytes.length<4||bytes[0]!==0x1f||bytes[1]!==0x8b)throw new Error('遊戲資料不是有效的 GZIP 格式');
+  return bytes;
+}
+async function nativeGunzip(bytes){
+  if(!('DecompressionStream' in window))throw new Error('此瀏覽器沒有原生解壓功能');
+  const ds=new DecompressionStream('gzip');
+  return await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
+}
+function loadPako(){
+  return new Promise((resolve,reject)=>{
+    if(window.pako)return resolve();
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js';
+    s.onload=resolve;s.onerror=()=>reject(new Error('備援解壓模組載入失敗'));
+    document.head.appendChild(s);
+  });
+}
+async function pakoGunzip(bytes){
+  await loadPako();
+  try{return new TextDecoder('utf-8').decode(window.pako.ungzip(bytes));}
+  catch(e){throw new Error('備援解壓也失敗：'+(e&&e.message?e.message:String(e)));}
+}
+async function start(){
+  try{
+    err.textContent='';retry.style.display='none';
+    const parts=[];
+    for(let i=0;i<names.length;i++){
+      status.textContent=`載入遊戲資料 ${i+1}/${names.length}`;
+      parts.push(await readPart(names[i],i));
+    }
+    const b64=parts.join('');
+    if(b64.length%4!==0)throw new Error(`遊戲資料長度異常（${b64.length}）`);
+    const bytes=b64ToBytes(b64);
+    status.textContent='正在解壓縮遊戲…';
+    let html='';
+    try{html=await nativeGunzip(bytes)}
+    catch(nativeErr){
+      status.textContent='使用備援方式解壓縮…';
+      html=await pakoGunzip(bytes);
+    }
+    if(!html||html.length<1000||!/<html|<!doctype/i.test(html))throw new Error('解壓後的遊戲資料不完整');
+    status.textContent='啟動遊戲…';
+    document.open();document.write(html);document.close();
+  }catch(e){
+    status.textContent='載入失敗';
+    err.textContent=(e&&e.message?e.message:String(e))+'\n\n請按「重新載入」再試一次。';
+    retry.style.display='inline-block';
+    console.error(e);
+  }
+}
+start();
+})();
+</script></body></html>

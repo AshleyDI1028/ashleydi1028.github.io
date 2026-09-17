@@ -533,7 +533,7 @@ h1{font-size:clamp(44px,7vw,84px);line-height:1;margin:12px 0 18px}
       <button class="ghost" onclick="cloudReloadCurrent()">☁ 從雲端重新讀取</button>
     </div>
     <div id="menuClassHint" class="menuClassHint"></div>
-    <div class="note">v28.1 網址雲端自動存檔版：<br>• <b>同一個網址就是同一份雲端進度</b>：不需要老師密碼、不需要班級代碼，換任何電腦開同一網址即可繼續　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
+    <div class="note">v28.2 多班級雲端存檔版：<br>• <b>同一個網址就是同一份雲端進度</b>：不需要老師密碼、不需要班級代碼，換任何電腦開同一網址即可繼續　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
   </div></div>
 </section>
 
@@ -1667,7 +1667,7 @@ function tokenFromUrl(input=location.href){
     return (q||"").trim();
   }catch(e){return "";}
 }
-function currentCloudToken(){return tokenFromUrl() || (state&&state.cloudToken) || "";}
+function currentCloudToken(){return (state&&state.cloudToken) || "";}
 function cloudUrlFor(token){
   const u=new URL(location.href);
   u.searchParams.delete("cloud");
@@ -1765,9 +1765,9 @@ async function cloudLoadPrompt(){
 }
 
 async function cloudReloadCurrent(){
-  const token=currentCloudToken();
+  const token=(state&&state.cloudToken)||"";
   if(!token){
-    alert("這個網址目前沒有綁定雲端存檔。請使用網址最後有 #cloud=…… 的完整班級網址。");
+    alert("這個班級還沒有自己的雲端存檔。請先按一次「儲存」，系統會自動建立這個班級的雲端網址。");
     return;
   }
   try{
@@ -1782,8 +1782,6 @@ async function saveLocal(show=false){
     state.classId=newClassId();
     if(!state.className)state.className="未命名班級";
   }
-  const token=tokenFromUrl();
-  if(token)state.cloudToken=token;
   localStorage.setItem(classKey(state.classId),JSON.stringify(state));
   setActiveClass(state.classId);
   upsertClassMeta();
@@ -3338,7 +3336,7 @@ function importSharedState(obj,suffix="網址匯入"){
 }
 function loadResumeFromPrompt(){cloudLoadPrompt();}
 function normalizeState(){
-  state.cloudToken=state.cloudToken||tokenFromUrl()||"";
+  state.cloudToken=state.cloudToken||"";
   state.fatigue=state.fatigue??20;
   state.sickTurns=state.sickTurns??0;
   state.healthCooldown=state.healthCooldown??0;
@@ -3393,6 +3391,8 @@ async function newGame(){
   const name=(prompt("班級名稱（例如：國一3班、技高一美工）","")||"").trim();
   if(!name)return;
   state=freshState();
+  state.cloudToken="";
+  history.replaceState(null,"",location.pathname+location.search);
   state.classId=newClassId();
   state.className=name;
   ensureWeekSetup();

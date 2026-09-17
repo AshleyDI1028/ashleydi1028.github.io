@@ -520,6 +520,37 @@ h1{font-size:clamp(44px,7vw,84px);line-height:1;margin:12px 0 18px}
 <style id="v2851-stat-fix">
 #game .topbar.cinematicHidden{display:flex!important;opacity:1!important;visibility:visible!important;transform:none!important;pointer-events:auto!important;}
 </style>
+
+<style id="v2852-big-stats">
+/* Classroom/projector readability for the top-left ability strip */
+#game .eventDataBar{
+  left:18px!important; right:18px!important; top:16px!important;
+  gap:9px!important; row-gap:9px!important;
+}
+#game .eventDataGroup{
+  display:flex!important; gap:8px!important; flex-wrap:wrap!important; align-items:center!important;
+}
+#game .eventDataChip{
+  padding:9px 13px!important;
+  border-radius:999px!important;
+  font-size:14px!important;
+  line-height:1.2!important;
+  font-weight:800!important;
+  background:rgba(5,9,18,.90)!important;
+  border:1px solid rgba(255,255,255,.24)!important;
+  box-shadow:0 3px 12px rgba(0,0,0,.28)!important;
+}
+#game .eventDataChip b{
+  font-size:17px!important;
+  font-weight:1000!important;
+  letter-spacing:.01em!important;
+}
+#game .eventDataChip.relation b{font-size:16px!important;}
+@media (max-width:900px){
+  #game .eventDataChip{font-size:12.5px!important;padding:8px 10px!important;}
+  #game .eventDataChip b{font-size:15px!important;}
+}
+</style>
 </head>
 <body>
 <section id="menu" class="screen active">
@@ -545,7 +576,7 @@ h1{font-size:clamp(44px,7vw,84px);line-height:1;margin:12px 0 18px}
       </div>
       <div id="teacherCloudList" class="classManagerList"><div class="menuClassHint">正在讀取雲端班級……</div></div>
     </div>
-    <div class="note">v28.5.1 劇情分歧・能力面板修正版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
+    <div class="note">v28.5.2 劇情分歧・大字能力面板版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
   </div></div>
 </section>
 

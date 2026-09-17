@@ -1,4 +1,4 @@
-name: Patch Our14 v28.5.1 restore ability stats retry
+name: Patch Our14 v28.5.1 restore numeric ability strip
 
 on:
   push:
@@ -16,15 +16,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore ability status bar
+      - name: Restore numeric ability strip
         run: python .github/scripts/patch_our14_v2851_restore_stats.py
 
       - name: Verify v28.5.1
         run: |
           grep -Fq 'v28.5.1 劇情分歧・能力面板修正版' our14-v28/index.html
           grep -Fq 'v2851-stat-fix' our14-v28/index.html
-          grep -Fq 'classList.remove("cinematicHidden")' our14-v28/index.html
-          if grep -Fq 'classList.add("cinematicHidden")' our14-v28/index.html; then exit 1; fi
+          grep -Fq 'document.getElementById("eventDataBar")?.classList.add("show")' our14-v28/index.html
+          grep -Fq 'data?.classList.add("show")' our14-v28/index.html
           grep -Fq 'teacherCloudList' our14-v28/index.html
 
       - name: Commit v28.5.1
@@ -32,5 +32,5 @@ jobs:
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
           git add our14-v28/index.html
-          git commit -m 'Restore ability stats during story and CG scenes'
+          git commit -m 'Restore numeric ability strip in event and CG scenes'
           git push

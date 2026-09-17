@@ -1,0 +1,48 @@
+name: Build Our14 v28
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build-our14-v28.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download complete v27 game
+        env:
+          SOURCE_URL: 'https://our14-v27-final-6dgoaxb0b-milkway0521-5766s-projects.vercel.app/?_vercel_share=BEKJW4PSKeR5tQOIGFj0nVIGL25awXTf'
+        run: |
+          set -euo pipefail
+          mkdir -p our14-v28
+          curl --fail --location --max-redirs 12 --cookie-jar /tmp/vercel.cookies --cookie /tmp/vercel.cookies "$SOURCE_URL" -o our14-v28/index.html
+          test $(wc -c < our14-v28/index.html) -gt 1000000
+          grep -q 'v27 完整CG・雲端存檔版' our14-v28/index.html
+
+      - name: Apply v28 cloud URL save patch
+        run: |
+          set -euo pipefail
+          patch our14-v28/index.html < .github/our14-v28.patch
+          grep -q 'v28 網址雲端自動存檔版' our14-v28/index.html
+          grep -q 'action:"link_save"' our14-v28/index.html
+          grep -q 'action:"link_load"' our14-v28/index.html
+          grep -q 'CLOUD_HASH_PREFIX="#cloud="' our14-v28/index.html
+
+      - name: Commit complete v28 game
+        run: |
+          set -euo pipefail
+          git config user.name 'our14-builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add our14-v28/index.html
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Deploy Our14 v28 URL cloud save version'
+          git push

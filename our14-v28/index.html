@@ -651,6 +651,95 @@ h1{font-size:clamp(44px,7vw,84px);line-height:1;margin:12px 0 18px}
   .modal:has(.activities) .activity{min-height:104px!important;}
 }
 </style>
+
+<style id="v2854-event-projection">
+/* Classroom projection typography for story / random / consequence events */
+#game .dialogue.eventDialogueMode,
+#game .dialogue.riskDialogueMode{
+  max-height:min(78vh,620px)!important;
+  padding:20px 22px!important;
+}
+#game .dialogue.eventDialogueMode .speaker,
+#game .dialogue.riskDialogueMode .speaker{
+  font-size:20px!important;
+  line-height:1.25!important;
+  padding:8px 14px!important;
+  margin-bottom:10px!important;
+}
+#game .dialogue.eventDialogueMode .story,
+#game .dialogue.riskDialogueMode .story{
+  font-size:25px!important;
+  line-height:1.72!important;
+  min-height:120px!important;
+  font-weight:650!important;
+  letter-spacing:.01em!important;
+}
+#game .dialogue.eventDialogueMode .hint,
+#game .dialogue.riskDialogueMode .hint{
+  font-size:16px!important;
+  line-height:1.55!important;
+  margin-top:7px!important;
+  color:#cbd5e1!important;
+}
+#game .dialogue.eventDialogueMode .widget,
+#game .dialogue.riskDialogueMode .widget{
+  margin-top:16px!important;
+}
+#game .dialogue.eventDialogueMode .choices,
+#game .dialogue.riskDialogueMode .choices{
+  gap:12px!important;
+  margin-top:16px!important;
+}
+#game .dialogue.eventDialogueMode .choice,
+#game .dialogue.riskDialogueMode .choice{
+  min-height:78px!important;
+  padding:15px 16px!important;
+  border-radius:14px!important;
+  font-size:22px!important;
+  line-height:1.42!important;
+  background:rgba(255,255,255,.075)!important;
+}
+#game .dialogue.eventDialogueMode .letter,
+#game .dialogue.riskDialogueMode .letter{
+  font-size:23px!important;
+  line-height:1!important;
+  margin-right:10px!important;
+}
+#game .dialogue.eventDialogueMode .cost,
+#game .dialogue.riskDialogueMode .cost{
+  font-size:17px!important;
+  line-height:1.5!important;
+  margin-top:6px!important;
+  color:#d1d8e5!important;
+}
+#game .dialogue.eventDialogueMode .adopt,
+#game .dialogue.riskDialogueMode .adopt{
+  font-size:17px!important;
+  line-height:1.15!important;
+  padding:10px 13px!important;
+  border-radius:10px!important;
+}
+#game .dialogue.eventDialogueMode .resultBtns,
+#game .dialogue.riskDialogueMode .resultBtns{
+  gap:12px!important;
+  margin-top:14px!important;
+}
+#game .dialogue.eventDialogueMode .resultBtns button,
+#game .dialogue.riskDialogueMode .resultBtns button{
+  font-size:18px!important;
+  padding:13px 15px!important;
+}
+@media (max-width:800px){
+  #game .dialogue.eventDialogueMode .story,
+  #game .dialogue.riskDialogueMode .story{font-size:20px!important;}
+  #game .dialogue.eventDialogueMode .choice,
+  #game .dialogue.riskDialogueMode .choice{font-size:18px!important;min-height:68px!important;}
+  #game .dialogue.eventDialogueMode .cost,
+  #game .dialogue.riskDialogueMode .cost{font-size:15px!important;}
+  #game .dialogue.eventDialogueMode .adopt,
+  #game .dialogue.riskDialogueMode .adopt{font-size:15px!important;}
+}
+</style>
 </head>
 <body>
 <section id="menu" class="screen active">
@@ -676,7 +765,7 @@ h1{font-size:clamp(44px,7vw,84px);line-height:1;margin:12px 0 18px}
       </div>
       <div id="teacherCloudList" class="classManagerList"><div class="menuClassHint">正在讀取雲端班級……</div></div>
     </div>
-    <div class="note">v28.5.3 課後生活・教室投影大字版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
+    <div class="note">v28.5.4 事件閱讀・教室投影大字版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
   </div></div>
 </section>
 

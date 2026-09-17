@@ -765,7 +765,7 @@ h1{font-size:clamp(44px,7vw,84px);line-height:1;margin:12px 0 18px}
       </div>
       <div id="teacherCloudList" class="classManagerList"><div class="menuClassHint">正在讀取雲端班級……</div></div>
     </div>
-    <div class="note">v28.5.4 事件閱讀・教室投影大字版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
+    <div class="note">v28.5.5 後果CG・第一批掛載版：<br>• <b>一個老師總網址即可管理全部班級</b>：不需要老師密碼、不需要班級代碼，換任何電腦開老師總網址即可讀取雲端班級　• 每次重要操作會自動同步到雲端，仍保留本機備份<br>• 每個班級完全獨立存檔　• 可一次備份／還原全部班級　• 第一章結束新增階段評價與章節CG<br>• 改成每個角色各自獨立立繪　• 修正段考範圍說明　• 段考分數重算<br>• 一般劇情畫面調整為更明確的「背景圖 + 對話框」構圖　• 後續影響改成隔幾個事件／下一週才出現，不再全部緊接著發生　• 300元零用錢重新平衡飲料、出遊、文具與存錢目標　• 第一章結算新增「開學 → 現在」能力與關係變化　• 修正事件資訊列重疊，五科與生活狀態改成兩排　• 風險判定改為固定高度精簡視窗，不再把頁面拉長　• 每週零用錢調整為 300 元（基本生活費仍為 245 元／週）　• 所有故事事件統一為「先看CG → 同圖作背景 → 浮動資料／對話／選項 → 結果變化摘要」　• 人際／家庭選項會直接改變人物關係，連「拒絕、忽略、設界線、提醒還錢」都會留下細微差異　• 重大後果事件加入「後續影響」演出（被責備、記過後續、人際變化、心情波動等）　• 人物關係改為「互動＋共同經歷＋多次危機／修復」養成，第一章最高只到逐漸熟悉　• 危機關係事件會解鎖對應CG　• 右側資訊欄精簡：只保留做決定需要看的能力、特質與人物關係　• 偷簽被確認後會正式通知導師／家長並記小過1次　• 特質會隨長期選擇形成，並影響章節CG　• 行程會依熟練度升級，能力／關係可解鎖新活動　• NPC有關係階段與專屬事件　• 重要成長會收錄CG　• 主角每週也有自己的需求（假簽名等重大行為一定會出事）</div>
   </div></div>
 </section>
 
@@ -1739,7 +1739,12 @@ function showQueuedAftermath(force=false){
   const item=state.pendingAftermaths.splice(i,1)[0];
   const id=typeof item==="string"?item:item.id;
   if(!id||!AFTERMATH_EVENTS[id])return resumeFlow();
-  showEvent(AFTERMATH_EVENTS[id]());
+  const ev=AFTERMATH_EVENTS[id]();
+  ev.aftermathId=id;
+  if(id.startsWith("loan_"))ev.cgPanel=0;
+  else if(id.startsWith("fakeSign_"))ev.cgPanel=1;
+  else if(id.startsWith("hideScore_"))ev.cgPanel=2;
+  showEvent(ev);
 }
 function addWarning(n=1){
   state.discipline=state.discipline||{warning:0,minorDemerit:0};
@@ -2906,8 +2911,30 @@ function buildChoiceChangeSummary(before,relationChanges=[],riskBefore=null,choi
   if(!chips.length)chips.push(`<span class="changeChip neutral">這次沒有立即可見的數值變化，影響可能在後續才出現。</span>`);
   return `<div class="changeSummary">${chips.slice(0,10).join("")}</div>`;
 }
+const AFTERMATH_CG_SPRITE="assets/cg_consequence_sprite.jpg";
+function eventCgPanel(ev){
+  if(Number.isFinite(ev?.cgPanel))return ev.cgPanel;
+  const label=String(ev?.label||"");
+  if(label.includes("94分"))return 3;
+  if(label.includes("23:48"))return 4;
+  if(label.includes("考完之後")||label.includes("段考結束"))return 5;
+  if(label.includes("48分"))return 2;
+  return null;
+}
 function setVisual(ev){
-  document.getElementById('visual').style.backgroundImage=`url("${A[ev.bg||'bg_classroom']}")`;
+  const visual=document.getElementById('visual');
+  const cgPanel=eventCgPanel(ev);
+  if(cgPanel!==null){
+    visual.style.backgroundImage=`url("${AFTERMATH_CG_SPRITE}")`;
+    visual.style.backgroundSize="100% 600%";
+    visual.style.backgroundPosition=`center ${cgPanel*20}%`;
+    visual.style.backgroundRepeat="no-repeat";
+  }else{
+    visual.style.backgroundImage=`url("${A[ev.bg||'bg_classroom']}")`;
+    visual.style.backgroundSize="cover";
+    visual.style.backgroundPosition="center";
+    visual.style.backgroundRepeat="no-repeat";
+  }
   const tag=document.getElementById('tag');
   tag.textContent=ev.label;
   tag.className='tag'+(ev.isHealth?' consequence':ev.isConsequence?' consequence':ev.isExtra?' random':'');

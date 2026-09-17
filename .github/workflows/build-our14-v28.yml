@@ -1,4 +1,4 @@
-name: Patch Our14 v28.1 cloud reload
+name: Patch Our14 v28.2 multi-class cloud
 
 on:
   push:
@@ -15,41 +15,69 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Remove old cloud prompt flow from UI
+      - name: Make cloud token belong to each class
         run: |
+          set -euo pipefail
           python - <<'PY'
           from pathlib import Path
           p=Path('our14-v28/index.html')
           s=p.read_text(encoding='utf-8')
 
-          replacements={
-            '<button class="ghost" onclick="cloudLoadPrompt()">🔗 開啟雲端續玩網址</button>':'<button class="ghost" onclick="cloudReloadCurrent()">☁ 從雲端重新讀取</button>',
-            '<button onclick="cloudLoadPrompt()">🔗 開啟其他雲端網址</button>':'<button onclick="cloudReloadCurrent()">☁ 從雲端重新讀取</button>'
-          }
-          for old,new in replacements.items():
-            if old not in s:
-              raise SystemExit(f'missing expected button: {old}')
-            s=s.replace(old,new)
+          def replace_once(old,new,label):
+              global s
+              if old not in s:
+                  raise SystemExit(f'missing expected source for {label}')
+              s=s.replace(old,new,1)
 
-          marker='async function saveLocal(show=false){'
-          fn='''async function cloudReloadCurrent(){\n  const token=currentCloudToken();\n  if(!token){\n    alert("這個網址目前沒有綁定雲端存檔。請使用網址最後有 #cloud=…… 的完整班級網址。");\n    return;\n  }\n  try{\n    await loadCloudToken(token,true);\n  }catch(e){\n    alert("雲端讀取失敗："+(e?.message||e));\n  }\n}\n\n'''
-          if 'async function cloudReloadCurrent()' not in s:
-            if marker not in s:
-              raise SystemExit('saveLocal marker missing')
-            s=s.replace(marker,fn+marker,1)
+          # A class owns its token. Never let the URL of the previous class override it.
+          replace_once(
+              'function currentCloudToken(){return tokenFromUrl() || (state&&state.cloudToken) || "";}',
+              'function currentCloudToken(){return (state&&state.cloudToken) || "";}',
+              'currentCloudToken'
+          )
 
-          s=s.replace('v28 網址雲端自動存檔版：','v28.1 網址雲端自動存檔版：',1)
+          # Do not copy the current address-bar token into whichever class happens to save next.
+          replace_once(
+              '  const token=tokenFromUrl();\n  if(token)state.cloudToken=token;\n  localStorage.setItem(classKey(state.classId),JSON.stringify(state));',
+              '  localStorage.setItem(classKey(state.classId),JSON.stringify(state));',
+              'saveLocal url inheritance'
+          )
+
+          # Loading/normalizing a local class must preserve only that class token.
+          replace_once(
+              '  state.cloudToken=state.cloudToken||tokenFromUrl()||"";',
+              '  state.cloudToken=state.cloudToken||"";',
+              'normalizeState cloud token'
+          )
+
+          # A newly-created class must start clean and get a brand-new cloud token.
+          replace_once(
+              '  state=freshState();\n  state.classId=newClassId();\n  state.className=name;',
+              '  state=freshState();\n  state.cloudToken="";\n  history.replaceState(null,"",location.pathname+location.search);\n  state.classId=newClassId();\n  state.className=name;',
+              'newGame token reset'
+          )
+
+          # Cloud reload always reloads the active class token, never another token left in the URL.
+          old_reload='''async function cloudReloadCurrent(){\n  const token=currentCloudToken();\n  if(!token){\n    alert("這個網址目前沒有綁定雲端存檔。請使用網址最後有 #cloud=…… 的完整班級網址。");\n    return;\n  }\n  try{\n    await loadCloudToken(token,true);\n  }catch(e){\n    alert("雲端讀取失敗："+(e?.message||e));\n  }\n}'''
+          new_reload='''async function cloudReloadCurrent(){\n  const token=(state&&state.cloudToken)||"";\n  if(!token){\n    alert("這個班級還沒有自己的雲端存檔。請先按一次「儲存」，系統會自動建立這個班級的雲端網址。");\n    return;\n  }\n  try{\n    await loadCloudToken(token,true);\n  }catch(e){\n    alert("雲端讀取失敗："+(e?.message||e));\n  }\n}'''
+          if old_reload in s:
+              s=s.replace(old_reload,new_reload,1)
+          elif new_reload not in s:
+              raise SystemExit('cloudReloadCurrent source not found')
+
+          s=s.replace('v28.1 網址雲端自動存檔版：','v28.2 多班級雲端存檔版：',1)
           p.write_text(s,encoding='utf-8')
           PY
 
-          grep -q 'cloudReloadCurrent()' our14-v28/index.html
-          grep -q '☁ 從雲端重新讀取' our14-v28/index.html
-          if grep -q '開啟其他雲端網址' our14-v28/index.html; then exit 1; fi
+          grep -Fq 'function currentCloudToken(){return (state&&state.cloudToken) || "";}' our14-v28/index.html
+          grep -Fq 'state.cloudToken=state.cloudToken||"";' our14-v28/index.html
+          grep -Fq 'state.cloudToken="";' our14-v28/index.html
+          if grep -Fq 'state.cloudToken=state.cloudToken||tokenFromUrl()' our14-v28/index.html; then exit 1; fi
 
-      - name: Commit v28.1
+      - name: Commit v28.2
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
           git add our14-v28/index.html
-          git commit -m 'Fix cloud reload UI and remove password-style flow'
+          git commit -m 'Fix multi-class cloud save token switching'
           git push

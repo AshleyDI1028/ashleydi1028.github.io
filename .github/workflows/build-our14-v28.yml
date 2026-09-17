@@ -1,4 +1,4 @@
-name: Extract Our14 aftermath events
+name: Patch Our14 v28.5.5 aftermath CG batch 1
 
 on:
   push:
@@ -11,16 +11,24 @@ permissions:
   contents: write
 
 jobs:
-  extract:
+  patch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Extract aftermath definitions
-        run: python .github/scripts/extract_our14_aftermath.py
-      - name: Commit dump
+      - name: Wire first aftermath CG batch
+        run: python .github/scripts/patch_our14_v2855_aftermath_cg.py
+      - name: Verify v28.5.5
+        run: |
+          grep -Fq 'v28.5.5 後果CG・第一批掛載版' our14-v28/index.html
+          grep -Fq 'AFTERMATH_CG_SPRITE="assets/cg_consequence_sprite.jpg"' our14-v28/index.html
+          grep -Fq 'id.startsWith("loan_")' our14-v28/index.html
+          grep -Fq 'id.startsWith("fakeSign_")' our14-v28/index.html
+          grep -Fq 'id.startsWith("hideScore_")' our14-v28/index.html
+          test -s our14-v28/assets/cg_consequence_sprite.jpg
+      - name: Commit v28.5.5
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
-          git add .github/aftermath_dump.txt
-          git commit -m 'Extract aftermath event definitions for CG pass'
+          git add our14-v28/index.html
+          git commit -m 'Wire first batch of aftermath CGs in v28.5.5'
           git push

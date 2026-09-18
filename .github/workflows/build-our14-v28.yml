@@ -1,4 +1,4 @@
-name: Patch Our14 v28.5.7 opening money fix
+name: Patch Our14 v28.5.8 aftermath CG complete
 
 on:
   push:
@@ -16,18 +16,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fix opening money logic
-        run: python .github/scripts/patch_our14_v2857_opening_money.py
+      - name: Wire final aftermath CG batch
+        run: python .github/scripts/patch_our14_v2858_aftermath_cg3.py
 
-      - name: Verify v28.5.7
+      - name: Verify v28.5.8
         run: |
-          grep -Fq 'v28.5.7 開場金錢修正版' our14-v28/index.html
-          grep -Fq 'isOpeningSeatEvent' our14-v28/index.html
+          grep -Fq 'v28.5.8 後果CG補齊版' our14-v28/index.html
+          grep -Fq 'cg_aftermath_batch3_sprite.jpg' our14-v28/index.html
+          grep -Fq 'function eventCgPanel3' our14-v28/index.html
+          test -f our14-v28/assets/cg_aftermath_batch3_sprite.jpg
 
-      - name: Commit v28.5.7
+      - name: Commit v28.5.8
         run: |
           git config user.name 'our14-builder'
           git config user.email 'actions@users.noreply.github.com'
           git add our14-v28/index.html
-          git commit -m 'Fix opening seat event money deduction in v28.5.7'
+          git commit -m 'Complete aftermath CG coverage in v28.5.8'
           git push
